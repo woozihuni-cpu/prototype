@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Booking - Elanne Resort & Hotel</title>
+    <link rel="stylesheet" href="styles-3.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+    .center-outer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 70vh;
+        width: 100%;
+    }
+    /* Navigation Bar */
+nav {
+    background-color: #f7f3ec;
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-bottom: 2px solid #e0dbd0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo img {
+    height: 50px;
+    width: auto;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #4c3e35;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #e47b48;
+}
+
+.book-btn {
+    background-color: transparent;
+    color: #e47b48;
+    padding: 0.7rem 1.5rem;
+    border-radius: 0;
+    border: 2px solid #e47b48;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: Verdana, Geneva, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.book-btn:hover {
+    background-color: #e47b48;
+    color: white;
+}
+
+.book-btn:active{
+    background-color: #4c3e35;
+    border: #4c3e35 2px solid;
+    color: white;
+}
+/* MAIN NAVBAR - sticky at top */
+.main-navbar {
+    background-color: #f7f3ec;
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-bottom: 2px solid #e0dbd0;
+}
+
+        /* MAIN NAVBAR - sticky at top */
+.main-navbar {
+    background-color: #f7f3ec;
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-bottom: 2px solid #e0dbd0;
+}
+
+/* SECONDARY NAVBAR - sticky below main nav */
+.secondary-navbar {
+    background-color: #f0aa64;
+    padding: 0.75rem 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 82px; /* Height of main navbar */
+    z-index: 999;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border-bottom: 1.5px solid #e09548;
+}
+
+.secondary-navbar .nav-links {
+    position: relative;
+}
+
+.secondary-navbar .nav-links li:first-child::after {
+    content: '|';
+    position: absolute;
+    color: #4c3e35;
+    opacity: 0.3;
+    margin: 0 1rem;
+}
+
+.secondary-navbar .nav-links a {
+    color: #a75126;
+    font-weight: 400;
+    padding: 0.5rem 1.5rem;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+}
+
+.secondary-navbar .nav-links a:hover {
+    color: #fff;
+}
+
+.secondary-navbar .nav-links a.active {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Make sure content below is not hidden under sticky navbars */
+.wizard-progress {
+    margin-top: 0px;
+    padding-top: 80px; /* Space for both sticky navbars */
+}
+    </style>
+    
+</head>
+<body>
+   <!-- Main Navbar -->
+    <nav class="main-navbar">
+        <div class="logo">
+            <img src="images/elanne-nav-logo.png" alt="Elanne Resort Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rooms.html">Rooms</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="step1-date-duration.html">Reservation</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li>
+                <a href="step1-date-duration.html">
+                    <button class="book-btn">BOOK NOW</button>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Secondary Navbar -->
+    <nav class="secondary-navbar">
+        <ul class="nav-links">
+            <li><a href="step1-date-duration.html">Book Reservation</a></li>
+            <li><a href="manage-booking.html" class="active">Manage Booking</a></li>
+        </ul>
+    </nav>
+
+<!-- Centered Manage Booking Card -->
+<div class="center-outer">
+    <div style="max-width: 500px; width: 100%;">
+        <div class="signin-card" style="background: #fff; padding: 3rem 2rem; border-radius: 8px; border: 1px solid #e0dbd0;">
+            <div class="signin-header" style="text-align: center; margin-bottom: 2rem;">
+                <div class="signin-icon" style="width: 64px; height: 64px; background-color: rgba(46, 97, 128, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem; color: #2e6180;">
+                    <i class="bi bi-key"></i>
+                </div>
+                <h1 class="signin-title" style="color: #2e6180; font-size: 2rem; margin-bottom: 0.5rem;">Manage Booking</h1>
+                <p class="signin-description" style="color: #666;">Enter your booking details to view and manage your reservation</p>
+            </div>
+            <form id="signin-form" onsubmit="handleSignIn(event)">
+                <div class="input-group">
+                    <label for="booking-ref">
+                        <i class="bi bi-ticket-detailed"></i> Booking Reference Number *
+                    </label>
+                    <input type="text" id="booking-ref" required placeholder="100X" style="font-family: 'Courier New', monospace; text-transform: uppercase;">
+                </div>
+                <div class="input-group">
+                    <label for="email">
+                        <i class="bi bi-envelope"></i> Email Address *
+                    </label>
+                    <input type="email" id="email" required placeholder="your@email.com">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1.3rem;">
+                    <i class="bi bi-box-arrow-in-right"></i> Access Booking
+                </button>
+            </form>
+            <div class="signin-footer" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e0dbd0; text-align: center; font-size: 0.97rem; color: #777;">
+                <p>Need help? <i class="bi bi-telephone"></i> Contact us at <a href="tel:0969-431-9817">0969-431-9817</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <img src="images/elanne-logo.png" alt="Elanne Logo" class="footer-logo">
+            <p>Your perfect escape in Antipolo</p>
+        </div>
+        <div class="footer-section">
+            <h3>Location</h3>
+            <p>Sta. Cruz, Antipolo City<br>
+            Rizal, Philippines</p>
+        </div>
+        <div class="footer-section">
+            <h3>Contact Us</h3>
+            <ul>
+                <li><i class="bi bi-telephone"></i> Phone: 0969-431-9817</li>
+                <li><i class="bi bi-envelope"></i> Email: info@elanneresort.com</li>
+                <li><i class="bi bi-facebook"></i> Facebook: Elanne Resort & Hotel</li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Useful Links</h3>
+            <ul>
+                <li><a href="step1-date-duration.html">Book Reservation</a></li>
+                <li><a href="manage-booking.html">Manage Booking</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Elanne Resort & Hotel. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+function handleSignIn(event) {
+    event.preventDefault();
+    const bookingRef = document.getElementById('booking-ref').value;
+    const email = document.getElementById('email').value;
+    sessionStorage.setItem('bookingRef', bookingRef);
+    sessionStorage.setItem('bookingEmail', email);
+    window.location.href = 'booking-details.html';
+}
+</script>
+</body>
+</html>

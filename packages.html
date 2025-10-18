@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packages - Elanne Resort & Hotel</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">
+            <img src="images/elanne-nav-logo.png" alt="Elanne Resort Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rooms.html">Rooms</a></li>
+            <li><a href="packages.html" class="active">Packages</a></li>
+            <li><a href="step1-date-duration.html">Reservation</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <a href="step1-date-duration.html"><li><button class="book-btn">BOOK NOW</button></li></a>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Pool & Room Packages</h1>
+            <div class="intro-content">
+                <p style="color:white">Our packages combine pool access with comfortable accommodations and essential amenities. Whether you're planning a day tour, overnight stay, or 22-hour experience, we have the perfect package for your group.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pool Selection -->
+    <section class="pool-selection">
+        <div class="section-badge">
+            <i class="bi bi-water"></i>
+            <span>Choose Your Pool</span>
+        </div>
+        <h2>Select Your Pool Package</h2>
+        <div class="pool-cards">
+            <div class="pool-card">
+                <div class="pool-card-header">
+                    <h3>Lower Pool</h3>
+                    <span class="capacity-badge">25 Pax</span>
+                </div>
+                <div class="pool-image-wrapper">
+                    <img src="images/lower-pool-small.jpg" alt="Lower Pool">
+                    <div class="pool-overlay">
+                        <i class="bi bi-water"></i>
+                    </div>
+                </div>
+                <div class="pool-card-body">
+                    <p>Perfect for intimate gatherings and small groups</p>
+                    <button class="view-package-btn" onclick="openModal('lower-25')">
+                        VIEW RATES
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pool-card">
+                <div class="pool-card-header">
+                    <h3>Lower Pool</h3>
+                    <span class="capacity-badge">40 Pax</span>
+                </div>
+                <div class="pool-image-wrapper">
+                    <img src="images/lower-pool-large.jpg" alt="Lower Pool Large">
+                    <div class="pool-overlay">
+                        <i class="bi bi-water"></i>
+                    </div>
+                </div>
+                <div class="pool-card-body">
+                    <p>Ideal for medium-sized groups and celebrations</p>
+                    <button class="view-package-btn" onclick="openModal('lower-40')">
+                        VIEW RATES
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pool-card">
+                <div class="pool-card-header">
+                    <h3>Sampaguita Pool</h3>
+                    <span class="capacity-badge">20 Pax</span>
+                </div>
+                <div class="pool-image-wrapper">
+                    <img src="images/sampaguita-pool.jpg" alt="Sampaguita Pool">
+                    <div class="pool-overlay">
+                        <i class="bi bi-water"></i>
+                    </div>
+                </div>
+                <div class="pool-card-body">
+                    <p>Cozy pool area for family gatherings</p>
+                    <button class="view-package-btn" onclick="openModal('sampaguita-20')">
+                        VIEW RATES
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pool-card">
+                <div class="pool-card-header">
+                    <h3>Sampaguita Pool</h3>
+                    <span class="capacity-badge">30 Pax</span>
+                </div>
+                <div class="pool-image-wrapper">
+                    <img src="images/sampaguita-pool-large.jpg" alt="Sampaguita Pool Large">
+                    <div class="pool-overlay">
+                        <i class="bi bi-water"></i>
+                    </div>
+                </div>
+                <div class="pool-card-body">
+                    <p>Spacious option for family reunions</p>
+                    <button class="view-package-btn" onclick="openModal('sampaguita-30')">
+                        VIEW RATES
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pool-card">
+                <div class="pool-card-header">
+                    <h3>Upper Pool</h3>
+                    <span class="capacity-badge">40 Pax</span>
+                </div>
+                <div class="pool-image-wrapper">
+                    <img src="images/elanne-banner.jpeg" alt="Upper Pool">
+                    <div class="pool-overlay">
+                        <i class="bi bi-water"></i>
+                    </div>
+                </div>
+                <div class="pool-card-body">
+                    <p>Best views of Metro Manila skyline</p>
+                    <button class="view-package-btn" onclick="openModal('upper-40')">
+                        VIEW RATES
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pool-card featured">
+                <div class="featured-star">
+                    <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="pool-card-header">
+                    <h3>All 3 Pools</h3>
+                    <span class="capacity-badge">100 Pax</span>
+                </div>
+                <div class="pool-image-wrapper">
+                    <img src="images/all-pools.jpg" alt="All Pools">
+                    <div class="pool-overlay">
+                        <i class="bi bi-water"></i>
+                    </div>
+                </div>
+                <div class="pool-card-body">
+                    <p>Complete resort experience for large events</p>
+                    <button class="view-package-btn" onclick="openModal('all-pools')">
+                        VIEW RATES
+                        <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Structure -->
+    <div id="packageModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modalBody">
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing Tables (Hidden - for modal content) -->
+    <div style="display: none;">
+        <!-- Lower Pool 25 Pax -->
+        <div id="modal-lower-25" class="modal-pricing-content">
+            <div class="modal-side-layout">
+                <div class="modal-side-image">
+                    <img src="images/lower-pool-small.jpg" alt="Lower Pool - 25 Pax">
+                </div>
+                <div class="modal-side-details">
+                    <div class="modal-header">
+                        <h2>Lower Pool - 25 Pax Capacity</h2>
+                    </div>
+                    <div class="modal-body-content">
+                        <table class="rates-table">
+                            <thead>
+                                <tr>
+                                    <th>Rooms</th>
+                                    <th>Day Tour<br><small>8AM-6PM</small></th>
+                                    <th>Overnight<br><small>8PM-6AM</small></th>
+                                    <th>22 Hours</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1 Room</td>
+                                    <td>₱9,500</td>
+                                    <td>₱11,000</td>
+                                    <td>₱20,500</td>
+                                </tr>
+                                <tr>
+                                    <td>2 Rooms</td>
+                                    <td>₱13,000</td>
+                                    <td>₱14,500</td>
+                                    <td>₱27,500</td>
+                                </tr>
+                                <tr>
+                                    <td>3 Rooms</td>
+                                    <td>₱16,000</td>
+                                    <td>₱17,500</td>
+                                    <td>₱33,500</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="package-inclusions">
+                            <h4><i class="bi bi-check-circle-fill"></i> Package Inclusions</h4>
+                            <ul>
+                                <li>Lower Pool access</li>
+                                <li>Family Room(s) (7-10 pax each)</li>
+                                <li>Videoke machine</li>
+                                <li>Refrigerator</li>
+                                <li>Stove & grillers</li>
+                                <li>Chairs, tables, & utensils</li>
+                                <li>1 box ice cubes</li>
+                                <li>2 containers mineral water</li>
+                            </ul>
+                        </div>
+                        <a href="step1-date-duration.html"><button class="modal-book-btn" onclick="bookPackage('Lower Pool 25 Pax')">BOOK NOW</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Lower Pool 40 Pax -->
+        <div id="modal-lower-40" class="modal-pricing-content">
+            <div class="modal-side-layout">
+                <div class="modal-side-image">
+                    <img src="images/lower-pool-large.jpg" alt="Lower Pool - 40 Pax">
+                </div>
+                <div class="modal-side-details">
+                    <div class="modal-header">
+                        <h2>Lower Pool - 40 Pax Capacity</h2>
+                    </div>
+                    <div class="modal-body-content">
+                        <table class="rates-table">
+                            <thead>
+                                <tr>
+                                    <th>Rooms</th>
+                                    <th>Day Tour<br><small>8AM-6PM</small></th>
+                                    <th>Overnight<br><small>8PM-6AM</small></th>
+                                    <th>22 Hours</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1 Room</td>
+                                    <td>₱10,500</td>
+                                    <td>₱12,000</td>
+                                    <td>₱22,500</td>
+                                </tr>
+                                <tr>
+                                    <td>2 Rooms</td>
+                                    <td>₱14,000</td>
+                                    <td>₱15,500</td>
+                                    <td>₱29,500</td>
+                                </tr>
+                                <tr>
+                                    <td>3 Rooms</td>
+                                    <td>₱17,000</td>
+                                    <td>₱18,500</td>
+                                    <td>₱35,500</td>
+                                </tr>
+                                <tr>
+                                    <td>4 Rooms</td>
+                                    <td>₱20,000</td>
+                                    <td>₱21,500</td>
+                                    <td>₱41,500</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="package-inclusions">
+                            <h4><i class="bi bi-check-circle-fill"></i> Package Inclusions</h4>
+                            <ul>
+                                <li>Lower Pool access</li>
+                                <li>Family Room(s) (7-10 pax each)</li>
+                                <li>Videoke machine</li>
+                                <li>Refrigerator</li>
+                                <li>Stove & grillers</li>
+                                <li>Chairs, tables, & utensils</li>
+                                <li>1 box ice cubes</li>
+                                <li>2 containers mineral water</li>
+                            </ul>
+                        </div>
+                        <a href="step1-date-duration.html"><button class="modal-book-btn" onclick="bookPackage('Lower Pool 40 Pax')">BOOK NOW</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Sampaguita Pool 20 Pax -->
+        <div id="modal-sampaguita-20" class="modal-pricing-content">
+            <div class="modal-side-layout">
+                <div class="modal-side-image">
+                    <img src="images/sampaguita-pool.jpg" alt="Sampaguita Pool - 20 Pax">
+                </div>
+                <div class="modal-side-details">
+                    <div class="modal-header">
+                        <h2>Sampaguita Pool - 20 Pax Capacity</h2>
+                    </div>
+                    <div class="modal-body-content">
+                        <table class="rates-table">
+                            <thead>
+                                <tr>
+                                    <th>Rooms</th>
+                                    <th>Day Tour<br><small>8AM-6PM</small></th>
+                                    <th>Overnight<br><small>8PM-6AM</small></th>
+                                    <th>22 Hours</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1 Room</td>
+                                    <td>₱8,500</td>
+                                    <td>₱10,000</td>
+                                    <td>₱18,500</td>
+                                </tr>
+                                <tr>
+                                    <td>2 Rooms</td>
+                                    <td>₱12,000</td>
+                                    <td>₱13,500</td>
+                                    <td>₱25,500</td>
+                                </tr>
+                                <tr>
+                                    <td>3 Rooms</td>
+                                    <td>₱15,000</td>
+                                    <td>₱16,500</td>
+                                    <td>₱31,500</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="package-inclusions">
+                            <h4><i class="bi bi-check-circle-fill"></i> Package Inclusions</h4>
+                            <ul>
+                                <li>Sampaguita Pool access</li>
+                                <li>Family Room(s) (7-10 pax each)</li>
+                                <li>Videoke machine</li>
+                                <li>Refrigerator</li>
+                                <li>Stove & grillers</li>
+                                <li>Chairs, tables, & utensils</li>
+                                <li>1 box ice cubes</li>
+                                <li>2 containers mineral water</li>
+                            </ul>
+                        </div>
+                        <a href="step1-date-duration.html"><button class="modal-book-btn" onclick="bookPackage('Sampaguita Pool 20 Pax')">BOOK NOW</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sampaguita Pool 30 Pax -->
+        <div id="modal-sampaguita-30" class="modal-pricing-content">
+            <div class="modal-side-layout">
+                <div class="modal-side-image">
+                    <img src="images/sampaguita-pool-large.jpg" alt="Sampaguita Pool - 30 Pax">
+                </div>
+                <div class="modal-side-details">
+                    <div class="modal-header">
+                        <h2>Sampaguita Pool - 30 Pax Capacity</h2>
+                    </div>
+                    <div class="modal-body-content">
+                        <table class="rates-table">
+                            <thead>
+                                <tr>
+                                    <th>Rooms</th>
+                                    <th>Day Tour<br><small>8AM-6PM</small></th>
+                                    <th>Overnight<br><small>8PM-6AM</small></th>
+                                    <th>22 Hours</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1 Room</td>
+                                    <td>₱9,500</td>
+                                    <td>₱11,000</td>
+                                    <td>₱20,500</td>
+                                </tr>
+                                <tr>
+                                    <td>2 Rooms</td>
+                                    <td>₱13,000</td>
+                                    <td>₱14,500</td>
+                                    <td>₱27,500</td>
+                                </tr>
+                                <tr>
+                                    <td>3 Rooms</td>
+                                    <td>₱16,000</td>
+                                    <td>₱17,500</td>
+                                    <td>₱33,500</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="package-inclusions">
+                            <h4><i class="bi bi-check-circle-fill"></i> Package Inclusions</h4>
+                            <ul>
+                                <li>Sampaguita Pool access</li>
+                                <li>Family Room(s) (7-10 pax each)</li>
+                                <li>Videoke machine</li>
+                                <li>Refrigerator</li>
+                                <li>Stove & grillers</li>
+                                <li>Chairs, tables, & utensils</li>
+                                <li>1 box ice cubes</li>
+                                <li>2 containers mineral water</li>
+                            </ul>
+                        </div>
+                        <button class="modal-book-btn" onclick="bookPackage('Sampaguita Pool 30 Pax')">BOOK NOW</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upper Pool 40 Pax -->
+        <div id="modal-upper-40" class="modal-pricing-content">
+            <div class="modal-side-layout">
+                <div class="modal-side-image">
+                    <img src="images/elanne-banner.jpeg" alt="Upper Pool - 40 Pax">
+                </div>
+                <div class="modal-side-details">
+                    <div class="modal-header">
+                        <h2>Upper Pool - 40 Pax Capacity</h2>
+                    </div>
+                    <div class="modal-body-content">
+                        <table class="rates-table">
+                            <thead>
+                                <tr>
+                                    <th>Rooms</th>
+                                    <th>Day Tour<br><small>8AM-6PM</small></th>
+                                    <th>Overnight<br><small>8PM-6AM</small></th>
+                                    <th>22 Hours</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1 Room</td>
+                                    <td>₱10,500</td>
+                                    <td>₱12,000</td>
+                                    <td>₱22,500</td>
+                                </tr>
+                                <tr>
+                                    <td>2 Rooms</td>
+                                    <td>₱14,000</td>
+                                    <td>₱15,500</td>
+                                    <td>₱29,500</td>
+                                </tr>
+                                <tr>
+                                    <td>3 Rooms</td>
+                                    <td>₱17,000</td>
+                                    <td>₱18,500</td>
+                                    <td>₱35,500</td>
+                                </tr>
+                                <tr>
+                                    <td>4 Rooms</td>
+                                    <td>₱20,000</td>
+                                    <td>₱21,500</td>
+                                    <td>₱41,500</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="package-inclusions">
+                            <h4><i class="bi bi-check-circle-fill"></i> Package Inclusions</h4>
+                            <ul>
+                                <li>Upper Pool access with skyline views</li>
+                                <li>Family Room(s) (7-10 pax each)</li>
+                                <li>Videoke machine</li>
+                                <li>Refrigerator</li>
+                                <li>Stove & grillers</li>
+                                <li>Chairs, tables, & utensils</li>
+                                <li>1 box ice cubes</li>
+                                <li>2 containers mineral water</li>
+                            </ul>
+                        </div>
+                        <a href="step1-date-duration.html"><button class="modal-book-btn" onclick="bookPackage('Upper Pool 40 Pax')">BOOK NOW</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Pools 100 Pax -->
+        <div id="modal-all-pools" class="modal-pricing-content">
+            <div class="modal-side-layout">
+                <div class="modal-side-image">
+                    <img src="images/all-pools.jpg" alt="All 3 Pools - 100 Pax">
+                </div>
+                <div class="modal-side-details">
+                    <div class="modal-header featured-modal">
+                        <h2><i class="bi bi-star-fill"></i> All 3 Pools - 100 Pax Package</h2>
+                        <span class="featured-badge">MOST POPULAR</span>
+                    </div>
+                    <div class="modal-body-content">
+                        <table class="rates-table">
+                            <thead>
+                                <tr>
+                                    <th>Package</th>
+                                    <th>Day Tour<br><small>8AM-6PM</small></th>
+                                    <th>Overnight<br><small>8PM-6AM</small></th>
+                                    <th>22 Hours</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Complete Resort</td>
+                                    <td>₱24,000</td>
+                                    <td>₱28,500</td>
+                                    <td>₱52,500</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="package-inclusions">
+                            <h4><i class="bi bi-check-circle-fill"></i> Package Inclusions</h4>
+                            <ul>
+                                <li>Access to all 3 swimming pools</li>
+                                <li>3 Family Rooms (30 pax total)</li>
+                                <li>1 Videoke machine</li>
+                                <li>Refrigerator</li>
+                                <li>1 Stove & grillers</li>
+                                <li>Chairs, tables, & utensils</li>
+                                <li>1 box ice cubes</li>
+                                <li>5 containers mineral water</li>
+                            </ul>
+                        </div>
+                        <a href="step1-date-duration.html"><button class="modal-book-btn" onclick="bookPackage('All 3 Pools 100 Pax Package')">BOOK NOW</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Call to Action -->
+    <section class="rooms-cta">
+        <div class="cta-content">
+            <h2>Ready to Book Your Stay?</h2>
+            <p>Contact us now to reserve your preferred room and start planning your perfect escape</p>
+            <div class="cta-buttons">
+                <a href="step1-date-duration.html"><button class="cta-primary">BOOK NOW</button></a>
+                <a href="https://www.facebook.com/p/Elanne-Resort-and-Hotel-100075668393808/"><button class="cta-secondary">INQUIRE VIA FACEBOOK</button></a>
+            </div>
+            <div class="contact-info">
+                <p><i class="bi bi-telephone-fill"></i>Need Help? Contact us through 0916 519 1960</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="images/elanne-logo.png" alt="Elanne Logo" class="footer-logo">
+                <p>Your perfect escape in Antipolo</p>
+            </div>
+            <div class="footer-section">
+                <h3>Location</h3>
+                <p>Sta. Cruz, Antipolo City<br>Rizal, Philippines</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li>Phone: 0916 519 1960</li>
+                    <li>Email: elanne.resort.hotel@gmail.com</li>
+                    <li><a href="https://www.facebook.com/profile.php?id=100075668393808">Facebook: Elanne Resort & Hotel</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="rooms.html">Rooms</a></li>
+                    <li><a href="packages.html">Packages</a></li>
+                    <li><a href="step1-date-duration.html">Reservation</a></li>
+                    <li><a href="events.html">Events</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Elanne Resort & Hotel. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script-1.js"></script>
+</body>
+</html>

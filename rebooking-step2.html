@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rebooking Step 2: Select Package/Room - Elanne Resort</title>
+    <link rel="stylesheet" href="styles-1.css">
+    <link rel="stylesheet" href="styles-2.css">
+    <link rel="stylesheet" href="styles-step2.css">
+    <link rel="stylesheet" href="styles-rebooking-step1.css">
+    <link rel="stylesheet" href="styles-rebooking.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body>
+    <!-- Main Navbar -->
+    <nav class="main-navbar">
+        <div class="logo">
+            <img src="images/elanne-nav-logo.png" alt="Elanne Resort Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rooms.html">Rooms</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="step1-date-duration.html">Reservation</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="step1-date-duration.html"><button class="book-btn">BOOK NOW</button></a></li>
+        </ul>
+    </nav>
+
+    <!-- Secondary Navbar -->
+    <nav class="secondary-navbar">
+        <a href="step1-date-duration.html">Book Reservation</a>
+        <a href="manage-booking.html" class="active">Manage Booking</a>
+    </nav>
+
+    <!-- Progress Bar -->
+    <div class="wizard-progress">
+        <div class="wizard-container">
+            <div class="wizard-step completed" id="step-1">
+                <div class="step-circle"><i class="bi bi-check-lg"></i></div>
+                <div class="step-label">Date & Duration</div>
+            </div>
+            <div class="wizard-line"></div>
+            <div class="wizard-step active" id="step-2">
+                <div class="step-circle">2</div>
+                <div class="step-label">Package/Room</div>
+            </div>
+            <div class="wizard-line"></div>
+            <div class="wizard-step" id="step-3">
+                <div class="step-circle">3</div>
+                <div class="step-label">Confirmation</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content - SAME LAYOUT AS STEP2-ROOM -->
+   <!-- Step 2: Package/Room Selection -->
+<div class="step-content active" id="step-2-content">
+    <div class="section-container-split">
+        <div class="options-section">
+            <h2 class="step-title"><i class="bi bi-house-door"></i> Select New Package or Room</h2>
+            
+            <!-- Rebooking Info Banner -->
+            <div class="important-note" style="margin-bottom: 2rem;">
+                <i class="bi bi-info-circle-fill"></i>
+                <div>
+                    <strong>Rebooking #<span id="rebooking-id">RB006</span></strong> - Original Booking: #<span id="original-booking-id">1006</span><br>
+                    <span style="font-size: 0.9rem;">Select your new package/room below. Price difference will be calculated automatically.</span>
+                </div>
+            </div>
+            
+            <div class="selection-tabs">
+                <button class="tab-btn active" id="packages-tab" onclick="showTab('packages')">
+                    <i class="bi bi-water"></i> Pool Packages
+                </button>
+                <button class="tab-btn" id="rooms-tab" onclick="showTab('rooms')">
+                    <i class="bi bi-door-open"></i> Rooms Only
+                </button>
+            </div>
+
+            <div id="packages-content" class="tab-content active">
+                <div class="packages-grid" id="packages-grid"></div>
+            </div>
+
+            <div id="rooms-content" class="tab-content">
+                <div class="rooms-grid" id="rooms-grid"></div>
+            </div>
+        </div>
+
+        <div class="summary-sidebar">
+            <div class="summary-sticky">
+                <h3><i class="bi bi-arrow-left-right"></i> Booking Comparison</h3>
+                
+                <!-- Price Difference Section -->
+                <div class="price-difference-section" id="price-difference-section" style="display: none;">
+                    <div class="price-diff-label">
+                        <i class="bi bi-calculator"></i> Price Difference
+                    </div>
+                    <div class="price-diff-amount" id="price-diff-amount">₱0</div>
+                    <div class="price-diff-note" id="price-diff-note"></div>
+                </div>
+
+                <!-- Original Booking Summary -->
+                <div class="rebooking-summary-card original">
+                    <div class="rebooking-summary-header">
+                        <i class="bi bi-bookmark-fill"></i> Original Booking
+                    </div>
+                    <div class="rebooking-summary-body" id="original-summary-body">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- New Booking Summary -->
+                <div class="rebooking-summary-card new">
+                    <div class="rebooking-summary-header">
+                        <i class="bi bi-bookmark-star-fill"></i> New Booking
+                    </div>
+                    <div class="rebooking-summary-body" id="new-summary-body">
+                        <div class="summary-empty">
+                            <i class="bi bi-inbox"></i>
+                            <p>No items selected yet</p>
+                            <span style="font-size: 0.9rem;">Choose a package or room to continue</span>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                <div class="summary-actions">
+                    <button class="btn btn-outline btn-block" onclick="goBack()">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </button>
+                    <button class="btn btn-primary btn-block" id="next-btn" disabled onclick="goToStep3()">
+                        Next <i class="bi bi-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Package/Room Details Modal (SAME AS STEP2-ROOM) -->
+    <div class="modal" id="details-modal">
+        <div class="modal-overlay" onclick="closeDetailsModal()"></div>
+        <div class="modal-content-large">
+            <button class="modal-close" onclick="closeDetailsModal()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            
+            <div class="modal-body">
+                <!-- Image Section -->
+                <div class="modal-image-section">
+                    <img id="modal-image" src="" alt="" class="modal-main-image">
+                    <div class="modal-badge-container">
+                        <span id="modal-capacity-badge" class="modal-capacity-badge"></span>
+                    </div>
+                </div>
+                
+                <!-- Details Section -->
+                <div class="modal-details-section">
+                    <h2 id="modal-title" class="modal-title"></h2>
+                    <p id="modal-description" class="modal-description"></p>
+                    
+                    <!-- Price Display -->
+                    <div class="modal-price-section">
+                        <div class="modal-price-label">Price:</div>
+                        <div id="modal-price" class="modal-price">₱0</div>
+                    </div>
+                    
+                    <!-- Quantity Controls -->
+                    <div id="modal-quantity-section" class="modal-quantity-section">
+                        <label class="modal-label">
+                            Quantity:
+                        </label>
+                        <div class="modal-quantity-controls">
+                            <button class="quantity-btn" id="modal-decrease-btn" onclick="modalDecreaseQuantity()">
+                                <i class="bi bi-dash-lg"></i>
+                            </button>
+                            <span id="modal-quantity" class="quantity-display">1</span>
+                            <button class="quantity-btn" id="modal-increase-btn" onclick="modalIncreaseQuantity()">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </div>
+                        <span id="modal-quantity-note" class="modal-note"></span>
+                    </div>
+                    
+                    <!-- Inclusions/Features -->
+                    <div class="modal-inclusions-section">
+                        <h3 class="modal-section-title">
+                            <i class="bi bi-check-circle-fill"></i> <span id="modal-inclusions-title">Inclusions</span>
+                        </h3>
+                        <ul id="modal-inclusions-list" class="modal-inclusions-list"></ul>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="modal-actions">
+                        <button class="btn btn-outline btn-block" onclick="closeDetailsModal()">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </button>
+                        <button class="btn btn-primary btn-block" onclick="addItemFromModal()">
+                            <i class="bi bi-check-circle"></i> Add to Selection
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="images/elanne-logo.png" alt="Elanne Logo" class="footer-logo">
+                <p>Your perfect escape in Antipolo</p>
+            </div>
+            <div class="footer-section">
+                <h3>Location</h3>
+                <p>Sta. Cruz, Antipolo City<br>Rizal, Philippines</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><i class="bi bi-telephone"></i> Phone: 0969-431-9817</li>
+                    <li><i class="bi bi-envelope"></i> Email: info@elanneresort.com</li>
+                    <li><i class="bi bi-facebook"></i> Facebook: Elanne Resort & Hotel</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="manage-booking.html">Manage Booking</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Elanne Resort & Hotel. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Load Scripts: Base functionality first, then rebooking overrides -->
+    <script src="script-step2.js"></script>
+    <script src="script-rebooking-step2.js"></script>
+</body>
+</html>

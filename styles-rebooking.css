@@ -1,0 +1,544 @@
+/* ===== REBOOKING-SPECIFIC STYLES ===== */
+
+/* Important Note Banner */
+.important-note {
+    background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+    border-left: 5px solid #ffc107;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.15);
+}
+
+.important-note i {
+    color: #ffc107;
+    font-size: 2rem;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+}
+
+.important-note p {
+    color: #856404;
+    line-height: 1.7;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* ===== REBOOKING SUMMARY CARDS IN SIDEBAR ===== */
+.rebooking-summary-card {
+    background: #fff;
+    border: 2px solid #e0dbd0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+.rebooking-summary-card.original {
+    border-left: 4px solid #2e6180;
+}
+
+.rebooking-summary-card.new {
+    border-left: 4px solid #e47b48;
+}
+
+.rebooking-summary-header {
+    background: linear-gradient(135deg, #2e6180 0%, #4c3e35 100%);
+    color: #fff;
+    padding: 0.85rem 1rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rebooking-summary-card.new .rebooking-summary-header {
+    background: linear-gradient(135deg, #e47b48 0%, #f0aa64 100%);
+}
+
+.rebooking-summary-body {
+    padding: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Summary Content Inside Cards */
+.rebooking-summary-body .summary-section-header {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #2e6180;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.rebooking-summary-body .summary-item-card {
+    background: #f7f3ec;
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+}
+
+.rebooking-summary-body .summary-item-name {
+    font-weight: 700;
+    color: #2e6180;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+}
+
+.rebooking-summary-body .summary-item-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.rebooking-summary-body .summary-item-price {
+    font-weight: 700;
+    color: #e47b48;
+}
+
+.rebooking-summary-body .summary-total-section {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 2px solid #e0dbd0;
+}
+
+.rebooking-summary-body .total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    font-size: 0.9rem;
+}
+
+.rebooking-summary-body .total-row.main-total {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2e6180;
+    margin-top: 0.4rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #e0dbd0;
+}
+
+.rebooking-summary-body .total-row.main-total span:last-child {
+    color: #e47b48;
+}
+
+.rebooking-summary-body .summary-info-section {
+    background: #f7f3ec;
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-top: 0.75rem;
+}
+
+.rebooking-summary-body .summary-info-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.rebooking-summary-body .summary-info-row i {
+    color: #2e6180;
+    font-size: 0.9rem;
+}
+
+/* Price Difference Section */
+.price-difference-section {
+    background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+    border: 2px solid #ffc107;
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.price-diff-label {
+    font-size: 0.85rem;
+    color: #856404;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.price-diff-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.price-diff-amount.positive {
+    color: #e47b48;
+}
+
+.price-diff-amount.negative {
+    color: #22c55e;
+}
+
+.price-diff-amount.same {
+    color: #666;
+    font-size: 1.5rem;
+}
+
+.price-diff-note {
+    font-size: 0.8rem;
+    color: #856404;
+    font-style: italic;
+}
+
+
+/* ===== MATCH STEP 2 PACKAGE LAYOUT ===== */
+.packages-grid,
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.package-card,
+.room-card {
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: visible; /* ADD THIS LINE */
+    min-height: 450px; /* ADD THIS LINE */
+}
+
+.package-card:hover,
+.room-card:hover {
+    border-color: var(--secondary);
+    box-shadow: 0 8px 24px rgba(228, 123, 72, 0.15);
+    transform: translateY(-3px);
+}
+
+.package-card.selected,
+.room-card.selected {
+    border-color: var(--secondary);
+    background-color: rgba(228, 123, 72, 0.03);
+    box-shadow: 0 8px 24px rgba(228, 123, 72, 0.2);
+}
+
+.package-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+    overflow: hidden; /* ADD THIS IF MISSING */
+}
+
+.package-card:hover .package-image,
+.room-card:hover .package-image {
+    transform: scale(1.05);
+}
+
+.package-name {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.package-capacity {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background-color: rgba(228, 123, 72, 0.1);
+    color: var(--secondary);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.package-description {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 1rem 0;
+}
+
+.package-price {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--secondary);
+    margin: 1rem 0;
+}
+
+.selected-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 12px rgba(46, 97, 128, 0.3);
+    z-index: 10;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .rebooking-layout {
+        grid-template-columns: 1fr 380px;
+    }
+}
+
+@media (max-width: 992px) {
+    .section-container-split {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-sidebar {
+        order: -1;
+    }
+
+    .summary-sticky {
+        position: relative;
+        top: 0;
+    }
+    
+    .rebooking-summary-card {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .rebooking-actions {
+        flex-direction: column;
+    }
+    
+    .confirmation-actions {
+        flex-direction: column;
+    }
+    .packages-grid,
+    .rooms-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+
+
+
+/* Replace rebooking-layout with: */
+.rebooking-main-container {
+    max-width: 1600px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.rebooking-selection-area {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+/* Side-by-side summaries */
+.rebooking-summaries-container {
+    position: relative;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 3px solid #e0dbd0;
+}
+
+.rebooking-summaries-sticky {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    position: sticky;
+    top: 175px;
+}
+
+.summaries-main-title {
+    grid-column: 1 / -1;
+    color: #2e6180;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.booking-summary-card {
+    background: #fff;
+    border: 2px solid #e0dbd0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.booking-summary-card.original {
+    border-left: 5px solid #2e6180;
+}
+
+.booking-summary-card.new {
+    border-left: 5px solid #e47b48;
+}
+
+.summary-card-header {
+    background: linear-gradient(135deg, #2e6180 0%, #4c3e35 100%);
+    color: #fff;
+    padding: 1.25rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.booking-summary-card.new .summary-card-header {
+    background: linear-gradient(135deg, #e47b48 0%, #f0aa64 100%);
+}
+
+.summary-card-body {
+    padding: 1.5rem;
+    min-height: 300px;
+}
+
+.summary-empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #999;
+}
+
+.summary-empty-state i {
+    font-size: 4rem;
+    color: #e0dbd0;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* Summary items inside cards */
+.summary-section-header {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #2e6180;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+}
+
+.summary-item-card {
+    background: #f7f3ec;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+}
+
+.summary-item-name {
+    font-weight: 700;
+    color: #2e6180;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+}
+
+.summary-item-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.summary-item-price {
+    font-weight: 700;
+    color: #e47b48;
+}
+
+.summary-total-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #e0dbd0;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+}
+
+.total-row.main-total {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2e6180;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e0dbd0;
+}
+
+/* Price Difference Box */
+.price-difference-box {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+    border-left: 5px solid #ffc107;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+}
+
+.price-diff-label {
+    font-size: 0.9rem;
+    color: #856404;
+    margin-bottom: 0.5rem;
+}
+
+.price-diff-amount {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.price-diff-amount.positive {
+    color: #e47b48;
+}
+
+.price-diff-amount.negative {
+    color: #22c55e;
+}
+
+.price-diff-amount.same {
+    color: #666;
+}
+
+/* Navigation buttons */
+.summaries-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .rebooking-summaries-sticky {
+        grid-template-columns: 1fr;
+        position: relative;
+        top: 0;
+    }
+    
+    .price-difference-box,
+    .summaries-actions {
+        grid-column: 1;
+    }
+}

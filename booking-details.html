@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details - Elanne Resort & Hotel</title>
+    <link rel="stylesheet" href="styles-1.css">
+    <link rel="stylesheet" href="styles-2.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles-booking.css">
+</head>
+<body>
+    <nav class="main-navbar">
+        <div class="logo">
+            <img src="images/elanne-nav-logo.png" alt="Elanne Resort Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rooms.html">Rooms</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="step1-date-duration.html">Reservation</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="step1-date-duration.html"><button class="book-btn">BOOK NOW</button></a></li>
+        </ul>
+    </nav>
+
+    <nav class="secondary-navbar">
+        <ul class="nav-links">
+            <li><a href="step1-date-duration.html">Book Reservation</a></li>
+            <li><a href="manage-booking.html" class="active">Manage Booking</a></li>
+        </ul>
+    </nav>
+
+    <div style="max-width:1100px; margin:2rem auto; padding:0 2rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+            <div>
+                <h1 style="color:#2e6180; font-size:2.5rem; margin-bottom:0.5rem;">Booking Details</h1>
+                <p style="color:#666;">Manage your reservation at Elanne Resort & Hotel</p>
+            </div>
+            <button class="btn btn-primary" onclick="openModifyModal()">
+                <i class="bi bi-pencil"></i> Modify Booking
+            </button>
+        </div>
+
+        <div style="background:#fff; padding:2rem; border-radius:8px; margin-bottom:1.5rem; border:1px solid #e0dbd0;">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:2rem;">
+                <div>
+                    <div style="font-size:0.9rem; color:#777; margin-bottom:0.25rem;">
+                        <i class="bi bi-ticket-detailed"></i> Booking Reference Number
+                    </div>
+                    <div id="display-booking-ref" style="font-size:1.8rem; font-family:'Courier New', monospace; font-weight:bold; color:#2e6180;">1006</div>
+                </div>
+                <div>
+                    <div style="font-size:0.9rem; color:#777; margin-bottom:0.25rem;">
+                        <i class="bi bi-check-circle"></i> Status
+                    </div>
+                    <span style="display:inline-block; padding:0.5rem 1.2rem; background-color:rgba(34,197,94,0.1); color:#22c55e; border-radius:20px; font-weight:600; font-size:1rem;">
+                        <i class="bi bi-check-circle-fill"></i> Confirmed
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div style="background:#fff; padding:2rem; border-radius:8px; margin-bottom:1.5rem; border:1px solid #e0dbd0;">
+            <h3 style="color:#2e6180; margin-bottom:1.5rem; font-size:1.3rem;">
+                <i class="bi bi-info-circle"></i> Reservation Information
+            </h3>
+            
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:2rem;">
+                <div style="display:flex; gap:1rem;">
+                    <div style="color:#e47b48; margin-top:0.25rem; font-size:1.5rem;">
+                        <i class="bi bi-person"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:0.9rem; color:#777; margin-bottom:0.25rem;">Guest Name</div>
+                        <div style="font-weight:600; color:#333; font-size:1.1rem;" id="guest-name">Pearl Roxas</div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:1rem;">
+                    <div style="color:#e47b48; margin-top:0.25rem; font-size:1.5rem;">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:0.9rem; color:#777; margin-bottom:0.25rem;">Check-in Date</div>
+                        <div style="font-weight:600; color:#333; font-size:1.1rem;" id="checkin-date">October 26, 2025</div>
+                    </div>
+                </div>
+            </div>
+
+            <hr style="border:none; border-top:1px solid #e0dbd0; margin:2rem 0;">
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:2rem;">
+                <div style="display:flex; gap:1rem;">
+                    <div style="color:#e47b48; font-size:1.5rem;">
+                        <i class="bi bi-calendar-x"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:0.9rem; color:#777; margin-bottom:0.25rem;">Check-out Date</div>
+                        <div style="font-weight:600; color:#333; font-size:1.1rem;" id="checkout-date">October 27, 2025</div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:1rem;">
+                    <div style="color:#e47b48; font-size:1.5rem;">
+                        <i class="bi bi-house-door"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:0.9rem; color:#777; margin-bottom:0.25rem;">Package</div>
+                        <div style="font-weight:600; color:#333; font-size:1.1rem;">Lower Pool (40 PAX)</div>
+                    </div>
+                </div>
+            </div>
+
+            <hr style="border:none; border-top:1px solid #e0dbd0; margin:2rem 0;">
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:2rem;">
+                <div style="display:flex; gap:1rem;">
+                    <div style="color:#e47b48; font-size:1.5rem;">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:0.9rem; color:#777; margin-bottom:0.25rem;">Number of Guests</div>
+                        <div style="font-weight:600; color:#333; font-size:1.1rem;">35</div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:1rem;">
+                    <div style="color:#e47b48; font-size:1.5rem;">
+                        <i class="bi bi-credit-card"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:0.9rem; color:#777; margin-bottom:0.25rem;">Total Amount</div>
+                        <div style="font-weight:600; color:#333; font-size:1.1rem;">₱6,000</div>
+                        <div style="margin-top:0.25rem; color:#22c55e; font-size:0.9rem;">
+                            <i class="bi bi-check-circle-fill"></i> Paid: ₱3,000 (50%)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modify Modal -->
+    <div class="modal" id="modify-modal">
+        <div class="modal-content" style="max-width:450px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                <h2 style="color:#2e6180; margin:0;">
+                    <i class="bi bi-pencil"></i> Modify Booking
+                </h2>
+                <button onclick="closeModifyModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:#777;">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            
+            <p style="color:#666; margin-bottom:2rem;">What would you like to do with your booking?</p>
+            
+            <div style="display:flex; flex-direction:column; gap:1rem;">
+                <a href="rebooking-step1.html" class="btn btn-primary" style="width:100%; text-decoration:none; text-align:center;">
+                    <i class="bi bi-arrow-repeat"></i> Rebook Your Stay
+                </a>
+                <button class="btn" onclick="openCancelConfirmModal()" style="width:100%; background:#dc3545; color:#fff; border:none;">
+                    <i class="bi bi-x-circle"></i> Cancel This Booking
+                </button>
+                <button class="btn btn-outline" onclick="closeModifyModal()" style="width:100%;">
+                    <i class="bi bi-arrow-left"></i> Go Back
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancel Confirmation Modal -->
+    <div class="modal" id="cancel-confirm-modal">
+        <div class="modal-content" style="max-width:550px;">
+            <div style="font-size:4rem; color:#dc3545; text-align:center; margin-bottom:1rem;">
+                <i class="bi bi-exclamation-triangle"></i>
+            </div>
+            <h2 style="color:#2e6180; margin-bottom:1rem; text-align:center;">Cancel Booking?</h2>
+            <p style="color:#666; margin-bottom:1.5rem; text-align:center;">
+                Are you sure you want to cancel this booking? This action will send a cancellation request to the resort.
+            </p>
+            
+            <div style="background:#fff8e1; padding:1.5rem; border-radius:6px; margin-bottom:1.5rem; border-left:4px solid #ffc107;">
+                <p style="margin:0 0 1rem; color:#856404;">
+                    <strong><i class="bi bi-info-circle"></i> Cancellation Policy:</strong>
+                </p>
+                <p style="margin:0; color:#856404;" id="cancel-policy-message">
+                    Cancellations made 7 or more days before check-in are eligible for 50% refund. Your request will be reviewed by our team.
+                </p>
+            </div>
+
+            <div style="margin-bottom:1.5rem;">
+                <label style="display:block; font-weight:600; color:#4c3e35; margin-bottom:0.5rem;">
+                    Reason for Cancellation *
+                </label>
+                <select id="cancel-reason" style="width:100%; padding:0.75rem; border:1.5px solid #e0dbd0; border-radius:6px; font-family:inherit; font-size:1rem;" onchange="toggleCancelOther()">
+                    <option value="">Select a reason...</option>
+                    <option value="change-mind">Change of Mind</option>
+                    <option value="schedule-conflict">Conflict of Schedule</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div id="cancel-other-reason" style="display:none; margin-bottom:1.5rem;">
+                <label style="display:block; font-weight:600; color:#4c3e35; margin-bottom:0.5rem;">
+                    Please specify:
+                </label>
+                <textarea id="cancel-other-text" rows="3" style="width:100%; padding:0.75rem; border:1.5px solid #e0dbd0; border-radius:6px; font-family:inherit; font-size:1rem; resize:vertical;" placeholder="Tell us more..."></textarea>
+            </div>
+            
+            <div style="display:flex; gap:1rem;">
+                <button class="btn btn-outline" onclick="closeCancelConfirmModal()" style="flex:1;">
+                    <i class="bi bi-arrow-left"></i> Go Back
+                </button>
+                <button class="btn" onclick="submitCancellation()" style="flex:1; background:#dc3545; color:#fff; border:none;" id="submit-cancel-btn" disabled>
+                    <i class="bi bi-check-circle"></i> Confirm Cancellation
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="success-modal">
+        <div class="modal-content" style="max-width:500px; text-align:center;">
+            <div style="font-size:4rem; color:#22c55e; margin-bottom:1rem;">
+                <i class="bi bi-check-circle"></i>
+            </div>
+            <h2 style="color:#2e6180; margin-bottom:1rem;" id="success-title">Request Sent</h2>
+            <p style="color:#666; margin-bottom:1.5rem;" id="success-message">
+                Your request has been sent to the resort. You will receive an email notification about your booking status.
+            </p>
+            <div style="background:#f7f3ec; padding:1.5rem; border-radius:6px; margin-bottom:1.5rem; border-left:4px solid #e47b48;">
+                <p style="margin:0; color:#4c3e35;">
+                    <strong>Cancellation Reference:</strong><br>
+                    <span style="font-family:'Courier New', monospace; font-size:1.5rem; color:#2e6180;" id="cancel-ref">CXL-2025007</span>
+                </p>
+            </div>
+            <button class="btn btn-primary" onclick="closeSuccessModal()">
+                <i class="bi bi-check-lg"></i> OK
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="images/elanne-logo.png" alt="Elanne Logo" class="footer-logo">
+                <p>Your perfect escape in Antipolo</p>
+            </div>
+            <div class="footer-section">
+                <h3>Location</h3>
+                <p>Sta. Cruz, Antipolo City<br>Rizal, Philippines</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><i class="bi bi-telephone"></i> Phone: 0969-431-9817</li>
+                    <li><i class="bi bi-envelope"></i> Email: info@elanneresort.com</li>
+                    <li><i class="bi bi-facebook"></i> Facebook: Elanne Resort & Hotel</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li><a href="step1-date-duration.html">Book Reservation</a></li>
+                    <li><a href="manage-booking.html">Manage Booking</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Elanne Resort & Hotel. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const bookingRef = sessionStorage.getItem('bookingRef') || '1006';
+        document.getElementById('display-booking-ref').textContent = bookingRef;
+        
+        const guestName = sessionStorage.getItem('guestName') || 'Pearl Roxas';
+        document.getElementById('guest-name').textContent = guestName;
+        
+        const checkin = new Date('2025-10-26');
+        const checkout = new Date('2025-10-27');
+        
+        document.getElementById('checkin-date').textContent = checkin.toLocaleDateString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric'
+        });
+        document.getElementById('checkout-date').textContent = checkout.toLocaleDateString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        function openModifyModal() {
+            document.getElementById('modify-modal').classList.add('show');
+        }
+
+        function closeModifyModal() {
+            document.getElementById('modify-modal').classList.remove('show');
+        }
+
+        function openCancelConfirmModal() {
+            closeModifyModal();
+            const today = new Date();
+            const daysUntilCheckin = Math.floor((checkin - today) / (1000 * 60 * 60 * 24));
+            const policyMsg = document.getElementById('cancel-policy-message');
+            
+            if (daysUntilCheckin >= 7) {
+                policyMsg.innerHTML = `You are cancelling ${daysUntilCheckin} days before check-in. You will receive a 50% refund (₱1,500) of your down payment according to our cancellation policy.`;
+            } else {
+                policyMsg.innerHTML = `You are within ${daysUntilCheckin} day(s) of check-in. According to our policy, cancellations are only permitted 7 or more days before your reservation date. Your request will be reviewed by our team.`;
+            }
+            
+            document.getElementById('cancel-confirm-modal').classList.add('show');
+        }
+
+        function closeCancelConfirmModal() {
+            document.getElementById('cancel-confirm-modal').classList.remove('show');
+            document.getElementById('cancel-reason').value = '';
+            document.getElementById('cancel-other-text').value = '';
+            document.getElementById('cancel-other-reason').style.display = 'none';
+            document.getElementById('submit-cancel-btn').disabled = true;
+        }
+
+        function toggleCancelOther() {
+            const reason = document.getElementById('cancel-reason').value;
+            const otherDiv = document.getElementById('cancel-other-reason');
+            const submitBtn = document.getElementById('submit-cancel-btn');
+            
+            if (reason === 'other') {
+                otherDiv.style.display = 'block';
+                submitBtn.disabled = true;
+                document.getElementById('cancel-other-text').addEventListener('input', function() {
+                    submitBtn.disabled = this.value.trim() === '';
+                });
+            } else {
+                otherDiv.style.display = 'none';
+                submitBtn.disabled = reason === '';
+            }
+        }
+
+        function submitCancellation() {
+            const reason = document.getElementById('cancel-reason').value;
+            const reasonText = document.getElementById('cancel-reason').options[document.getElementById('cancel-reason').selectedIndex].text;
+            const otherText = document.getElementById('cancel-other-text').value;
+            
+            closeCancelConfirmModal();
+            
+            document.getElementById('success-title').textContent = 'Cancellation Request Sent';
+            document.getElementById('success-message').textContent = 
+                'Your cancellation request has been sent to the resort. You will receive an email notification about the status of your request and any applicable refunds.';
+            document.getElementById('cancel-ref').textContent = 'CXL-2025007';
+            
+            document.getElementById('success-modal').classList.add('show');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.remove('show');
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal') && e.target.classList.contains('show')) {
+                e.target.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

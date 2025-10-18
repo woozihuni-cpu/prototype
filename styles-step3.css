@@ -1,0 +1,249 @@
+/* Form Section */
+.form-section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e0dbd0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #4c3e35;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 2px solid #e0dbd0;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #e47b48;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+/* Summary Section */
+.summary-section {
+  background: #f7f3ec;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.summary-details {
+  background: #fff;
+  border-radius: 6px;
+  padding: 1.5rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e0dbd0;
+}
+
+.summary-row:last-child {
+  border-bottom: none;
+}
+
+.summary-row.total {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #2e6180;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  border-top: 2px solid #e0dbd0;
+}
+
+.summary-row.total .summary-value {
+  color: #e47b48;
+}
+
+/* Payment Section */
+.payment-section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e0dbd0;
+}
+
+.payment-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.payment-option {
+  cursor: pointer;
+}
+
+.payment-option input[type="radio"] {
+  display: none;
+}
+
+.payment-card {
+  border: 2px solid #e0dbd0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.payment-card i {
+  font-size: 2rem;
+  color: #2e6180;
+}
+
+.payment-card span {
+  font-weight: 600;
+  color: #4c3e35;
+}
+
+.payment-option input[type="radio"]:checked + .payment-card {
+  border-color: #e47b48;
+  background-color: rgba(228, 123, 72, 0.05);
+}
+
+.payment-card:hover {
+  border-color: #e47b48;
+}
+
+/* Payment Instructions */
+.payment-instructions {
+  background: #fff8e1;
+  border-left: 4px solid #ffc107;
+  padding: 1.5rem;
+  border-radius: 6px;
+  margin-top: 1.5rem;
+  display: none;
+}
+
+.payment-instructions.show {
+  display: block;
+}
+
+.payment-instructions h4 {
+  color: #2e6180;
+  margin-bottom: 1rem;
+}
+
+.payment-instructions p {
+  color: #4c3e35;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.payment-instructions strong {
+  color: #e47b48;
+}
+
+/* Terms Section */
+.terms-section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e0dbd0;
+}
+
+.terms-box {
+  background: #f7f3ec;
+  border-radius: 6px;
+  padding: 1.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 1.5rem;
+}
+
+.terms-box h4 {
+  color: #2e6180;
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.terms-box h4:first-child {
+  margin-top: 0;
+}
+
+.terms-box ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.terms-box li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  color: #4c3e35;
+}
+
+.terms-box li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #e47b48;
+  font-weight: bold;
+}
+
+.terms-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.terms-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.terms-checkbox span {
+  color: #4c3e35;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+

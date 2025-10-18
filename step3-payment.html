@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 3: Payment - Elanne Resort & Hotel</title>
+    <link rel="stylesheet" href="styles-1.css">
+    <link rel="stylesheet" href="styles-2.css">
+    <link rel="stylesheet" href="styles-step2.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        
+        /* ===== STEP 3 SPECIFIC STYLES ===== */
+        .payment-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .payment-main-content {
+            min-width: 0;
+        }
+
+        .payment-sidebar {
+            position: relative;
+        }
+
+        .summary-sticky-payment {
+            position: sticky;
+            top: 175px;
+            background: #fff;
+            border: 2px solid #e0dbd0;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        .payment-section-card {
+            background: #fff;
+            border: 2px solid #e0dbd0;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            color: #2e6180;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e0dbd0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-field label {
+            font-weight: 600;
+            color: #4c3e35;
+            font-size: 0.95rem;
+        }
+
+        .form-field input,
+        .form-field textarea {
+            padding: 0.85rem;
+            border: 2px solid #e0dbd0;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-field input:focus,
+        .form-field textarea:focus {
+            outline: none;
+            border-color: #e47b48;
+            box-shadow: 0 0 0 3px rgba(228, 123, 72, 0.1);
+        }
+
+        .form-field textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+         /* ===== COMPACT PROGRESS BAR ===== */
+        .wizard-progress {
+            background-color: var(--white);
+            padding: 1rem 0;
+            position: sticky;
+            top: 105px;
+            z-index: 998;
+            border-bottom: 2px solid var(--border);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+
+        .wizard-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .wizard-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .step-circle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #e0dbd0;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .wizard-step.active .step-circle {
+            background-color: var(--secondary);
+            color: var(--white);
+            box-shadow: 0 0 0 4px rgba(228, 123, 72, 0.2);
+        }
+
+        .wizard-step.completed .step-circle {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .step-label {
+            font-size: 0.85rem;
+            text-align: center;
+            color: var(--gray);
+            max-width: 100px;
+        }
+
+        .wizard-step.active .step-label {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .wizard-line {
+            flex: 1;
+            height: 2px;
+            background-color: #e0dbd0;
+            margin: 0 1rem;
+        }
+
+
+        /* Payment Options */
+        .payment-options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-option {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .payment-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .payment-card {
+            border: 2px solid #e0dbd0;
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            background: #fff;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .payment-option input:checked + .payment-card {
+            border-color: #e47b48;
+            background-color: rgba(228, 123, 72, 0.05);
+            box-shadow: 0 4px 12px rgba(228, 123, 72, 0.2);
+        }
+
+        .payment-card:hover {
+            border-color: #e47b48;
+            transform: translateY(-3px);
+        }
+
+        .payment-card i {
+            font-size: 2.5rem;
+            color: #2e6180;
+            transition: color 0.3s;
+        }
+
+        .payment-option input:checked + .payment-card i {
+            color: #e47b48;
+        }
+
+        .payment-card-label {
+            font-weight: 600;
+            color: #2e6180;
+            font-size: 1.1rem;
+        }
+
+        .payment-card-desc {
+            font-size: 0.85rem;
+            color: #777;
+        }
+
+        /* Payment Instructions */
+        .payment-instructions {
+            background: #f7f3ec;
+            border-left: 4px solid #e47b48;
+            padding: 2rem;
+            border-radius: 8px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .payment-instructions.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .instructions-title {
+            color: #2e6180;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .instruction-step {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            padding: 0.75rem 0;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            background: #e47b48;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .step-text {
+            flex: 1;
+            color: #4c3e35;
+            line-height: 1.6;
+        }
+
+        .step-text strong {
+            color: #2e6180;
+        }
+
+        /* Terms Section */
+        .terms-agreement {
+            background: #fff8e1;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .terms-checkbox-wrapper {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        .terms-checkbox-wrapper input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            margin-top: 0.15rem;
+            flex-shrink: 0;
+        }
+
+        .terms-text {
+            flex: 1;
+            color: #4c3e35;
+            line-height: 1.6;
+        }
+
+        .terms-link {
+            color: #2e6180;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .terms-link:hover {
+            color: #e47b48;
+        }
+
+        /* Summary Sidebar */
+        .summary-header {
+            color: #2e6180;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e0dbd0;
+        }
+
+        .summary-item-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.85rem 0;
+            border-bottom: 1px solid #e0dbd0;
+        }
+
+        .summary-item-row:last-of-type {
+            border-bottom: none;
+        }
+
+        .summary-label-text {
+            color: #4c3e35;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .summary-value-text {
+            color: #2e6180;
+            font-weight: 600;
+        }
+
+        .summary-total-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #2e6180;
+        }
+
+        .summary-total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .summary-total-row .summary-label-text {
+            color: #2e6180;
+        }
+
+        .summary-total-row .summary-value-text {
+            color: #e47b48;
+        }
+
+        .summary-downpayment-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #e47b48;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e0dbd0;
+        }
+
+        /* Terms Modal */
+        .terms-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .terms-modal.show {
+            display: flex;
+        }
+
+        .terms-modal-content {
+            background: #fff;
+            border-radius: 12px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalSlideUp 0.3s ease;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .terms-modal-header {
+            padding: 2rem;
+            border-bottom: 2px solid #e0dbd0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terms-modal-header h2 {
+            color: #2e6180;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .close-terms-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #4c3e35;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-terms-btn:hover {
+            background: #f7f3ec;
+            color: #e47b48;
+        }
+
+        .terms-modal-body {
+            padding: 2rem;
+        }
+
+        .terms-modal-body h3 {
+            color: #2e6180;
+            font-size: 1.2rem;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .terms-modal-body h3:first-child {
+            margin-top: 0;
+        }
+
+        .terms-modal-body ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .terms-modal-body li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: #4c3e35;
+            line-height: 1.6;
+        }
+
+        .terms-modal-body li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #e47b48;
+            font-weight: bold;
+        }
+
+        .terms-modal-footer {
+            padding: 1.5rem 2rem;
+            border-top: 2px solid #e0dbd0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .payment-layout {
+                grid-template-columns: 1fr 350px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .payment-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-sidebar {
+                order: -1;
+            }
+
+            .summary-sticky-payment {
+                position: relative;
+                top: 0;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .payment-options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Proof of Payment Upload Section */
+.proof-upload-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e0dbd0;
+}
+
+.upload-section-title {
+    color: #2e6180;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.upload-area {
+    border: 2px dashed #e0dbd0;
+    border-radius: 12px;
+    padding: 2rem;
+    background: #f7f3ec;
+    transition: all 0.3s;
+}
+
+.upload-area:hover {
+    border-color: #e47b48;
+    background: #fff;
+}
+
+.upload-placeholder {
+    text-align: center;
+    cursor: pointer;
+    padding: 2rem 1rem;
+}
+
+.upload-preview {
+    text-align: center;
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.preview-filename {
+    color: #2e6180;
+    font-weight: 600;
+    font-size: 0.9rem;
+    flex: 1;
+    text-align: left;
+    word-break: break-all;
+}
+
+.remove-file-btn {
+    background: none;
+    border: none;
+    color: #e47b48;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: all 0.2s;
+}
+
+.remove-file-btn:hover {
+    color: #dc2626;
+    transform: scale(1.1);
+}
+
+#preview-image {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    margin: 1rem 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.preview-success {
+    padding: 1rem;
+}
+
+/* Drag and drop active state */
+.upload-area.drag-over {
+    border-color: #e47b48;
+    background: rgba(228, 123, 72, 0.05);
+}
+    </style>
+</head>
+<body>
+    <!-- Main Navbar -->
+    <nav class="main-navbar">
+        <div class="logo">
+            <img src="images/elanne-nav-logo.png" alt="Elanne Resort Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rooms.html">Rooms</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="reservation-step1.html" class="active">Reservation</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="reservation-step1.html"><button class="book-btn">BOOK NOW</button></a></li>
+        </ul>
+    </nav>
+
+    <!-- Secondary Navbar -->
+    <nav class="secondary-navbar">
+        <ul class="nav-links">
+            <li><a href="reservation-step1.html" class="active">Book Reservation</a></li>
+            <li><a href="manage-booking.html">Manage Booking</a></li>
+        </ul>
+    </nav>
+
+    <!-- Progress Bar -->
+    <div class="wizard-progress">
+        <div class="wizard-container">
+            <div class="wizard-step completed">
+                <div class="step-circle"><i class="bi bi-check-lg"></i></div>
+                <span class="step-label">Date & Duration</span>
+            </div>
+            <div class="wizard-line"></div>
+            <div class="wizard-step completed">
+                <div class="step-circle"><i class="bi bi-check-lg"></i></div>
+                <span class="step-label">Room/Package</span>
+            </div>
+            <div class="wizard-line"></div>
+            <div class="wizard-step active">
+                <div class="step-circle">3</div>
+                <span class="step-label">Payment</span>
+            </div>
+            <div class="wizard-line"></div>
+            <div class="wizard-step">
+                <div class="step-circle">4</div>
+                <span class="step-label">Confirmation</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="payment-layout">
+        <!-- Left Side: Payment Form -->
+        <div class="payment-main-content">
+            <!-- Guest Information -->
+            <div class="payment-section-card">
+                <h3 class="section-header">
+                    <i class="bi bi-person-fill"></i> Guest Information
+                </h3>
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="guest-name">Full Name *</label>
+                        <input type="text" id="guest-name" placeholder="Pearl Roxas" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="guest-email">Email Address *</label>
+                        <input type="email" id="guest-email" placeholder="pearl@email.com" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="guest-phone">Phone Number *</label>
+                        <input type="tel" id="guest-phone" placeholder="09XX-XXX-XXXX" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="guest-count">Number of Guests *</label>
+                        <input type="number" id="guest-count" placeholder="35" min="1" required>
+                    </div>
+                </div>
+                <div class="form-field" style="margin-top: 1.5rem;">
+                    <label for="special-requests">Special Requests (Optional)</label>
+                    <textarea id="special-requests" placeholder="Any special requirements..."></textarea>
+                </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="payment-section-card">
+                <h3 class="section-header">
+                    <i class="bi bi-wallet2"></i> Select Payment Method
+                </h3>
+                <div class="payment-options-grid">
+                    <label class="payment-option">
+                        <input type="radio" name="payment-method" value="gcash" onchange="showPaymentInstructions('gcash')">
+                        <div class="payment-card">
+                            <i class="bi bi-phone"></i>
+                            <div class="payment-card-label">GCash</div>
+                            <div class="payment-card-desc">Mobile Payment</div>
+                        </div>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment-method" value="paymaya" onchange="showPaymentInstructions('paymaya')">
+                        <div class="payment-card">
+                            <i class="bi bi-credit-card"></i>
+                            <div class="payment-card-label">PayMaya</div>
+                            <div class="payment-card-desc">Digital Wallet</div>
+                        </div>
+                    </label>
+                    <!-- <label class="payment-option">
+                        <input type="radio" name="payment-method" value="bank" onchange="showPaymentInstructions('bank')">
+                        <div class="payment-card">
+                            <i class="bi bi-bank"></i>
+                            <div class="payment-card-label">Bank Transfer</div>
+                            <div class="payment-card-desc">Direct Deposit</div>
+                        </div>
+                    </label> -->
+                    <label class="payment-option">
+                        <input type="radio" name="payment-method" value="other" onchange="showPaymentInstructions('other')">
+                        <div class="payment-card">
+                            <i class="bi bi-cash-stack"></i>
+                            <div class="payment-card-label">Other</div>
+                            <div class="payment-card-desc">Other Payment Methods</div>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- GCash Instructions -->
+                <div class="payment-instructions" id="instructions-gcash">
+                    <h4 class="instructions-title">
+                        <i class="bi bi-info-circle"></i> GCash Payment Instructions
+                    </h4>
+                    <div class="instruction-step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Send payment to: <strong>09XX-XXX-XXXX</strong> (Elanne Resort Official)</div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Amount: <strong id="gcash-amount">₱3,000</strong> (50% down payment)</div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">3</div>
+                        <div class="step-text">Include your name in the message</div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">4</div>
+                        <div class="step-text">Screenshot and save your payment confirmation</div>
+                    </div>
+                </div>
+
+                <!-- PayMaya Instructions -->
+                <div class="payment-instructions" id="instructions-paymaya">
+                    <h4 class="instructions-title">
+                        <i class="bi bi-info-circle"></i> PayMaya Payment Instructions
+                    </h4>
+                    <div class="instruction-step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Send payment to: <strong>09XX-XXX-XXXX</strong> (Elanne Resort PayMaya)</div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Amount: <strong id="paymaya-amount">₱3,000</strong> (50% down payment)</div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">3</div>
+                        <div class="step-text">Include your name in the note</div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">4</div>
+                        <div class="step-text">Screenshot and save your payment confirmation</div>
+                    </div>
+                </div>
+
+                <!-- Bank Transfer Instructions
+                <div class="payment-instructions" id="instructions-bank">
+                    <h4 class="instructions-title">
+                        <i class=""></i> Bank Transfer Instructions
+                    </h4>
+                    <div class="instruction-step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Bank: <strong>BPI (Bank of the Philippine Islands)</strong></div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Account Number: <strong>XXXX-XXXX-XX</strong></div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">3</div>
+                        <div class="step-text">Account Name: <strong>Elanne Resort and Hotel</strong></div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">4</div>
+                        <div class="step-text">Amount: <strong id="bank-amount">₱3,000</strong> (50% down payment)</div>
+                    </div>
+                    <div class="instruction-step">
+                        <div class="step-number">5</div>
+                        <div class="step-text">Include your name as reference</div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Other Instructions -->
+                <div class="payment-instructions" id="instructions-other">
+                <h4 class="instructions-title">
+                    <i class="bi bi-info-circle"></i> Other Payment Methods Instructions
+                </h4>
+
+                <div class="instruction-step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">
+                    Message us on 
+                    <a href="https://www.facebook.com/profile.php?id=100075668393808">
+                        <strong style="color:#2e6180">Facebook</strong>
+                    </a> 
+                    to confirm your booking and preferred payment method. If your chosen method is available, we’ll provide the account details for it.
+                    </div>
+                </div>
+                </div>
+
+                <!-- Add this right after the closing </div> of "instructions-other" and before the closing </div> of "payment-section-card" -->
+
+                <!-- Proof of Payment Upload Section -->
+                <div class="proof-upload-section" id="proof-upload-section" style="display: none;">
+                    <h4 class="upload-section-title">
+                        <i class="bi bi-cloud-upload"></i> Upload Proof of Payment
+                    </h4>
+                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
+                        Please upload a screenshot or photo of your payment confirmation
+                    </p>
+                    
+                    <div class="upload-area" id="upload-area">
+                        <input type="file" id="proof-file-input" accept="image/*,.pdf" style="display: none;" onchange="handleFileSelect(event)">
+                        
+                        <div class="upload-placeholder" id="upload-placeholder" onclick="document.getElementById('proof-file-input').click()">
+                            <i class="bi bi-cloud-arrow-up" style="font-size: 3rem; color: #2e6180; margin-bottom: 0.5rem;"></i>
+                            <p style="color: #2e6180; font-weight: 600; margin-bottom: 0.25rem;">Click to upload</p>
+                            <p style="color: #999; font-size: 0.85rem;">or drag and drop</p>
+                            <p style="color: #999; font-size: 0.8rem; margin-top: 0.5rem;">Supports: JPG, PNG, PDF (Max 5MB)</p>
+                        </div>
+                        
+                        <div class="upload-preview" id="upload-preview" style="display: none;">
+                            <div class="preview-header">
+                                <span class="preview-filename" id="preview-filename"></span>
+                                <button type="button" class="remove-file-btn" onclick="removeFile()">
+                                    <i class="bi bi-x-circle"></i>
+                                </button>
+                            </div>
+                            <img id="preview-image" src="" alt="Preview" style="display: none;">
+                            <div class="preview-success">
+                                <i class="bi bi-check-circle-fill" style="color: #22c55e; font-size: 2rem;"></i>
+                                <p style="color: #22c55e; font-weight: 600; margin-top: 0.5rem;">File uploaded successfully!</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p style="color: #e47b48; font-size: 0.85rem; margin-top: 1rem;">
+                        <i class="bi bi-exclamation-triangle"></i> 
+                        <strong>Important:</strong> Your booking will be confirmed only after payment verification (within 24 hours)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Terms Agreement -->
+            <div class="terms-agreement">
+                <div class="terms-checkbox-wrapper">
+                    <input type="checkbox" id="terms-checkbox">
+                    <label for="terms-checkbox" class="terms-text">
+                        I have read and agree to the <span class="terms-link" onclick="openTermsModal()">Terms & Conditions</span>, and I understand the payment instructions above.
+                    </label>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-outline" onclick="goBack()">
+                    <i class="bi bi-arrow-left"></i> Back
+                </button>
+                <button class="btn btn-primary" id="confirm-btn" disabled onclick="confirmBooking()">
+                    <i class="bi bi-check-circle"></i> Confirm Booking
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Side: Booking Summary -->
+        <div class="payment-sidebar">
+            <div class="summary-sticky-payment">
+                <h3 class="summary-header">
+                    <i class="bi bi-receipt"></i> Booking Summary
+                </h3>
+                
+                <div class="summary-item-row">
+                    <span class="summary-label-text">
+                        <i class="bi bi-calendar-check"></i> Check-in Date
+                    </span>
+                    <span class="summary-value-text" id="summary-checkin">October 26, 2025</span>
+                </div>
+                
+                <div class="summary-item-row">
+                    <span class="summary-label-text">
+                        <i class="bi bi-clock"></i> Duration
+                    </span>
+                    <span class="summary-value-text" id="summary-duration">Day Tour (8AM-6PM)</span>
+                </div>
+                
+                <div class="summary-item-row">
+                    <span class="summary-label-text">
+                        <i class="bi bi-house-door"></i> Package
+                    </span>
+                    <span class="summary-value-text" id="summary-package">Lower Pool (40 PAX)</span>
+                </div>
+                
+                <div class="summary-item-row">
+                    <span class="summary-label-text">
+                        <i class="bi bi-people"></i> Guests
+                    </span>
+                    <span class="summary-value-text" id="summary-guests">35</span>
+                </div>
+
+                <div class="summary-total-section">
+                    <div class="summary-total-row">
+                        <span class="summary-label-text">Total Amount:</span>
+                        <span class="summary-value-text" id="summary-total">₱6,000</span>
+                    </div>
+                    <div class="summary-downpayment-row">
+                        <span>50% Down Payment:</span>
+                        <span id="summary-downpayment">₱3,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms & Conditions Modal -->
+    <div class="terms-modal" id="terms-modal">
+        <div class="terms-modal-content">
+            <div class="terms-modal-header">
+                <h2><i class="bi bi-file-text"></i> Terms & Conditions</h2>
+                <button class="close-terms-btn" onclick="closeTermsModal()">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="terms-modal-body">
+                <h3>Booking Policy</h3>
+                <ul>
+                    <li>50% down payment required upon reservation</li>
+                    <li>Full payment before or upon check-in</li>
+                    <li>Valid ID required at check-in</li>
+                    <li>First-come, first-served based on payment</li>
+                    <li>Reservation fee is non-refundable</li>
+                </ul>
+
+                <h3>Cancellation Policy</h3>
+                <ul>
+                    <li>Cancellations 1 week before: 50% refundable</li>
+                    <li>Less than 1 week: non-refundable</li>
+                    <li>All cancellation requests must be sent via email</li>
+                </ul>
+
+                <h3>House Rules</h3>
+                <ul>
+                    <li>Maintain cleanliness of the premises</li>
+                    <li>No outside alcoholic beverages allowed</li>
+                    <li>Damage to property will be charged accordingly</li>
+                    <li>Management reserves the right to refuse service</li>
+                    <li>Maximum capacity must be strictly followed</li>
+                </ul>
+
+                <h3>Payment Terms</h3>
+                <ul>
+                    <li>All payments are in Philippine Pesos (₱)</li>
+                    <li>We accept GCash, PayMaya, and Bank Transfer only</li>
+                    <li>Payment confirmation must be sent within 24 hours</li>
+                    <li>Official receipts will be issued upon full payment</li>
+                </ul>
+            </div>
+            <div class="terms-modal-footer">
+                <button class="btn btn-outline" onclick="closeTermsModal()">Close</button>
+                <button class="btn btn-primary" onclick="agreeToTerms()">
+                    <i class="bi bi-check-lg"></i> I Agree
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="images/elanne-logo.png" alt="Elanne Logo" class="footer-logo">
+                <p>Your perfect escape in Antipolo</p>
+            </div>
+            <div class="footer-section">
+                <h3>Location</h3>
+                <p>Sta. Cruz, Antipolo City<br>Rizal, Philippines</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><i class="bi bi-telephone"></i> Phone: 0969-431-9817</li>
+                    <li><i class="bi bi-envelope"></i> Email: info@elanneresort.com</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="manage-booking.html">Manage Booking</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Elanne Resort & Hotel. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // State
+        let selectedPaymentMethod = null;
+        let bookingData = {
+            totalAmount: 12000,
+            downPayment: 6000
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBookingData();
+            setupFormValidation();
+        });
+
+        // Load booking data from previous steps
+        function loadBookingData() {
+            try {
+                const step1Data = sessionStorage.getItem('elanneBookingStep1');
+                const step2Data = sessionStorage.getItem('elanneBookingStep2');
+
+                if (step1Data) {
+                    const data = JSON.parse(step1Data);
+                    // Update check-in date
+                    if (data.checkinDate) {
+                        const date = new Date(data.checkinDate);
+                        document.getElementById('summary-checkin').textContent = date.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                    }
+
+                    // Update duration
+                    const durationMap = {
+                        'daytour': 'Day Tour (8AM-6PM)',
+                        'overnight': 'Overnight (8PM-6AM)',
+                        'fullday': '22 Hours (Full Day)'
+                    };
+                    if (data.durationType) {
+                        document.getElementById('summary-duration').textContent = durationMap[data.durationType] || 'Day Tour (8AM-6PM)';
+                    }
+                }
+
+                if (step2Data) {
+                    const data = JSON.parse(step2Data);
+                    if (data.totalPrice) {
+                        bookingData.totalAmount = data.totalPrice;
+                        bookingData.downPayment = Math.ceil(data.totalPrice * 0.5);
+                        updateSummaryAmounts();
+                    }
+
+                    // Update package info
+                    if (data.selectedItems && data.selectedItems.length > 0) {
+                        const packageName = data.selectedItems[0].replace(/-/g, ' ').toUpperCase();
+                        document.getElementById('summary-package').textContent = packageName;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading booking data:', error);
+            }
+        }
+
+        function updateSummaryAmounts() {
+            document.getElementById('summary-total').textContent = '₱' + bookingData.totalAmount.toLocaleString();
+            document.getElementById('summary-downpayment').textContent = '₱' + bookingData.downPayment.toLocaleString();
+            document.getElementById('gcash-amount').textContent = '₱' + bookingData.downPayment.toLocaleString();
+            document.getElementById('paymaya-amount').textContent = '₱' + bookingData.downPayment.toLocaleString();
+            document.getElementById('bank-amount').textContent = '₱' + bookingData.downPayment.toLocaleString();
+        }
+
+        // Show payment instructions
+        function showPaymentInstructions(method) {
+            selectedPaymentMethod = method;
+            
+            // Hide all instructions
+            document.querySelectorAll('.payment-instructions').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Show selected method instructions
+            const instructionsEl = document.getElementById('instructions-' + method);
+            if (instructionsEl) {
+                instructionsEl.classList.add('active');
+            }
+
+            validateForm();
+        }
+
+        // Setup form validation
+        function setupFormValidation() {
+            const nameInput = document.getElementById('guest-name');
+            const emailInput = document.getElementById('guest-email');
+            const phoneInput = document.getElementById('guest-phone');
+            const countInput = document.getElementById('guest-count');
+            const termsCheckbox = document.getElementById('terms-checkbox');
+
+            [nameInput, emailInput, phoneInput, countInput, termsCheckbox].forEach(input => {
+                if (input) {
+                    input.addEventListener('change', validateForm);
+                    input.addEventListener('input', validateForm);
+                }
+            });
+        }
+
+        // Validate form
+        function validateForm() {
+            const name = document.getElementById('guest-name').value.trim();
+            const email = document.getElementById('guest-email').value.trim();
+            const phone = document.getElementById('guest-phone').value.trim();
+            const count = document.getElementById('guest-count').value.trim();
+            const termsChecked = document.getElementById('terms-checkbox').checked;
+
+            const isValid = name && email && phone && count && termsChecked && selectedPaymentMethod;
+            
+            document.getElementById('confirm-btn').disabled = !isValid;
+        }
+
+        // Terms modal functions
+        function openTermsModal() {
+            document.getElementById('terms-modal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeTermsModal() {
+            document.getElementById('terms-modal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function agreeToTerms() {
+            document.getElementById('terms-checkbox').checked = true;
+            validateForm();
+            closeTermsModal();
+        }
+
+        // Close modal on outside click
+        document.getElementById('terms-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTermsModal();
+            }
+        });
+
+        // Navigation functions
+        function goBack() {
+            window.location.href = 'step2-room.html';
+        }
+
+        function confirmBooking() {
+            if (document.getElementById('confirm-btn').disabled) {
+                return;
+            }
+
+            // Save booking data
+            const bookingRef = '1006';
+            
+            sessionStorage.setItem('bookingRef', bookingRef);
+            sessionStorage.setItem('guestName', document.getElementById('guest-name').value || 'Pearl Roxas');
+            sessionStorage.setItem('guestEmail', document.getElementById('guest-email').value || 'pearl.roxas@email.com');
+            sessionStorage.setItem('guestPhone', document.getElementById('guest-phone').value || '+63 912 345 6789');
+            sessionStorage.setItem('guestCount', document.getElementById('guest-count').value || '35');
+            sessionStorage.setItem('specialRequests', document.getElementById('special-requests').value || '');
+            sessionStorage.setItem('paymentMethod', selectedPaymentMethod);
+            sessionStorage.setItem('totalAmount', '₱' + bookingData.totalAmount.toLocaleString());
+            sessionStorage.setItem('downPayment', '₱' + bookingData.downPayment.toLocaleString());
+
+            // Redirect to confirmation page
+            window.location.href = 'step4-confirmation.html';
+        }
+
+        // Update guest count in summary when changed
+        document.getElementById('guest-count').addEventListener('input', function() {
+            const count = this.value || '35';
+            document.getElementById('summary-guests').textContent = count;
+        });
+
+        // Proof of Payment Upload Variables
+let uploadedFile = null;
+
+// Show upload section when payment method is selected
+function showPaymentInstructions(method) {
+    selectedPaymentMethod = method;
+    
+    // Hide all instructions
+    document.querySelectorAll('.payment-instructions').forEach(el => {
+        el.classList.remove('active');
+    });
+
+    // Show selected method instructions
+    const instructionsEl = document.getElementById('instructions-' + method);
+    if (instructionsEl) {
+        instructionsEl.classList.add('active');
+    }
+
+    // Show proof of payment upload section
+    document.getElementById('proof-upload-section').style.display = 'block';
+
+    validateForm();
+}
+
+// Handle file selection
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validate file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+        alert('File size must be less than 5MB');
+        return;
+    }
+
+    // Validate file type
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+    if (!validTypes.includes(file.type)) {
+        alert('Please upload a valid image (JPG, PNG) or PDF file');
+        return;
+    }
+
+    uploadedFile = file;
+
+    // Show preview
+    const placeholder = document.getElementById('upload-placeholder');
+    const preview = document.getElementById('upload-preview');
+    const filename = document.getElementById('preview-filename');
+    const previewImage = document.getElementById('preview-image');
+
+    placeholder.style.display = 'none';
+    preview.style.display = 'block';
+    filename.textContent = file.name;
+
+    // Show image preview if it's an image
+    if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            previewImage.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        previewImage.style.display = 'none';
+    }
+
+    validateForm();
+}
+
+// Remove uploaded file
+function removeFile() {
+    uploadedFile = null;
+    document.getElementById('proof-file-input').value = '';
+    document.getElementById('upload-placeholder').style.display = 'block';
+    document.getElementById('upload-preview').style.display = 'none';
+    document.getElementById('preview-image').src = '';
+    validateForm();
+}
+
+// Drag and drop functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadArea = document.getElementById('upload-area');
+    
+    if (uploadArea) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => {
+                uploadArea.classList.add('drag-over');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => {
+                uploadArea.classList.remove('drag-over');
+            }, false);
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            const dt = e.dataTransfer;
+            const file = dt.files[0];
+            
+            if (file) {
+                const input = document.getElementById('proof-file-input');
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                input.files = dataTransfer.files;
+                handleFileSelect({ target: input });
+            }
+        }, false);
+    }
+
+    loadBookingData();
+    setupFormValidation();
+});
+
+// Update the validateForm function to include proof of payment
+function validateForm() {
+    const name = document.getElementById('guest-name').value.trim();
+    const email = document.getElementById('guest-email').value.trim();
+    const phone = document.getElementById('guest-phone').value.trim();
+    const count = document.getElementById('guest-count').value.trim();
+    const termsChecked = document.getElementById('terms-checkbox').checked;
+
+    // Require proof of payment to be uploaded
+    const isValid = name && email && phone && count && termsChecked && selectedPaymentMethod && uploadedFile;
+    
+    document.getElementById('confirm-btn').disabled = !isValid;
+}
+
+// Update confirmBooking to save proof of payment info
+function confirmBooking() {
+    if (document.getElementById('confirm-btn').disabled) {
+        return;
+    }
+
+    // Save booking data
+    const bookingRef = '1006';
+    
+    sessionStorage.setItem('bookingRef', bookingRef);
+    sessionStorage.setItem('guestName', document.getElementById('guest-name').value || 'Pearl Roxas');
+    sessionStorage.setItem('guestEmail', document.getElementById('guest-email').value || 'pearl.roxas@email.com');
+    sessionStorage.setItem('guestPhone', document.getElementById('guest-phone').value || '+63 912 345 6789');
+    sessionStorage.setItem('guestCount', document.getElementById('guest-count').value || '35');
+    sessionStorage.setItem('specialRequests', document.getElementById('special-requests').value || '');
+    sessionStorage.setItem('paymentMethod', selectedPaymentMethod);
+    sessionStorage.setItem('totalAmount', '₱' + bookingData.totalAmount.toLocaleString());
+    sessionStorage.setItem('downPayment', '₱' + bookingData.downPayment.toLocaleString());
+    
+    // Save proof of payment filename
+    if (uploadedFile) {
+        sessionStorage.setItem('proofOfPayment', uploadedFile.name);
+    }
+
+    // In a real application, you would upload the file to a server here
+    // For now, we'll just proceed to confirmation
+
+    // Redirect to confirmation page
+    window.location.href = 'step4-confirmation.html';
+}
+    </script>
+</body>
+</html>

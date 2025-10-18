@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rebooking Step 3: Confirmation - Elanne Resort</title>
+    <link rel="stylesheet" href="styles-1.css">
+    <link rel="stylesheet" href="styles-2.css">
+    <link rel ="stylesheet" href="styles-step2.css">
+    <link rel="stylesheet" href="styles">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles-rebooking-step3.css">
+</head>
+<body>
+    <!-- Main Navbar -->
+    <nav class="main-navbar">
+        <div class="logo">
+            <img src="images/elanne-nav-logo.png" alt="Elanne Resort Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rooms.html">Rooms</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="step1-date-duration.html">Reservation</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="step1-date-duration.html"><button class="book-btn">BOOK NOW</button></a></li>
+        </ul>
+    </nav>
+
+    <!-- Secondary Navbar -->
+    <nav class="secondary-navbar">
+        <ul class="nav-links">
+            <li><a href="step1-date-duration.html">Book Reservation</a></li>
+            <li><a href="manage-booking.html" class="active">Manage Booking</a></li>
+        </ul>
+    </nav>
+
+    <!-- Wizard Progress -->
+    <div class="wizard-progress">
+        <div class="wizard-container">
+            <div class="wizard-step completed" id="step-indicator-1">
+                <div class="step-circle"><i class="bi bi-check-lg"></i></div>
+                <span class="step-label">New Date</span>
+            </div>
+            <div class="wizard-line"></div>
+            <div class="wizard-step completed" id="step-indicator-2">
+                <div class="step-circle"><i class="bi bi-check-lg"></i></div>
+                <span class="step-label">New Room/Package</span>
+            </div>
+            <div class="wizard-line"></div>
+            <div class="wizard-step active" id="step-indicator-3">
+                <div class="step-circle">3</div>
+                <span class="step-label">Confirmation</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="rebooking-container">
+        <!-- Left Column: Form Section -->
+        <div class="form-section">
+            <h2 class="page-title">
+                <i class="bi bi-arrow-repeat"></i> Rebooking Request - Review & Confirm
+            </h2>
+            
+            <!-- Important Notice -->
+            <div class="notice-banner">
+                <div class="notice-icon">
+                    <i class="bi bi-info-circle-fill"></i>
+                </div>
+                <div class="notice-content">
+                    <h3>Important Notice</h3>
+                    <p>This is a rebooking request. Our staff will review your request and contact you within 24 hours to confirm availability and provide payment instructions for any price differences. Your original booking will remain active until the new booking is confirmed.</p>
+                </div>
+            </div>
+
+            <!-- Reason for Rebooking -->
+            <div class="form-card">
+                <h3 class="card-title">
+                    <i class="bi bi-chat-left-text"></i> Reason for Rebooking
+                </h3>
+                <div class="form-group">
+                    <label for="rebooking-reason">Please select your reason for rebooking <span class="required">*</span></label>
+                    <select id="rebooking-reason" class="form-control" onchange="toggleOtherReason()">
+                        <option value="">-- Select a reason --</option>
+                        <option value="conflict">Conflict of Schedule</option>
+                        <option value="change-mind">Change of Mind</option>
+                        <option value="better-package">Better Package Available</option>
+                        <option value="guest-count">Change in Number of Guests</option>
+                        <option value="other">Other (Please specify)</option>
+                    </select>
+                </div>
+                <div id="other-reason-container" class="form-group" style="display: none;">
+                    <label for="other-reason-text">Please specify your reason <span class="required">*</span></label>
+                    <textarea id="other-reason-text" class="form-control" rows="4" placeholder="Please provide details..."></textarea>
+                </div>
+            </div>
+
+            <!-- Additional Notes -->
+            <div class="form-card">
+                <h3 class="card-title">
+                    <i class="bi bi-pencil"></i> Additional Notes <span class="optional-label">(Optional)</span>
+                </h3>
+                <div class="form-group">
+                    <textarea id="additional-notes" class="form-control" rows="4" placeholder="Any special requests or additional information..."></textarea>
+                </div>
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="form-card terms-card">
+                <h3 class="card-title">
+                    <i class="bi bi-file-text"></i> Rebooking Terms & Conditions
+                </h3>
+                <div class="terms-box">
+                    <div class="terms-section">
+                        <h4><i class="bi bi-clipboard-check"></i> Rebooking Policy</h4>
+                        <ul>
+                            <li>This rebooking request is subject to availability confirmation</li>
+                            <li>Original booking remains active until new booking is confirmed</li>
+                            <li>Price differences may apply based on new dates and packages</li>
+                            <li>Staff will contact you within 24 hours with confirmation</li>
+                        </ul>
+                    </div>
+                    <div class="terms-section">
+                        <h4><i class="bi bi-credit-card"></i> Payment Policy</h4>
+                        <ul>
+                            <li>Any price difference must be settled before confirmation</li>
+                            <li>Refunds for price reductions will be processed within 5-7 business days</li>
+                            <li>Payment instructions will be sent via email</li>
+                        </ul>
+                    </div>
+                    <div class="terms-section">
+                        <h4><i class="bi bi-x-circle"></i> Cancellation</h4>
+                        <ul>
+                            <li>You may cancel this rebooking request anytime before staff confirmation</li>
+                            <li>Once confirmed, standard cancellation policy applies</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="terms-agreement">
+                    <input type="checkbox" id="terms-agree" onchange="updateConfirmButton()">
+                    <label for="terms-agree">
+                        I have read and agree to the rebooking terms and conditions. I understand that this is a request and my original booking remains active until staff confirms the new booking.
+                    </label>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="form-actions">
+                <button class="btn btn-outline" onclick="goBack()">
+                    <i class="bi bi-arrow-left"></i> Back
+                </button>
+                <button class="btn btn-primary" id="confirm-btn" disabled onclick="submitRebookingRequest()">
+                    <i class="bi bi-check-circle"></i> Submit Rebooking Request
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Column: Summary Sidebar -->
+        <div class="summary-sidebar">
+            <div class="summary-sticky">
+                <!-- Booking Info Header -->
+                <div class="booking-header">
+                    <div class="booking-badge">
+                        <i class="bi bi-bookmark-fill"></i>
+                        <span id="header-booking-id">RB006</span>
+                    </div>
+                    <div class="booking-guest" id="header-guest-name">Pearl Roxas</div>
+                </div>
+
+                <!-- Original Booking Summary -->
+                <div class="summary-card original-booking">
+                    <h3 class="summary-title">
+                        <i class="bi bi-file-text"></i> Original Booking
+                    </h3>
+                    <div class="summary-details">
+                        <div class="detail-item">
+                            <span class="detail-icon"><i class="bi bi-calendar-check"></i></span>
+                            <div class="detail-info">
+                                <span class="detail-label">Check-in</span>
+                                <span class="detail-value" id="original-checkin">October 26, 2025</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon"><i class="bi bi-calendar-x"></i></span>
+                            <div class="detail-info">
+                                <span class="detail-label">Check-out</span>
+                                <span class="detail-value" id="original-checkout">October 27, 2025</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon"><i class="bi bi-clock"></i></span>
+                            <div class="detail-info">
+                                <span class="detail-label">Duration</span>
+                                <span class="detail-value" id="original-duration">Day Tour</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon"><i class="bi bi-building"></i></span>
+                            <div class="detail-info">
+                                <span class="detail-label">Package</span>
+                                <span class="detail-value" id="original-package">Lower Pool (40 PAX)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrow Indicator -->
+                <div class="change-indicator">
+                    <i class="bi bi-arrow-down-circle-fill"></i>
+                    <span>Changing to</span>
+                </div>
+
+                <!-- New Booking Summary -->
+                <div class="summary-card new-booking">
+                    <h3 class="summary-title">
+                        <i class="bi bi-star-fill"></i> New Booking
+                    </h3>
+                    <div class="summary-details">
+                        <div class="detail-item">
+                            <span class="detail-icon"><i class="bi bi-calendar-check"></i></span>
+                            <div class="detail-info">
+                                <span class="detail-label">Check-in</span>
+                                <span class="detail-value" id="new-checkin">October 28, 2025</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon"><i class="bi bi-calendar-x"></i></span>
+                            <div class="detail-info">
+                                <span class="detail-label">Check-out</span>
+                                <span class="detail-value" id="new-checkout">October 29, 2025</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon"><i class="bi bi-clock"></i></span>
+                            <div class="detail-info">
+                                <span class="detail-label">Duration</span>
+                                <span class="detail-value" id="new-duration">Day Tour</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon"><i class="bi bi-building"></i></span>
+                            <div class="detail-info">
+                                <span class="detail-label">Package</span>
+                                <span class="detail-value" id="new-package">Lower Pool (40 PAX)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Reference Info -->
+                <div class="reference-info">
+                    <div class="info-item">
+                        <i class="bi bi-hash"></i>
+                        <div>
+                            <span class="info-label">New Reference</span>
+                            <span class="info-value" id="new-booking-id">RB006</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmation-modal">
+        <div class="modal-content">
+            <div class="modal-icon success">
+                <i class="bi bi-check-circle-fill"></i>
+            </div>
+            <h2 class="modal-title">Rebooking Request Submitted!</h2>
+            <p class="modal-text">
+                Your rebooking request has been successfully submitted.
+            </p>
+            <div class="modal-reference">
+                <span class="ref-label">Reference Number</span>
+                <span class="ref-number" id="modal-ref-number">RB006</span>
+            </div>
+            <p class="modal-info">
+                Our staff will review your request and contact you within 24 hours to confirm availability and provide further instructions. You will receive an email confirmation shortly.
+            </p>
+            <div class="modal-actions">
+                <a href="booking-details.html" class="btn btn-primary">
+                    <i class="bi bi-file-text"></i> View Booking Details
+                </a>
+                <a href="manage-booking.html" class="btn btn-outline">
+                    <i class="bi bi-house"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="images/elanne-logo.png" alt="Elanne Logo" class="footer-logo">
+                <p>Your perfect escape in Antipolo</p>
+            </div>
+            <div class="footer-section">
+                <h3>Location</h3>
+                <p>Sta. Cruz, Antipolo City<br>Rizal, Philippines</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><i class="bi bi-telephone"></i> Phone: 0969-431-9817</li>
+                    <li><i class="bi bi-envelope"></i> Email: info@elanneresort.com</li>
+                    <li><i class="bi bi-facebook"></i> Facebook: Elanne Resort & Hotel</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="manage-booking.html">Manage Booking</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Elanne Resort & Hotel. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script-rebooking-step3.js"></script>
+</body>
+</html>
+

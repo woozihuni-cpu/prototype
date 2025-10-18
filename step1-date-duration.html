@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 1: Select Date & Duration - Elanne Resort</title>
+    <link rel="stylesheet" href="styles-1.css">
+    <link rel="stylesheet" href="styles-2.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles-step1.css">
+    <link rel="stylesheet" href="styles-step2.css">
+</head>
+<body>
+    <!-- Main Navbar -->
+    <nav class="main-navbar">
+        <div class="logo">
+            <img src="images/elanne-nav-logo.png" alt="Elanne Resort Logo">
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rooms.html">Rooms</a></li>
+            <li><a href="packages.html">Packages</a></li>
+            <li><a href="step1-date.html" class="active">Reservation</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="step1-date.html"><button class="book-btn">BOOK NOW</button></a></li>
+        </ul>
+    </nav>
+
+    <!-- Secondary Navbar -->
+    <nav class="secondary-navbar">
+        <ul class="nav-links">
+            <li><a href="step1-date.html" class="active">Book Reservation</a></li>
+            <li><a href="manage-booking.html">Manage Booking</a></li>
+        </ul>
+    </nav>
+
+    <!-- Wizard Progress -->
+    <div class="wizard-progress">
+        <div class="wizard-container">
+            <div class="wizard-step active" id="step-indicator-1">
+                <div class="step-circle">1</div>
+                <span class="step-label">Date & Duration</span>
+            </div>
+            <div class="wizard-line"></div>
+            <div class="wizard-step" id="step-indicator-2">
+                <div class="step-circle">2</div>
+                <span class="step-label">Room/Package</span>
+            </div>
+            <div class="wizard-line"></div>
+            <div class="wizard-step" id="step-indicator-3">
+                <div class="step-circle">3</div>
+                <span class="step-label">Payment</span>
+            </div>
+            <div class="wizard-line"></div>
+            <div class="wizard-step" id="step-indicator-4">
+                <div class="step-circle">4</div>
+                <span class="step-label">Confirmation</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="section-container">
+        <div class="content-wrapper">
+            <h2 class="step-title"><i class="bi bi-calendar-event"></i> Select Your Date & Duration</h2>
+            
+            <!-- Duration Selection -->
+            <div class="duration-selection-box">
+                <h3>1. Choose Duration Type</h3>
+                <div class="duration-options">
+                    <label class="duration-option">
+                        <input type="radio" name="duration-type" value="daytour" id="duration-daytour">
+                        <div class="duration-card">
+                            <i class="bi bi-sun"></i>
+                            <h4>Day Tour</h4>
+                            <p>8:00 AM - 6:00 PM (Single Day)</p>
+                        </div>
+                    </label>
+                    <label class="duration-option">
+                        <input type="radio" name="duration-type" value="overnight" id="duration-overnight">
+                        <div class="duration-card">
+                            <i class="bi bi-moon-stars"></i>
+                            <h4>Overnight</h4>
+                            <p>8:00 PM - 6:00 AM (Single Night)</p>
+                        </div>
+                    </label>
+                    <label class="duration-option">
+                        <input type="radio" name="duration-type" value="fullday" id="duration-fullday">
+                        <div class="duration-card">
+                            <i class="bi bi-clock"></i>
+                            <h4>Full Day</h4>
+                            <p>22 Hours (Choose Start Time)</p>
+                        </div>
+                    </label>
+                </div>
+                 <p style="text-align: center; margin-left: 30; margin-right: 30; font-style: italic;"><i class="bi bi-telephone-fill"></i>&nbsp; Planning to stay multiple days? Contact us at <span style="color: #2e6180; text-decoration: underline;">0916 519 1960</span>  or message us on <a href=" https://www.facebook.com/profile.php?id=100075668393808" style="color: #2e6180">Facebook</a></p>
+            </div>
+            
+            <!-- Full Day Time Selection (Hidden by default) -->
+            <div id="fullday-time-selection" class="fullday-time-selection" style="display: none;">
+                <h3>2. Select Full Day Time Range</h3>
+                <div class="time-options">
+                    <label class="time-option">
+                        <input type="radio" name="fullday-time" value="day-night">
+                        <div class="time-card">
+                            <i class="bi bi-brightness-high"></i>
+                            <h4>Day to Night</h4>
+                            <p>8:00 AM (Day 1) to 6:00 AM (Day 2)</p>
+                            <span class="time-breakdown">1 Day Tour + 1 Overnight</span>
+                        </div>
+                    </label>
+                    <label class="time-option">
+                        <input type="radio" name="fullday-time" value="night-day">
+                        <div class="time-card">
+                            <i class="bi bi-moon-stars-fill"></i>
+                            <h4>Night to Day</h4>
+                            <p>8:00 PM (Night 1) to 6:00 PM (Day 2)</p>
+                            <span class="time-breakdown">1 Overnight + 1 Day Tour</span>
+                        </div>
+                    </label>
+                </div>
+               
+            </div>
+
+            <!-- Calendar Instructions -->
+            <div class="calendar-instructions">
+                <h3>3. Select Date(s)</h3>
+                <p id="calendar-instruction-text">Please select a duration type first to enable the calendar.</p>
+            </div>
+            <!-- Calendar Legend -->
+            <div class="calendar-legend">
+                <div class="legend-item">
+                    <div class="legend-color available"></div>
+                    <span>Fully Available</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color day-only"></div>
+                    <span>Day Tour Only</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color night-only"></div>
+                    <span>Overnight Only</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color unavailable"></div>
+                    <span>Unavailable</span>
+                </div>
+            </div>
+
+            <!-- Dual Calendar -->
+            <div class="dual-calendar-container">
+                <div class="calendar-wrapper">
+                    <div id="calendar-1"></div>
+                </div>
+                <div class="calendar-wrapper">
+                    <div id="calendar-2"></div>
+                </div>
+            </div>
+
+            <!-- Selection Summary -->
+            <div class="selection-summary">
+                <h3>Your Selection</h3>
+                <div class="summary-box">
+                    <div class="summary-item">
+                        <span class="label">Duration Type:</span>
+                        <span class="value" id="selected-duration">Not selected</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">Selected Date(s):</span>
+                        <span class="value" id="selected-dates">None</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label">Stay Length:</span>
+                        <span class="value" id="stay-length">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="step-navigation">
+                <button class="btn btn-outline" onclick="goHome()">
+                    <i class="bi bi-house"></i> Home
+                </button>
+                <button class="btn btn-primary" id="next-btn" disabled onclick="goToStep2()">
+                    Next <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="images/elanne-logo.png" alt="Elanne Logo" class="footer-logo">
+                <p>Your perfect escape in Antipolo</p>
+            </div>
+            <div class="footer-section">
+                <h3>Location</h3>
+                <p>Sta. Cruz, Antipolo City<br>Rizal, Philippines</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><i class="bi bi-telephone"></i> Phone: 0969-431-9817</li>
+                    <li><i class="bi bi-envelope"></i> Email: elanne.resort.hotel@gmail.com</li>
+                    <li><i class="bi bi-facebook"></i> Facebook: Elanne Resort & Hotel</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="manage-booking.html">Manage Booking</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Elanne Resort & Hotel. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script-step1.js"></script>
+</body>
+</html>
