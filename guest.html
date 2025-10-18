@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Accounts - Elanne Resort Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Verdana, Geneva, sans-serif;
+            background-color: #f7f3ec;
+            color: #4c3e35;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(180deg, #2e6180 0%, #4c3e35 100%);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-header h2 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .sidebar-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-link.active {
+            background-color: #e47b48;
+            color: white;
+        }
+
+        .logout-section {
+            position: absolute;
+            bottom: 1.5rem;
+            width: 100%;
+            padding: 0 1.5rem;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background-color: rgba(228, 123, 72, 0.2);
+            color: white;
+            border: 2px solid rgba(228, 123, 72, 0.5);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            background-color: #e47b48;
+            border-color: #e47b48;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-header h1 {
+            color: #2e6180;
+            font-size: 1.8rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .add-btn,
+        .report-btn {
+            padding: 0.8rem 1.5rem;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .add-btn {
+            background-color: #e47b48;
+        }
+
+        .add-btn:hover {
+            background-color: #dd5a68;
+            transform: translateY(-2px);
+        }
+
+        .report-btn {
+            background-color: #2e6180;
+        }
+
+        .report-btn:hover {
+            background-color: #4c3e35;
+            transform: translateY(-2px);
+        }
+
+        .search-bar {
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid #e0dbd0;
+            border-radius: 6px;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #2e6180;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #2e6180, #4c3e35);
+            color: white;
+        }
+
+        thead th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e0dbd0;
+            transition: background-color 0.3s;
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        tbody td {
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-icon.view {
+            background-color: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .btn-icon.edit {
+            background-color: #e3f2fd;
+            color: #2196f3;
+        }
+
+        .btn-icon.delete {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+
+        .btn-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #f7f3ec;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-content.large {
+            max-width: 1000px;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #2e6180, #4c3e35);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #4c3e35;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0dbd0;
+            border-radius: 6px;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2e6180;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-submit,
+        .btn-cancel,
+        .btn-print {
+            padding: 0.8rem 2rem;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .btn-submit {
+            background-color: #e47b48;
+        }
+
+        .btn-submit:hover {
+            background-color: #dd5a68;
+        }
+
+        .btn-cancel {
+            background-color: #e0dbd0;
+            color: #4c3e35;
+        }
+
+        .btn-cancel:hover {
+            background-color: #d0cbc0;
+        }
+
+        .btn-print {
+            background-color: #2e6180;
+        }
+
+        .btn-print:hover {
+            background-color: #4c3e35;
+        }
+
+        .feedback-item {
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #2e6180;
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback-header strong {
+            color: #2e6180;
+        }
+
+        .feedback-date {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .rating {
+            color: #ffc107;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
+        .feedback-text {
+            color: #555;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        .no-feedback {
+            text-align: center;
+            color: #999;
+            padding: 2rem;
+        }
+
+        .report-view {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .report-header {
+            text-align: center;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid #2e6180;
+            margin-bottom: 2rem;
+        }
+
+        .report-header h2 {
+            color: #2e6180;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-header p {
+            color: #777;
+            font-size: 0.95rem;
+        }
+
+        .report-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .report-stat {
+            background: #f7f3ec;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #2e6180;
+        }
+
+        .report-stat h4 {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-stat h3 {
+            font-size: 1.8rem;
+            color: #2e6180;
+        }
+
+        .report-table {
+            margin-top: 2rem;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .report-table h3 {
+            color: #2e6180;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0dbd0;
+        }
+
+        .report-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .report-table thead {
+            background: #2e6180;
+            color: white;
+        }
+
+        .report-table th {
+            background: #2e6180;
+            color: white;
+            padding: 1rem 0.8rem;
+            text-align: left;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+        }
+
+        .report-table td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #e0dbd0;
+            font-size: 0.9rem;
+        }
+
+        .report-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 1cm;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            body {
+                background: white !important;
+                margin: 0;
+                padding: 0;
+                color: #000 !important;
+            }
+
+            .sidebar,
+            .page-header,
+            .search-bar,
+            .form-actions,
+            .modal-header,
+            .btn-print,
+            .close-btn {
+                display: none !important;
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+                padding: 0 !important;
+            }
+
+            .modal-content {
+                box-shadow: none !important;
+                max-width: 100% !important;
+                max-height: none !important;
+                overflow: visible !important;
+                background: white !important;
+                border: none !important;
+            }
+
+            .modal-body {
+                padding: 0 !important;
+            }
+
+            .report-view {
+                padding: 1cm !important;
+                margin: 0 !important;
+                overflow: visible !important;
+                background: white !important;
+            }
+
+            .report-header {
+                page-break-after: avoid;
+                margin-bottom: 1.5rem !important;
+                border-bottom: 2px solid #000 !important;
+                padding-bottom: 1rem !important;
+            }
+
+            .report-header h2 {
+                color: #000 !important;
+                font-size: 1.8rem !important;
+                margin-bottom: 0.3rem !important;
+            }
+
+            .report-header p {
+                color: #000 !important;
+                font-size: 0.9rem !important;
+            }
+
+            .report-summary {
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 1rem !important;
+                page-break-inside: avoid;
+                margin-bottom: 1.5rem !important;
+            }
+
+            .report-stat {
+                background: #f5f5f5 !important;
+                padding: 1rem !important;
+                border-left: 4px solid #000 !important;
+                border: 1px solid #ddd !important;
+            }
+
+            .report-stat h3 {
+                font-size: 1.4rem !important;
+                color: #000 !important;
+            }
+
+            .report-table {
+                overflow: visible !important;
+                margin-top: 1.5rem !important;
+            }
+
+            .report-table table {
+                width: 100% !important;
+                font-size: 0.8rem !important;
+                border-collapse: collapse !important;
+            }
+
+            .report-table thead th {
+                background: #333 !important;
+                color: white !important;
+                padding: 0.6rem 0.4rem !important;
+            }
+
+            .report-table tbody td {
+                padding: 0.6rem 0.4rem !important;
+                border: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .header-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .header-actions button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Elanne Resort</h2>
+            <p>Admin Portal</p>
+        </div>
+
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="reservations.html" class="nav-link">
+                        <i class="bi bi-calendar-check"></i>
+                        <span>Reservations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="checkin.html" class="nav-link">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Check-in</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="checkout.html" class="nav-link">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Checkout</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="cancellation.html" class="nav-link">
+                        <i class="bi bi-x-circle"></i>
+                        <span>Cancellations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="rebooking.html" class="nav-link">
+                        <i class="bi bi-arrow-repeat"></i>
+                        <span>Rebookings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin-rooms.html" class="nav-link">
+                        <i class="bi bi-door-open"></i>
+                        <span>Rooms</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin-packages.html" class="nav-link">
+                        <i class="bi bi-box-seam"></i>
+                        <span>Packages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="payment.html" class="nav-link">
+                        <i class="bi bi-credit-card"></i>
+                        <span>Payments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="guest.html" class="nav-link active">
+                        <i class="bi bi-person"></i>
+                        <span>Guests</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="accounts.html" class="nav-link">
+                        <i class="bi bi-people"></i>
+                        <span>Accounts</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="logout-section">
+            <button class="logout-btn" onclick="logout()"><i class="bi bi-box-arrow-left"></i> Logout</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1><i class="bi bi-person"></i> Customer Accounts</h1>
+            <div class="header-actions">
+                <button class="add-btn" onclick="openAddModal()"><i class="bi bi-plus-circle"></i> Add Customer</button>
+                <button class="report-btn" onclick="openFeedbackReportModal()"><i class="bi bi-file-earmark-bar-graph"></i> Feedback Report</button>
+            </div>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" class="search-input" id="customerSearch" placeholder="Search customers by name or email..." oninput="filterCustomers()">
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Total Bookings</th>
+                        <th>Joined Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="customerTableBody"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Add/Edit Modal -->
+    <div id="accountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add Customer Account</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="accountForm">
+                    <input type="hidden" id="editId">
+                    <div class="form-group"><label>Full Name *</label><input type="text" id="fullName" required></div>
+                    <div class="form-group"><label>Email *</label><input type="email" id="email" required></div>
+                    <div class="form-group"><label>Phone *</label><input type="tel" id="phone" required></div>
+                    <div class="form-group"><label>Address *</label><input type="text" id="address" required></div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn-submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Feedback Modal -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2><i class="bi bi-chat-dots"></i> Customer Feedback</h2>
+                <button class="close-btn" onclick="closeFeedbackModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="feedbackContent"></div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeFeedbackModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Report Modal -->
+    <div id="feedbackReportModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>Generate Feedback Report</h2>
+                <button class="close-btn" onclick="closeFeedbackReportModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="reportForm">
+                    <div class="form-group">
+                        <label>Filter by Rating</label>
+                        <select id="ratingFilter">
+                            <option value="">All Ratings</option>
+                            <option value="5">5 Stars (Excellent)</option>
+                            <option value="4">4 Stars (Good)</option>
+                            <option value="3">3 Stars (Average)</option>
+                            <option value="2">2 Stars (Poor)</option>
+                            <option value="1">1 Star (Very Poor)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="closeFeedbackReportModal()">Cancel</button>
+                        <button type="submit" class="btn-submit">
+                            <i class="bi bi-bar-chart"></i> Generate Report
+                        </button>
+                    </div>
+                </form>
+
+                <div id="reportPreview" class="report-view" style="display: none;">
+                    <div class="report-header">
+                        <h2>Customer Feedback Report</h2>
+                        <p>Generated on: <span id="reportGeneratedDate"></span></p>
+                    </div>
+
+                    <div class="report-summary" id="reportSummary"></div>
+
+                    <div class="report-table">
+                        <h3>Feedback Details</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Customer Name</th>
+                                    <th>Rating</th>
+                                    <th>Date</th>
+                                    <th>Feedback</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-print" onclick="printReport()">
+                            <i class="bi bi-printer"></i> Print / Save PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        if (!sessionStorage.getItem('adminLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+
+        let customerAccounts = [
+            { id: 101, name: 'Juan Dela Cruz', email: 'juan.customer@email.com', phone: '0917-123-4567', bookings: 5, joined: '2024-01-15', address: 'Manila' },
+            { id: 102, name: 'Maria Lopez', email: 'maria.lopez@email.com', phone: '0918-234-5678', bookings: 3, joined: '2024-03-20', address: 'Quezon City' },
+            { id: 103, name: 'Roberto Santos', email: 'roberto@email.com', phone: '0919-345-6789', bookings: 8, joined: '2023-11-10', address: 'Makati' },
+            { id: 104, name: 'Carmen Reyes', email: 'carmen@email.com', phone: '0920-456-7890', bookings: 2, joined: '2024-06-05', address: 'Pasig' }
+        ];
+
+        let customerFeedback = [
+            { customerId: 101, customerName: 'Juan Dela Cruz', rating: 5, date: '2025-10-03', feedback: 'Excellent service! The rooms were clean and comfortable. Staff was very friendly and helpful. Will definitely come back!' },
+            { customerId: 101, customerName: 'Juan Dela Cruz', rating: 4, date: '2025-09-15', feedback: 'Great experience overall. Food was good but a bit slow during peak hours.' },
+            { customerId: 102, customerName: 'Maria Lopez', rating: 5, date: '2025-10-02', feedback: 'Amazing pool facilities! The amenities exceeded my expectations. Highly recommended!' },
+            { customerId: 103, customerName: 'Roberto Santos', rating: 3, date: '2025-09-28', feedback: 'Average experience. The resort is nice but could improve on customer service response time.' },
+            { customerId: 103, customerName: 'Roberto Santos', rating: 4, date: '2025-08-10', feedback: 'Good value for money. Nice location and peaceful environment.' },
+            { customerId: 104, customerName: 'Carmen Reyes', rating: 5, date: '2025-10-01', feedback: 'Fantastic! Everything was perfect. The team went above and beyond to make our stay memorable.' },
+            { customerId: 102, customerName: 'Maria Lopez', rating: 4, date: '2025-08-20', feedback: 'Very nice. Clean rooms, good food. Only minor issue with WiFi connectivity.' }
+        ];
+
+        function renderCustomers(data = customerAccounts) {
+            const tbody = document.getElementById('customerTableBody');
+            tbody.innerHTML = '';
+            data.forEach(c => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>#${c.id}</td>
+                        <td>${c.name}</td>
+                        <td>${c.email}</td>
+                        <td>${c.phone}</td>
+                        <td>${c.bookings}</td>
+                        <td>${c.joined}</td>
+                        <td class="action-btns">
+                            <button class="btn-icon view" onclick="viewFeedback(${c.id})" title="View Feedback">
+                                <i class="bi bi-chat-dots"></i>
+                            </button>
+                            <button class="btn-icon edit" onclick="editCustomer(${c.id})" title="Edit">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button class="btn-icon delete" onclick="deleteCustomer(${c.id})" title="Delete">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        function filterCustomers() {
+            const search = document.getElementById('customerSearch').value.toLowerCase();
+            const filtered = customerAccounts.filter(c =>
+                c.name.toLowerCase().includes(search) || c.email.toLowerCase().includes(search)
+            );
+            renderCustomers(filtered);
+        }
+
+        function viewFeedback(customerId) {
+            const customer = customerAccounts.find(c => c.id === customerId);
+            const feedback = customerFeedback.filter(f => f.customerId === customerId);
+            
+            let feedbackHTML = `<h3 style="color: #2e6180; margin-bottom: 1rem;">${customer.name}'s Feedback</h3>`;
+            
+            if (feedback.length === 0) {
+                feedbackHTML += '<div class="no-feedback">No feedback available from this customer yet.</div>';
+            } else {
+                feedback.forEach(f => {
+                    const stars = '★'.repeat(f.rating) + '☆'.repeat(5 - f.rating);
+                    feedbackHTML += `
+                        <div class="feedback-item">
+                            <div class="feedback-header">
+                                <strong>Rating:</strong>
+                                <span class="feedback-date">${f.date}</span>
+                            </div>
+                            <div class="rating">${stars} ${f.rating}/5 Stars</div>
+                            <div class="feedback-text">${f.feedback}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            document.getElementById('feedbackContent').innerHTML = feedbackHTML;
+            document.getElementById('feedbackModal').classList.add('show');
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedbackModal').classList.remove('show');
+        }
+
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = 'Add Customer Account';
+            document.getElementById('accountForm').reset();
+            document.getElementById('editId').value = '';
+            document.getElementById('accountModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('accountModal').classList.remove('show');
+        }
+
+        function editCustomer(id) {
+            const c = customerAccounts.find(c => c.id === id);
+            if (!c) return;
+            document.getElementById('modalTitle').textContent = 'Edit Customer Account';
+            document.getElementById('editId').value = c.id;
+            document.getElementById('fullName').value = c.name;
+            document.getElementById('email').value = c.email;
+            document.getElementById('phone').value = c.phone;
+            document.getElementById('address').value = c.address;
+            document.getElementById('accountModal').classList.add('show');
+        }
+
+        function openFeedbackReportModal() {
+            document.getElementById('reportForm').reset();
+            document.getElementById('reportPreview').style.display = 'none';
+            document.getElementById('reportForm').style.display = 'block';
+            document.getElementById('feedbackReportModal').classList.add('show');
+        }
+
+        function closeFeedbackReportModal() {
+            document.getElementById('feedbackReportModal').classList.remove('show');
+        }
+
+        document.getElementById('reportForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            generateFeedbackReport();
+        });
+
+        function generateFeedbackReport() {
+            const ratingFilter = document.getElementById('ratingFilter').value;
+
+            let filtered = customerFeedback;
+
+            if (ratingFilter) {
+                filtered = filtered.filter(f => f.rating === parseInt(ratingFilter));
+            }
+
+            const totalFeedback = filtered.length;
+            const avgRating = totalFeedback > 0 
+                ? (filtered.reduce((sum, f) => sum + f.rating, 0) / totalFeedback).toFixed(1)
+                : 0;
+            const excellentCount = filtered.filter(f => f.rating === 5).length;
+            const goodCount = filtered.filter(f => f.rating === 4).length;
+            const averageCount = filtered.filter(f => f.rating === 3).length;
+            const poorCount = filtered.filter(f => f.rating <= 2).length;
+
+            document.getElementById('reportGeneratedDate').textContent = new Date().toLocaleString('en-PH');
+
+            document.getElementById('reportSummary').innerHTML = `
+                <div class="report-stat">
+                    <h4>Total Feedback</h4>
+                    <h3>${totalFeedback}</h3>
+                </div>
+                <div class="report-stat">
+                    <h4>Average Rating</h4>
+                    <h3>${avgRating} / 5</h3>
+                </div>
+                <div class="report-stat">
+                    <h4>Excellent (5★)</h4>
+                    <h3>${excellentCount}</h3>
+                </div>
+                <div class="report-stat">
+                    <h4>Good (4★)</h4>
+                    <h3>${goodCount}</h3>
+                </div>
+                <div class="report-stat">
+                    <h4>Average (3★)</h4>
+                    <h3>${averageCount}</h3>
+                </div>
+                <div class="report-stat">
+                    <h4>Poor (1-2★)</h4>
+                    <h3>${poorCount}</h3>
+                </div>
+            `;
+
+            const tableBody = document.getElementById('reportTableBody');
+            tableBody.innerHTML = '';
+            filtered.forEach(f => {
+                const stars = '★'.repeat(f.rating) + '☆'.repeat(5 - f.rating);
+                const row = `
+                    <tr>
+                        <td>${f.customerName}</td>
+                        <td>${stars} (${f.rating}/5)</td>
+                        <td>${f.date}</td>
+                        <td>${f.feedback}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+
+            document.getElementById('reportPreview').style.display = 'block';
+            document.getElementById('reportForm').style.display = 'none';
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        document.getElementById('accountForm').addEventListener('submit', e => {
+            e.preventDefault();
+            const editId = document.getElementById('editId').value;
+            const formData = {
+                name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                bookings: 0,
+                joined: new Date().toISOString().split('T')[0]
+            };
+            if (editId) {
+                const i = customerAccounts.findIndex(c => c.id === parseInt(editId));
+                if (i !== -1) customerAccounts[i] = { ...customerAccounts[i], ...formData };
+                alert('Customer updated successfully!');
+            } else {
+                const newId = Math.max(...customerAccounts.map(c => c.id)) + 1;
+                customerAccounts.push({ id: newId, ...formData });
+                alert('Customer added successfully!');
+            }
+            renderCustomers();
+            closeModal();
+        });
+
+        function deleteCustomer(id) {
+            if (confirm('Are you sure you want to delete this customer account?')) {
+                customerAccounts = customerAccounts.filter(c => c.id !== id);
+                customerFeedback = customerFeedback.filter(f => f.customerId !== id);
+                renderCustomers();
+                alert('Customer deleted successfully!');
+            }
+        }
+        
+        renderCustomers();
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('adminLoggedIn');
+                window.location.href = 'login.html';
+            }
+
+        
+        }
+        if (!sessionStorage.getItem('adminLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rebookings - Elanne Resort Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Verdana, Geneva, sans-serif;
+            background-color: #f7f3ec;
+            color: #4c3e35;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(180deg, #2e6180 0%, #4c3e35 100%);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-header h2 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .sidebar-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-link.active {
+            background-color: #e47b48;
+            color: white;
+        }
+
+        .logout-section {
+            position: absolute;
+            bottom: 1.5rem;
+            width: 100%;
+            padding: 0 1.5rem;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background-color: rgba(228, 123, 72, 0.2);
+            color: white;
+            border: 2px solid rgba(228, 123, 72, 0.5);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            background-color: #e47b48;
+            border-color: #e47b48;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-header h1 {
+            color: #2e6180;
+            font-size: 1.8rem;
+        }
+
+        .btn-approve,
+        .btn-reject,
+        .btn-cancel {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-approve {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .add-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: #e47b48;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .add-btn:hover {
+            background-color: #dd5a68;
+            transform: translateY(-2px);
+        }
+
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .confirmation-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirmation-modal-content {
+            background-color: #f7f3ec;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .confirmation-modal-header {
+            background: linear-gradient(135deg, #2e6180, #4c3e35);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .confirmation-modal-header h2 {
+            font-size: 1.3rem;
+            margin: 0;
+        }
+
+        .confirmation-modal-body {
+            padding: 2rem;
+        }
+
+        .confirmation-modal-body p {
+            font-size: 1rem;
+            color: #4c3e35;
+            margin: 0;
+        }
+
+        .confirmation-modal-body strong {
+            color: #2e6180;
+        }
+
+        .confirmation-modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            padding: 0 2rem 2rem 2rem;
+        }
+
+        .btn-confirm-action {
+            padding: 0.8rem 2rem;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-confirm-action:hover {
+            background-color: #388e3c;
+        }
+
+        #rejectionReason:focus {
+            outline: none;
+            border-color: #2e6180;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .amount {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stat-card.pending .amount {
+            color: #ff9800;
+        }
+
+        .stat-card.confirmed .amount {
+            color: #4caf50;
+        }
+
+        .stat-card.rejected .amount {
+            color: #f44336;
+        }
+
+        .filters-section {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #4c3e35;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 0.7rem;
+            border: 2px solid #e0dbd0;
+            border-radius: 6px;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #2e6180;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1100px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #2e6180, #4c3e35);
+            color: white;
+        }
+
+        thead th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e0dbd0;
+            transition: background-color 0.3s;
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        tbody td {
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .status-badge.pending {
+            background-color: #fff3e0;
+            color: #ff9800;
+        }
+
+        .status-badge.confirmed {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .status-badge.rejected {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .btn-icon.view {
+            background-color: #e3f2fd;
+            color: #2196f3;
+        }
+
+        .btn-icon.confirm {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .btn-icon.reject {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+
+        .btn-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #f7f3ec;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #2e6180, #4c3e35);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #4c3e35;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0dbd0;
+            border-radius: 6px;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2e6180;
+        }
+
+        .form-group input[readonly] {
+            background-color: #f0f0f0;
+            color: #555;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .detail-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .detail-section h3 {
+            color: #2e6180;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0dbd0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-row strong {
+            color: #4c3e35;
+        }
+
+        .detail-row span {
+            color: #777;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-submit,
+        .btn-cancel,
+        .btn-confirm,
+        .btn-reject {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-submit {
+            background-color: #e47b48;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background-color: #dd5a68;
+        }
+
+        .btn-cancel {
+            background-color: #e0dbd0;
+            color: #4c3e35;
+        }
+
+        .btn-cancel:hover {
+            background-color: #d0cbc0;
+        }
+
+        .btn-confirm {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background-color: #388e3c;
+        }
+
+        .btn-reject {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background-color: #d32f2f;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Elanne Resort</h2>
+            <p>Admin Portal</p>
+        </div>
+
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="reservations.html" class="nav-link">
+                        <i class="bi bi-calendar-check"></i>
+                        <span>Reservations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="checkin.html" class="nav-link">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Check-in</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="checkout.html" class="nav-link">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Checkout</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="cancellation.html" class="nav-link">
+                        <i class="bi bi-x-circle"></i>
+                        <span>Cancellations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="rebooking.html" class="nav-link active">
+                        <i class="bi bi-arrow-repeat"></i>
+                        <span>Rebookings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin-rooms.html" class="nav-link">
+                        <i class="bi bi-door-open"></i>
+                        <span>Rooms</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin-packages.html" class="nav-link">
+                        <i class="bi bi-box-seam"></i>
+                        <span>Packages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="payment.html" class="nav-link">
+                        <i class="bi bi-credit-card"></i>
+                        <span>Payments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="guest.html" class="nav-link">
+                        <i class="bi bi-person"></i>
+                        <span>Guests</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="accounts.html" class="nav-link">
+                        <i class="bi bi-people"></i>
+                        <span>Accounts</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="logout-section">
+            <button class="logout-btn" onclick="logout()">
+                <i class="bi bi-box-arrow-left"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1><i class="bi bi-arrow-repeat"></i> Rebooking Requests</h1>
+            <button class="add-btn" onclick="openCreateModal()">
+                <i class="bi bi-plus-circle"></i> Create Rebooking Request
+            </button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card pending">
+                <h3>Pending Requests</h3>
+                <div class="amount" id="pendingCount">4</div>
+            </div>
+            <div class="stat-card confirmed">
+                <h3>Confirmed</h3>
+                <div class="amount" id="confirmedCount">18</div>
+            </div>
+            <div class="stat-card rejected">
+                <h3>Rejected</h3>
+                <div class="amount" id="rejectedCount">3</div>
+            </div>
+        </div>
+
+        <div class="filters-section">
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select id="filterStatus" onchange="filterRequests()">
+                        <option value="">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Date From</label>
+                    <input type="date" id="filterDateFrom" onchange="filterRequests()">
+                </div>
+                <div class="filter-group">
+                    <label>Date To</label>
+                    <input type="date" id="filterDateTo" onchange="filterRequests()">
+                </div>
+                <div class="filter-group">
+                    <label>Search</label>
+                    <input type="text" id="searchInput" placeholder="Rebooking ID, Reservation ID..."
+                        oninput="filterRequests()">
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rebooking ID</th>
+                        <th>Reservation ID</th>
+                        <th>Guest Name</th>
+                        <th>New Check-in</th>
+                        <th>New Check-out</th>
+                        <th>Reason</th>
+                        <th>Created By</th>
+                        <th>Date Requested</th>
+                        <th>Decided By</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="requestsTableBody"></tbody>
+            </table>
+        </div>
+
+        <div id="confirmationModal" class="confirmation-modal">
+            <div class="confirmation-modal-content">
+                <div class="confirmation-modal-header">
+                    <h2 id="confirmationTitle">Confirm Decision</h2>
+                </div>
+                <div class="confirmation-modal-body">
+                    <p id="confirmationMessage"></p>
+                    <div id="rejectionReasonContainer" style="display: none; margin-top: 1.5rem;">
+                        <label
+                            style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #4c3e35;">Rejection
+                            Reason *</label>
+                        <textarea id="rejectionReason" placeholder="Enter rejection reason..."
+                            style="width: 100%; padding: 0.8rem; border: 2px solid #e0dbd0; border-radius: 6px; font-family: Verdana, Geneva, sans-serif; min-height: 100px;"></textarea>
+                    </div>
+                </div>
+                <div class="confirmation-modal-actions">
+                    <button class="btn-cancel" onclick="cancelConfirmation()">Cancel</button>
+                    <button class="btn-confirm-action" id="confirmActionBtn"
+                        onclick="proceedDecision()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- View Modal -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Rebooking Request Details</h2>
+                <button class="close-btn" onclick="closeViewModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="viewModalDetails"></div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Modal -->
+    <div id="createModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="createModalTitle">Create Rebooking Request</h2>
+                <button class="close-btn" onclick="closeCreateModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="rebookingForm">
+                    <input type="hidden" id="editId">
+
+                    <div class="form-group">
+                        <label>Reservation ID *</label>
+                        <input type="text" id="bookingId" placeholder="#1001" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Guest Name *</label>
+                        <input type="text" id="guestName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Package *</label>
+                        <select id="package" onchange="calculateAmount()" required>
+                            <option value="">Select Package</option>
+                            <option value="Lower Pool 25 Pax">Lower Pool 25 Pax</option>
+                            <option value="Lower Pool 40 Pax">Lower Pool 40 Pax</option>
+                            <option value="Sampaguita Pool 20 Pax">Sampaguita Pool 20 Pax</option>
+                            <option value="Sampaguita Pool 30 Pax">Sampaguita Pool 30 Pax</option>
+                            <option value="Upper Pool 40 Pax">Upper Pool 40 Pax</option>
+                            <option value="All 3 Pools 100 Pax">All 3 Pools 100 Pax</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Duration *</label>
+                        <select id="duration" onchange="calculateAmount()" required>
+                            <option value="">Select Duration</option>
+                            <option value="Day Tour">Day Tour (8AM-6PM)</option>
+                            <option value="Overnight">Overnight (8PM-6AM)</option>
+                            <option value="22 Hours">22 Hours</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Number of Guests *</label>
+                        <input type="number" id="numGuests" min="1" onchange="calculateAmount()" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Amount (₱) *</label>
+                        <input type="number" id="amount" min="0" step="0.01" readonly required>
+                        <small style="color: #777; font-size: 0.85rem;">Amount is automatically calculated based on
+                            package, duration, and number of guests.</small>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Original Check-in *</label>
+                            <input type="date" id="originalCheckin" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Original Check-out *</label>
+                            <input type="date" id="originalCheckout" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>New Check-in *</label>
+                            <input type="date" id="newCheckin" required>
+                        </div>
+                        <div class="form-group">
+                            <label>New Check-out *</label>
+                            <input type="date" id="newCheckout" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Reason for Rebooking *</label>
+                        <textarea id="reason" rows="3" placeholder="Enter reason for rebooking..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Created By *</label>
+                        <select id="createdBy" required>
+                            <option value="">Select...</option>
+                            <option value="Admin - Angelo">Admin - Angelo</option>
+                            <option value="Admin - Edgar">Admin - Edgar</option>
+                            <option value="Receptionist - Maria Garcia">Receptionist - Maria Garcia</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="closeCreateModal()">Cancel</button>
+                        <button type="submit" class="btn-submit">Submit Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const packages = [
+            { name: 'Lower Pool 25 Pax', capacity: 25, dayTour: 9500, overnight: 11000, hours22: 20500 },
+            { name: 'Lower Pool 40 Pax', capacity: 40, dayTour: 10500, overnight: 12000, hours22: 22500 },
+            { name: 'Sampaguita Pool 20 Pax', capacity: 20, dayTour: 8500, overnight: 10000, hours22: 18500 },
+            { name: 'Sampaguita Pool 30 Pax', capacity: 30, dayTour: 9500, overnight: 11000, hours22: 19500 },
+            { name: 'Upper Pool 40 Pax', capacity: 40, dayTour: 10500, overnight: 12000, hours22: 22500 },
+            { name: 'All 3 Pools 100 Pax', capacity: 100, dayTour: 24000, overnight: 28500, hours22: 52500 }
+        ];
+
+        function calculateAmount() {
+            const packageName = document.getElementById('package').value;
+            const duration = document.getElementById('duration').value;
+            const numGuests = parseInt(document.getElementById('numGuests').value) || 0;
+
+            if (!packageName || !duration || numGuests === 0) {
+                document.getElementById('amount').value = '';
+                return;
+            }
+
+            const selectedPackage = packages.find(pkg => pkg.name === packageName);
+            if (!selectedPackage) return;
+
+            let basePrice = 0;
+            if (duration === 'Day Tour') {
+                basePrice = selectedPackage.dayTour;
+            } else if (duration === 'Overnight') {
+                basePrice = selectedPackage.overnight;
+            } else if (duration === '22 Hours') {
+                basePrice = selectedPackage.hours22;
+            }
+
+            let totalAmount = basePrice;
+            const excessGuests = numGuests - selectedPackage.capacity;
+            if (excessGuests > 0) {
+                const additionalCharge = excessGuests * 200;
+                totalAmount += additionalCharge;
+            }
+
+            document.getElementById('amount').value = totalAmount.toFixed(2);
+        }
+
+        let rebookings = [
+            { id: 'RB001', bookingId: '#1001', guestName: 'Juan Dela Cruz', originalCheckin: '2025-10-05', originalCheckout: '2025-10-06', newCheckin: '2025-10-12', newCheckout: '2025-10-13', reason: 'Schedule conflict', createdBy: 'Admin - Edgar', dateRequested: '2025-10-02', decidedBy: '', status: 'Pending', remarks: '' },
+            { id: 'RB002', bookingId: '#1002', guestName: 'Maria Santos', originalCheckin: '2025-10-08', originalCheckout: '2025-10-09', newCheckin: '2025-10-15', newCheckout: '2025-10-16', reason: 'Weather conditions', createdBy: 'Receptionist - Maria Garcia', dateRequested: '2025-10-01', decidedBy: 'Admin - Edgar', status: 'Confirmed', remarks: 'Approved due to typhoon warning' },
+            { id: 'RB003', bookingId: '#1003', guestName: 'Pedro Garcia', originalCheckin: '2025-10-10', originalCheckout: '2025-10-11', newCheckin: '2025-10-20', newCheckout: '2025-10-21', reason: 'Medical emergency', createdBy: 'Admin - Edgar', dateRequested: '2025-10-01', decidedBy: 'Admin - Edgar', status: 'Confirmed', remarks: 'Approved with supporting documents' },
+            { id: 'RB004', bookingId: '#1004', guestName: 'Ana Reyes', originalCheckin: '2025-10-12', originalCheckout: '2025-10-12', newCheckin: '2025-10-18', newCheckout: '2025-10-18', reason: 'Personal reasons', createdBy: 'Receptionist - Maria Garcia', dateRequested: '2025-10-02', decidedBy: 'Admin - Angelo', status: 'Rejected', remarks: 'Outside rebooking policy window' },
+            { id: 'RB005', bookingId: '#1005', guestName: 'Ryan Reyes', originalCheckin: '2025-10-15', originalCheckout: '2025-10-15', newCheckin: '2025-10-18', newCheckout: '2025-10-18', reason: 'Conflict of schedule', createdBy: 'Guest', dateRequested: '2025-10-13', decidedBy: '', status: 'Pending', remarks: '' },
+            { id: 'RB006', bookingId: '#1006', guestName: 'Pearl Roxas', originalCheckin: '2025-10-26', originalCheckout: '2025-10-27', newCheckin: '2025-10-28', newCheckout: '2025-10-29', reason: 'Conflict of schedule', createdBy: 'Guest', dateRequested: '2025-10-19', decidedBy: '', status: 'Pending', remarks: '' }
+        ];
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('adminLoggedIn');
+                window.location.href = 'login.html';
+            }
+        }
+
+        function renderTable(data = rebookings) {
+            const tbody = document.getElementById('requestsTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="11" style="text-align: center; padding: 2rem; color: #999;">No rebooking requests found</td></tr>';
+                return;
+            }
+
+            data.forEach(req => {
+                const row = `
+                    <tr>
+                        <td>${req.id}</td>
+                        <td>${req.bookingId}</td>
+                        <td>${req.guestName}</td>
+                        <td>${req.newCheckin}</td>
+                        <td>${req.newCheckout}</td>
+                        <td>${req.reason}</td>
+                        <td>${req.createdBy}</td>
+                        <td>${req.dateRequested}</td>
+                        <td>${req.decidedBy || '-'}</td>
+                        <td><span class="status-badge ${req.status.toLowerCase()}">${req.status}</span></td>
+                        <td class="action-btns">
+                            <button class="btn-icon view" onclick="viewRequest('${req.id}')" title="View">
+                                <i class="bi bi-eye-fill"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function filterRequests() {
+            const status = document.getElementById('filterStatus').value;
+            const dateFrom = document.getElementById('filterDateFrom').value;
+            const dateTo = document.getElementById('filterDateTo').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+
+            let filtered = rebookings;
+
+            if (status) {
+                filtered = filtered.filter(req => req.status === status);
+            }
+
+            if (dateFrom) {
+                filtered = filtered.filter(req => req.dateRequested >= dateFrom);
+            }
+
+            if (dateTo) {
+                filtered = filtered.filter(req => req.dateRequested <= dateTo);
+            }
+
+            if (search) {
+                filtered = filtered.filter(req =>
+                    req.id.toLowerCase().includes(search) ||
+                    req.bookingId.toLowerCase().includes(search) ||
+                    req.guestName.toLowerCase().includes(search)
+                );
+            }
+
+            renderTable(filtered);
+        }
+
+        function updateStats() {
+            const pending = rebookings.filter(r => r.status === 'Pending').length;
+            const confirmed = rebookings.filter(r => r.status === 'Confirmed').length;
+            const rejected = rebookings.filter(r => r.status === 'Rejected').length;
+
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('confirmedCount').textContent = confirmed;
+            document.getElementById('rejectedCount').textContent = rejected;
+        }
+
+        function openCreateModal() {
+            document.getElementById('createModalTitle').textContent = 'Create Rebooking Request';
+            document.getElementById('rebookingForm').reset();
+            document.getElementById('editId').value = '';
+            document.getElementById('createModal').classList.add('show');
+        }
+
+        function closeCreateModal() {
+            document.getElementById('createModal').classList.remove('show');
+        }
+
+        function viewRequest(id) {
+            const req = rebookings.find(r => r.id === id);
+            if (!req) return;
+
+            const details = `
+                <div class="detail-section">
+                    <h3>Booking Information</h3>
+                    <div class="detail-row"><strong>Rebooking ID:</strong> <span>${req.id}</span></div>
+                    <div class="detail-row"><strong>Reservation ID:</strong> <span>${req.bookingId}</span></div>
+                    <div class="detail-row"><strong>Guest Name:</strong> <span>${req.guestName}</span></div>
+                    <div class="detail-row"><strong>Status:</strong> <span class="status-badge ${req.status.toLowerCase()}">${req.status}</span></div>
+                </div>
+                <div class="detail-section">
+                    <h3>Date Changes</h3>
+                    <div class="detail-row"><strong>Original Check-in:</strong> <span>${req.originalCheckin}</span></div>
+                    <div class="detail-row"><strong>Original Check-out:</strong> <span>${req.originalCheckout}</span></div>
+                    <div class="detail-row"><strong>New Check-in:</strong> <span>${req.newCheckin}</span></div>
+                    <div class="detail-row"><strong>New Check-out:</strong> <span>${req.newCheckout}</span></div>
+                </div>
+                <div class="detail-section">
+                    <h3>Request Details</h3>
+                    <div class="detail-row"><strong>Reason:</strong> <span>${req.reason}</span></div>
+                    <div class="detail-row"><strong>Created By:</strong> <span>${req.createdBy}</span></div>
+                    <div class="detail-row"><strong>Date Requested:</strong> <span>${req.dateRequested}</span></div>
+                    <div class="detail-row"><strong>Decided By:</strong> <span>${req.decidedBy || '-'}</span></div>
+                    ${req.remarks ? `<div class="detail-row"><strong>Remarks:</strong> <span>${req.remarks}</span></div>` : ''}
+                </div>
+                <div class="form-actions">
+                    ${req.status === 'Pending' ? `
+                        <button class="btn-approve" onclick="confirmRequest('${req.id}'); closeModal();">
+                            <i class="bi bi-check-circle"></i> Approve
+                        </button>
+                        <button class="btn-reject" onclick="rejectRequest('${req.id}'); closeModal();">
+                            <i class="bi bi-x-circle"></i> Reject
+                        </button>
+                    ` : ''}
+                    <button class="btn-cancel" onclick="closeModal()">Close</button>
+                </div>
+            `;
+
+            document.getElementById('viewModalDetails').innerHTML = details;
+            document.getElementById('viewModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('viewModal').classList.remove('show');
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewModal').classList.remove('show');
+        }
+
+        let pendingDecisionId = null;
+        let pendingDecisionType = null;
+
+        function confirmRequest(id) {
+            pendingDecisionId = id;
+            pendingDecisionType = 'confirm';
+
+            const req = rebookings.find(r => r.id === id);
+            if (!req) return;
+
+            document.getElementById('confirmationTitle').textContent = 'Approve Rebooking';
+            document.getElementById('confirmationMessage').innerHTML = `Approve rebooking request <strong>${req.id}</strong> for <strong>${req.guestName}</strong> from ${req.originalCheckin} to ${req.newCheckin}?`;
+            document.getElementById('rejectionReasonContainer').style.display = 'none';
+            document.getElementById('rejectionReason').value = '';
+            document.getElementById('confirmActionBtn').textContent = 'Approve';
+            document.getElementById('confirmActionBtn').style.backgroundColor = '#4caf50';
+
+            document.getElementById('viewModal').classList.remove('show');
+            document.getElementById('confirmationModal').classList.add('show');
+        }
+
+        function rejectRequest(id) {
+            pendingDecisionId = id;
+            pendingDecisionType = 'reject';
+
+            const req = rebookings.find(r => r.id === id);
+            if (!req) return;
+
+            document.getElementById('confirmationTitle').textContent = 'Reject Rebooking';
+            document.getElementById('confirmationMessage').innerHTML = `Reject rebooking request <strong>${req.id}</strong> for <strong>${req.guestName}</strong>?`;
+            document.getElementById('rejectionReasonContainer').style.display = 'block';
+            document.getElementById('rejectionReason').value = '';
+            document.getElementById('confirmActionBtn').textContent = 'Reject';
+            document.getElementById('confirmActionBtn').style.backgroundColor = '#f44336';
+
+            document.getElementById('viewModal').classList.remove('show');
+            document.getElementById('confirmationModal').classList.add('show');
+        }
+
+        function cancelConfirmation() {
+            document.getElementById('confirmationModal').classList.remove('show');
+            document.getElementById('viewModal').classList.add('show');
+            pendingDecisionId = null;
+            pendingDecisionType = null;
+        }
+
+        function proceedDecision() {
+            if (!pendingDecisionId || !pendingDecisionType) return;
+
+            const req = rebookings.find(r => r.id === pendingDecisionId);
+            if (!req) return;
+
+            if (pendingDecisionType === 'reject') {
+                const reason = document.getElementById('rejectionReason').value.trim();
+                if (!reason) {
+                    alert('Please enter a rejection reason.');
+                    return;
+                }
+
+                req.status = 'Rejected';
+                req.decidedBy = sessionStorage.getItem('adminName') || 'Admin - Angelo';
+                req.remarks = reason;
+
+                document.getElementById('confirmationModal').classList.remove('show');
+                renderTable();
+                updateStats();
+
+                const successModal = document.createElement('div');
+                successModal.className = 'confirmation-modal show';
+                successModal.innerHTML = `
+                    <div class="confirmation-modal-content">
+                        <div class="confirmation-modal-header">
+                            <h2>Success</h2>
+                        </div>
+                        <div class="confirmation-modal-body">
+                            <p>Rebooking request <strong>${req.id}</strong> has been <strong>rejected</strong>.</p>
+                        </div>
+                        <div class="confirmation-modal-actions">
+                            <button class="btn-confirm-action" onclick="this.parentElement.parentElement.parentElement.remove()">OK</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(successModal);
+            } else if (pendingDecisionType === 'confirm') {
+                req.status = 'Confirmed';
+                req.decidedBy = sessionStorage.getItem('adminName') || 'Admin - Angelo';
+                req.remarks = 'Approved';
+
+                document.getElementById('confirmationModal').classList.remove('show');
+                renderTable();
+                updateStats();
+
+                const successModal = document.createElement('div');
+                successModal.className = 'confirmation-modal show';
+                successModal.innerHTML = `
+                    <div class="confirmation-modal-content">
+                        <div class="confirmation-modal-header">
+                            <h2>Success</h2>
+                        </div>
+                        <div class="confirmation-modal-body">
+                            <p>Rebooking request <strong>${req.id}</strong> has been <strong>approved</strong>.</p>
+                        </div>
+                        <div class="confirmation-modal-actions">
+                            <button class="btn-confirm-action" onclick="this.parentElement.parentElement.parentElement.remove()">OK</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(successModal);
+            }
+
+            pendingDecisionId = null;
+            pendingDecisionType = null;
+        }
+
+        // Form submission handler
+        document.getElementById('rebookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const newRebooking = {
+                id: 'RB' + String(rebookings.length + 1).padStart(3, '0'),
+                bookingId: document.getElementById('bookingId').value,
+                guestName: document.getElementById('guestName').value,
+                originalCheckin: document.getElementById('originalCheckin').value,
+                originalCheckout: document.getElementById('originalCheckout').value,
+                newCheckin: document.getElementById('newCheckin').value,
+                newCheckout: document.getElementById('newCheckout').value,
+                reason: document.getElementById('reason').value,
+                createdBy: document.getElementById('createdBy').value,
+                dateRequested: new Date().toISOString().split('T')[0],
+                decidedBy: '',
+                status: 'Pending',
+                remarks: ''
+            };
+
+            rebookings.push(newRebooking);
+            closeCreateModal();
+            renderTable();
+            updateStats();
+
+            alert('Rebooking request created successfully!');
+        });
+
+        renderTable();
+        updateStats();
+
+        if (!sessionStorage.getItem('adminLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+
+</html>

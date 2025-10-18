@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Elanne Resort Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Verdana, Geneva, sans-serif;
+            background-color: #f7f3ec;
+            color: #4c3e35;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(180deg, #2e6180 0%, #4c3e35 100%);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-header h2 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .sidebar-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-link.active {
+            background-color: #e47b48;
+            color: white;
+        }
+
+        .logout-section {
+            position: absolute;
+            bottom: 1.5rem;
+            width: 100%;
+            padding: 0 1.5rem;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background-color: rgba(228, 123, 72, 0.2);
+            color: white;
+            border: 2px solid rgba(228, 123, 72, 0.5);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            background-color: #e47b48;
+            border-color: #e47b48;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .page-header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-header h1 {
+            color: #2e6180;
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #e47b48, #dd5a68);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.8rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #2e6180, #4a8eb3);
+            color: white;
+        }
+
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #e47b48, #f09564);
+            color: white;
+        }
+
+        .stat-icon.green {
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+            color: white;
+        }
+
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #9c27b0, #ba68c8);
+            color: white;
+        }
+
+        .stat-details h3 {
+            color: #4c3e35;
+            font-size: 2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-details p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Charts Section */
+        .charts-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .chart-card h2 {
+            color: #2e6180;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f7f3ec;
+        }
+
+        /* Recent Activity */
+        .recent-activity {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .recent-activity h2 {
+            color: #2e6180;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f7f3ec;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid #f7f3ec;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.success {
+            background: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .activity-icon.info {
+            background: #e3f2fd;
+            color: #2196f3;
+        }
+
+        .activity-icon.warning {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+
+        .activity-details h4 {
+            color: #4c3e35;
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .activity-details p {
+            color: #777;
+            font-size: 0.85rem;
+        }
+
+        .activity-time {
+            color: #999;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-btn {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #e0dbd0;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            color: #4c3e35;
+        }
+
+        .action-btn:hover {
+            border-color: #e47b48;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(228, 123, 72, 0.2);
+        }
+
+        .action-btn i {
+            font-size: 2rem;
+            color: #2e6180;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-btn p {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* Room Status Grid */
+        .room-status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+        }
+
+        .room-status-item {
+            background: #f7f3ec;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .room-status-item.available {
+            border-color: #4caf50;
+        }
+
+        .room-status-item.occupied {
+            border-color: #e47b48;
+            background: #fff3e0;
+        }
+
+        .room-status-item.maintenance {
+            border-color: #999;
+            background: #f5f5f5;
+        }
+
+        .room-status-item p {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .room-status-item small {
+            font-size: 0.75rem;
+            color: #777;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .sidebar-header h2,
+            .sidebar-header p,
+            .nav-link span {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 70px;
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .logout-section {
+                position: relative;
+                bottom: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Elanne Resort</h2>
+            <p>Admin Portal</p>
+        </div>
+
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link active">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="reservations.html" class="nav-link">
+                        <i class="bi bi-calendar-check"></i>
+                        <span>Reservations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="checkin.html" class="nav-link">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Check-in</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="checkout.html" class="nav-link">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Checkout</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="cancellation.html" class="nav-link">
+                        <i class="bi bi-x-circle"></i>
+                        <span>Cancellations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="rebooking.html" class="nav-link">
+                        <i class="bi bi-arrow-repeat"></i>
+                        <span>Rebookings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin-rooms.html" class="nav-link">
+                        <i class="bi bi-door-open"></i>
+                        <span>Rooms</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin-packages.html" class="nav-link">
+                        <i class="bi bi-box-seam"></i>
+                        <span>Packages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="payment.html" class="nav-link">
+                        <i class="bi bi-credit-card"></i>
+                        <span>Payments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="guest.html" class="nav-link">
+                        <i class="bi bi-person"></i>
+                        <span>Guests</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="accounts.html" class="nav-link">
+                        <i class="bi bi-people"></i>
+                        <span>Accounts</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="logout-section">
+            <button class="logout-btn" onclick="logout()">
+                <i class="bi bi-box-arrow-left"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Dashboard Overview</h1>
+            <div class="user-info">
+                <div>
+                    <p style="font-weight: 600; margin-bottom: 0.2rem;">Admin User</p>
+                    <p style="font-size: 0.85rem; color: #777;">Administrator</p>
+                </div>
+                <div class="user-avatar">A</div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>24</h3>
+                    <p>Total Reservations</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <i class="bi bi-door-open"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>18</h3>
+                    <p>Rooms Occupied</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="bi bi-currency-dollar"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>₱45,200</h3>
+                    <p>Total Revenue for October</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div class="stat-details">
+                    <h3>20</h3>
+                    <p>Active Guests</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <div class="chart-card">
+                <h2><i class="bi bi-graph-up"></i> Revenue Trend (Monthly)</h2>
+                <div
+                    style="height: 250px; display: flex; align-items: flex-end; justify-content: space-around; gap: 1rem;">
+                    <div
+                        style="width: 60px; height: 60%; background: linear-gradient(180deg, #2e6180, #4a8eb3); border-radius: 4px 4px 0 0; display: flex; align-items: flex-end; justify-content: center; padding: 0.5rem; color: white; font-size: 0.75rem;">
+                        Jan</div>
+                    <div
+                        style="width: 60px; height: 75%; background: linear-gradient(180deg, #2e6180, #4a8eb3); border-radius: 4px 4px 0 0; display: flex; align-items: flex-end; justify-content: center; padding: 0.5rem; color: white; font-size: 0.75rem;">
+                        Feb</div>
+                    <div
+                        style="width: 60px; height: 85%; background: linear-gradient(180deg, #e47b48, #f09564); border-radius: 4px 4px 0 0; display: flex; align-items: flex-end; justify-content: center; padding: 0.5rem; color: white; font-size: 0.75rem;">
+                        Mar</div>
+                    <div
+                        style="width: 60px; height: 70%; background: linear-gradient(180deg, #2e6180, #4a8eb3); border-radius: 4px 4px 0 0; display: flex; align-items: flex-end; justify-content: center; padding: 0.5rem; color: white; font-size: 0.75rem;">
+                        Apr</div>
+                    <div
+                        style="width: 60px; height: 90%; background: linear-gradient(180deg, #2e6180, #4a8eb3); border-radius: 4px 4px 0 0; display: flex; align-items: flex-end; justify-content: center; padding: 0.5rem; color: white; font-size: 0.75rem;">
+                        May</div>
+                    <div
+                        style="width: 60px; height: 95%; background: linear-gradient(180deg, #2e6180, #4a8eb3); border-radius: 4px 4px 0 0; display: flex; align-items: flex-end; justify-content: center; padding: 0.5rem; color: white; font-size: 0.75rem;">
+                        Jun</div>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h2><i class="bi bi-pie-chart"></i> Room Status</h2>
+                <div class="room-status-grid">
+                    <div class="room-status-item available">
+                        <p>12</p>
+                        <small>Available</small>
+                    </div>
+                    <div class="room-status-item occupied">
+                        <p>15</p>
+                        <small>Occupied</small>
+                    </div>
+                    <div class="room-status-item maintenance">
+                        <p>3</p>
+                        <small>Maintenance</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="recent-activity">
+            <h2><i class="bi bi-clock-history"></i> Recent Activity</h2>
+            <div class="activity-item">
+                <div class="activity-icon success">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="activity-details">
+                    <h4>New Reservation</h4>
+                    <p>Juan Dela Cruz booked Lower Pool (25 pax) - Day Tour</p>
+                </div>
+                <span class="activity-time">5 mins ago</span>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon info">
+                    <i class="bi bi-person-plus-fill"></i>
+                </div>
+                <div class="activity-details">
+                    <h4>Check-in Completed</h4>
+                    <p>Maria Santos checked in to Family Room #12</p>
+                </div>
+                <span class="activity-time">25 mins ago</span>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon warning">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </div>
+                <div class="activity-details">
+                    <h4>Payment Pending</h4>
+                    <p>Booking #1024 - Awaiting full payment</p>
+                </div>
+                <span class="activity-time">1 hour ago</span>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon success">
+                    <i class="bi bi-cash-coin"></i>
+                </div>
+                <div class="activity-details">
+                    <h4>Payment Received</h4>
+                    <p>₱15,500 payment confirmed for Booking #1019</p>
+                </div>
+                <span class="activity-time">2 hours ago</span>
+            </div>
+            <div class="activity-item">
+                <div class="activity-icon info">
+                    <i class="bi bi-door-closed-fill"></i>
+                </div>
+                <div class="activity-details">
+                    <h4>Check-out Completed</h4>
+                    <p>Roberto Garcia checked out from Barkada Room #8</p>
+                </div>
+                <span class="activity-time">3 hours ago</span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Check if user is logged in
+        if (!sessionStorage.getItem('adminLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('adminLoggedIn');
+                sessionStorage.removeItem('adminUsername');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Update stats dynamically (demo)
+        setInterval(() => {
+            const statElements = document.querySelectorAll('.stat-details h3');
+            // This would normally fetch from an API
+        }, 30000);
+    </script>
+</body>
+
+</html>

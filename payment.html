@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments - Elanne Resort Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Verdana, Geneva, sans-serif;
+            background-color: #f7f3ec;
+            color: #4c3e35;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(180deg, #2e6180 0%, #4c3e35 100%);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-header h2 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .sidebar-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-link.active {
+            background-color: #e47b48;
+            color: white;
+        }
+
+        .logout-section {
+            position: absolute;
+            bottom: 1.5rem;
+            width: 100%;
+            padding: 0 1.5rem;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background-color: rgba(228, 123, 72, 0.2);
+            color: white;
+            border: 2px solid rgba(228, 123, 72, 0.5);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            background-color: #e47b48;
+            border-color: #e47b48;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-header h1 {
+            color: #2e6180;
+            font-size: 1.8rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .add-btn,
+        .report-btn {
+            padding: 0.8rem 1.5rem;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .add-btn {
+            background-color: #e47b48;
+        }
+
+        .add-btn:hover {
+            background-color: #dd5a68;
+            transform: translateY(-2px);
+        }
+
+        .report-btn {
+            background-color: #2e6180;
+        }
+
+        .report-btn:hover {
+            background-color: #4c3e35;
+            transform: translateY(-2px);
+        }
+
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-box h4 {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-box h3 {
+            font-size: 2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-box p {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .stat-box.revenue h3 {
+            color: #4caf50;
+        }
+
+        .stat-box.pending h3 {
+            color: #ff9800;
+        }
+
+        .stat-box.refunded h3 {
+            color: #f44336;
+        }
+
+        .stat-box.transactions h3 {
+            color: #2196f3;
+        }
+
+        .filters-section {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #4c3e35;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 0.7rem;
+            border: 2px solid #e0dbd0;
+            border-radius: 6px;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #2e6180;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #2e6180, #4c3e35);
+            color: white;
+        }
+
+        thead th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e0dbd0;
+            transition: background-color 0.3s;
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        tbody td {
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .status-badge.paid {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .status-badge.pending {
+            background-color: #fff3e0;
+            color: #ff9800;
+        }
+
+        .status-badge.down-payment {
+            background-color: #e3f2fd;
+            color: #2196f3;
+        }
+
+        .status-badge.refunded {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+
+        .status-badge.cancelled {
+            background-color: #f5f5f5;
+            color: #757575;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-icon.view {
+            background-color: #e3f2fd;
+            color: #2196f3;
+        }
+
+        .btn-icon.receipt {
+            background-color: #f3e5f5;
+            color: #9c27b0;
+        }
+
+        .btn-icon.edit {
+            background-color: #fff3e0;
+            color: #ff9800;
+        }
+
+        .btn-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #f7f3ec;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-content.large {
+            max-width: 1000px;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #2e6180, #4c3e35);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #4c3e35;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0dbd0;
+            border-radius: 6px;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2e6180;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .payment-summary {
+            background: #fff8e1;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #e47b48;
+        }
+
+        .payment-summary h4 {
+            margin-bottom: 1rem;
+            color: #2e6180;
+        }
+
+        .payment-summary .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e0dbd0;
+        }
+
+        .payment-summary .summary-row:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .file-upload {
+            border: 2px dashed #e0dbd0;
+            padding: 1.5rem;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: #2e6180;
+            background: #f9f9f9;
+        }
+
+        .file-upload i {
+            font-size: 2rem;
+            color: #2e6180;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-submit,
+        .btn-cancel,
+        .btn-print {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .btn-submit {
+            background-color: #e47b48;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background-color: #dd5a68;
+        }
+
+        .btn-cancel {
+            background-color: #e0dbd0;
+            color: #4c3e35;
+        }
+
+        .btn-cancel:hover {
+            background-color: #d0cbc0;
+        }
+
+        .btn-print {
+            background-color: #2e6180;
+            color: white;
+        }
+
+        .btn-print:hover {
+            background-color: #4c3e35;
+        }
+
+        .receipt-view {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .receipt-header {
+            text-align: center;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #e0dbd0;
+            margin-bottom: 1.5rem;
+        }
+
+        .receipt-header h2 {
+            color: #2e6180;
+            margin-bottom: 0.5rem;
+        }
+
+        .receipt-details {
+            margin-bottom: 1rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-row strong {
+            color: #4c3e35;
+        }
+
+        .details-modal-body {
+            padding: 0;
+        }
+
+        .details-section {
+            background: white;
+            margin: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .details-section h3 {
+            color: #2e6180;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0dbd0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-item {
+            padding: 0.8rem;
+            background: #f7f3ec;
+            border-radius: 6px;
+            border-left: 3px solid #2e6180;
+        }
+
+        .info-item label {
+            display: block;
+            font-size: 0.8rem;
+            color: #777;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .info-item .value {
+            font-size: 1rem;
+            color: #4c3e35;
+            font-weight: 600;
+        }
+
+        .amount-breakdown {
+            background: #fff8e1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #e47b48;
+        }
+
+        .amount-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #e0dbd0;
+        }
+
+        .amount-row:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #2e6180;
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+            border-top: 2px solid #2e6180;
+        }
+
+        .amount-row.paid {
+            color: #4caf50;
+            font-weight: 600;
+        }
+
+        .amount-row.balance {
+            color: #ff9800;
+            font-weight: 600;
+        }
+
+        .amount-row.balance.zero {
+            color: #4caf50;
+        }
+
+        .status-display {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .refund-alert {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+
+        .refund-alert h4 {
+            color: #f44336;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .notes-section {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid #2196f3;
+            margin-top: 1rem;
+        }
+
+        .notes-section h4 {
+            color: #2196f3;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .notes-section p {
+            color: #4c3e35;
+            line-height: 1.6;
+        }
+
+        .report-view {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .report-header {
+            text-align: center;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid #2e6180;
+            margin-bottom: 2rem;
+        }
+
+        .report-header h2 {
+            color: #2e6180;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-header p {
+            color: #777;
+            font-size: 0.95rem;
+        }
+
+        .report-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .report-stat {
+            background: #f7f3ec;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #2e6180;
+        }
+
+        .report-stat h4 {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-stat h3 {
+            font-size: 1.8rem;
+            color: #2e6180;
+        }
+
+        .report-table {
+            margin-top: 2rem;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .report-table h3 {
+            color: #2e6180;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0dbd0;
+        }
+
+        .report-table table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+
+        .report-table thead {
+            background: #2e6180;
+            color: white;
+        }
+
+        .report-table th {
+            background: #2e6180;
+            color: white;
+            padding: 1rem 0.8rem;
+            text-align: left;
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            border: none;
+        }
+
+        .report-table td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #e0dbd0;
+            font-size: 0.9rem;
+        }
+
+        .report-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 1cm;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            body {
+                background: white !important;
+                margin: 0;
+                padding: 0;
+                color: #000 !important;
+            }
+
+            .sidebar,
+            .page-header,
+            .filters-section,
+            .form-actions,
+            .modal-header,
+            .btn-print,
+            .close-btn {
+                display: none !important;
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+                padding: 0 !important;
+            }
+
+            .modal-content {
+                box-shadow: none !important;
+                max-width: 100% !important;
+                max-height: none !important;
+                overflow: visible !important;
+                background: white !important;
+                border: none !important;
+            }
+
+            .modal-body {
+                padding: 0 !important;
+            }
+
+            .report-view {
+                padding: 1cm !important;
+                margin: 0 !important;
+                overflow: visible !important;
+                background: white !important;
+            }
+
+            .report-header {
+                page-break-after: avoid;
+                margin-bottom: 1.5rem !important;
+                border-bottom: 2px solid #000 !important;
+                padding-bottom: 1rem !important;
+            }
+
+            .report-header h2 {
+                color: #000 !important;
+                font-size: 1.8rem !important;
+                margin-bottom: 0.3rem !important;
+            }
+
+            .report-header p {
+                color: #000 !important;
+                font-size: 0.9rem !important;
+            }
+
+            .report-summary {
+                display: grid !important;
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 1rem !important;
+                page-break-inside: avoid;
+                break-inside: avoid;
+                page-break-after: avoid;
+                margin-bottom: 1.5rem !important;
+            }
+
+            .report-stat {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                background: #f5f5f5 !important;
+                padding: 1rem !important;
+                border-left: 4px solid #000 !important;
+                border: 1px solid #ddd !important;
+            }
+
+            .report-stat h4 {
+                font-size: 0.8rem !important;
+                color: #333 !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .report-stat h3 {
+                font-size: 1.4rem !important;
+                color: #000 !important;
+                margin: 0 !important;
+            }
+
+            .report-table {
+                overflow: visible !important;
+                page-break-inside: auto;
+                margin-top: 1.5rem !important;
+                width: 100% !important;
+            }
+
+            .report-table h3 {
+                color: #000 !important;
+                font-size: 1.2rem !important;
+                margin-bottom: 1rem !important;
+                border-bottom: 2px solid #000 !important;
+                padding-bottom: 0.5rem !important;
+            }
+
+            .report-table table {
+                width: 100% !important;
+                font-size: 0.75rem !important;
+                page-break-inside: auto;
+                border-collapse: collapse !important;
+                table-layout: fixed !important;
+            }
+
+            .report-table thead {
+                display: table-header-group !important;
+                background: #333 !important;
+            }
+
+            .report-table thead th {
+                background: #333 !important;
+                color: white !important;
+                padding: 0.6rem 0.4rem !important;
+                text-align: left !important;
+                font-size: 0.75rem !important;
+                white-space: nowrap !important;
+                border: 1px solid #000 !important;
+                font-weight: 600;
+            }
+
+            .report-table tr {
+                page-break-inside: avoid !important;
+                page-break-after: auto;
+            }
+
+            .report-table tbody tr {
+                border-bottom: 1px solid #ddd !important;
+            }
+
+            .report-table tbody td {
+                padding: 0.6rem 0.4rem !important;
+                white-space: nowrap !important;
+                word-wrap: break-word !important;
+                border: none !important;
+                font-size: 0.75rem !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                color: #000 !important;
+            }
+
+            .details-section {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Elanne Resort</h2>
+            <p>Admin Portal</p>
+        </div>
+
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="reservations.html" class="nav-link">
+                        <i class="bi bi-calendar-check"></i>
+                        <span>Reservations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="checkin.html" class="nav-link">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Check-in</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="checkout.html" class="nav-link">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Checkout</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="cancellation.html" class="nav-link">
+                        <i class="bi bi-x-circle"></i>
+                        <span>Cancellations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="rebooking.html" class="nav-link">
+                        <i class="bi bi-arrow-repeat"></i>
+                        <span>Rebookings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin-rooms.html" class="nav-link">
+                        <i class="bi bi-door-open"></i>
+                        <span>Rooms</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin-packages.html" class="nav-link">
+                        <i class="bi bi-box-seam"></i>
+                        <span>Packages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="payment.html" class="nav-link active">
+                        <i class="bi bi-credit-card"></i>
+                        <span>Payments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="guest.html" class="nav-link">
+                        <i class="bi bi-person"></i>
+                        <span>Guests</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="accounts.html" class="nav-link">
+                        <i class="bi bi-people"></i>
+                        <span>Accounts</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="logout-section">
+            <button class="logout-btn" onclick="logout()">
+                <i class="bi bi-box-arrow-left"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1><i class="bi bi-credit-card"></i> Payment Management</h1>
+            <div class="header-actions">
+                <button class="add-btn" onclick="openAddModal()">
+                    <i class="bi bi-plus-circle"></i> Record Payment
+                </button>
+                <button class="report-btn" onclick="openReportModal()">
+                    <i class="bi bi-file-earmark-bar-graph"></i> Generate Report
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-overview">
+            <div class="stat-box revenue">
+                <h4>Total Revenue</h4>
+                <h3 id="totalRevenue">₱0</h3>
+                <p>All time collections</p>
+            </div>
+            <div class="stat-box pending">
+                <h4>Pending Payments</h4>
+                <h3 id="pendingAmount">₱0</h3>
+                <p><span id="pendingCount">0</span> transactions</p>
+            </div>
+            <div class="stat-box transactions">
+                <h4>Today's Transactions</h4>
+                <h3 id="todayCount">0</h3>
+                <p>₱<span id="todayAmount">0</span></p>
+            </div>
+            <div class="stat-box refunded">
+                <h4>Refunded</h4>
+                <h3 id="refundedAmount">₱15,250</h3>
+                <p>This month</p>
+            </div>
+        </div>
+
+        <div class="filters-section">
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select id="filterStatus" onchange="filterPayments()">
+                        <option value="">All Status</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Down Payment">Down Payment</option>
+                        <option value="Refunded">Refunded</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Payment Method</label>
+                    <select id="filterMethod" onchange="filterPayments()">
+                        <option value="">All Methods</option>
+                        <option value="Cash">Cash</option>
+                        <option value="GCash">GCash</option>
+                        <option value="Maya">Maya</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Date From</label>
+                    <input type="date" id="filterDateFrom" onchange="filterPayments()">
+                </div>
+                <div class="filter-group">
+                    <label>Date To</label>
+                    <input type="date" id="filterDateTo" onchange="filterPayments()">
+                </div>
+                <div class="filter-group">
+                    <label>Search</label>
+                    <input type="text" id="searchInput" placeholder="OR/Transaction ID, Guest..."
+                        oninput="filterPayments()">
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Payment ID</th>
+                        <th>Booking Ref</th>
+                        <th>Guest Name</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Balance</th>
+                        <th>Method</th>
+                        <th>Status</th>
+                        <th>Refund Info</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="paymentsTableBody"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Payment Form Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Record Payment</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="paymentForm">
+                    <input type="hidden" id="editId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Transaction/OR Number *</label>
+                            <input type="text" id="transactionId" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Booking Reference *</label>
+                            <input type="text" id="bookingRef" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Guest Name *</label>
+                            <input type="text" id="guestName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Number</label>
+                            <input type="tel" id="contactNumber">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email">
+                    </div>
+
+                    <div class="payment-summary">
+                        <h4>Payment Breakdown</h4>
+                        <div class="summary-row">
+                            <span>Total Amount Due:</span>
+                            <span>₱<input type="number" id="totalDue" step="0.01" min="0"
+                                    style="width: 150px; border: 1px solid #ddd; padding: 0.3rem;"
+                                    oninput="calculateBalance()" required></span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Discount/Voucher:</span>
+                            <span>₱<input type="number" id="discount" step="0.01" min="0" value="0"
+                                    style="width: 150px; border: 1px solid #ddd; padding: 0.3rem;"
+                                    oninput="calculateBalance()"></span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Service Charge/Tax:</span>
+                            <span>₱<input type="number" id="serviceCharge" step="0.01" min="0" value="0"
+                                    style="width: 150px; border: 1px solid #ddd; padding: 0.3rem;"
+                                    oninput="calculateBalance()"></span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Net Amount:</span>
+                            <strong id="netAmountDisplay">₱0</strong>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Amount Paid *</label>
+                            <input type="number" id="amountPaid" step="0.01" min="0" required
+                                oninput="calculateBalance()">
+                        </div>
+                        <div class="form-group">
+                            <label>Balance</label>
+                            <strong style="font-size: 1.2rem; color: #ff9800; display: block; margin-top: 0.8rem;"
+                                id="balanceDisplay">₱0</strong>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Payment Method *</label>
+                            <select id="paymentMethod" required>
+                                <option value="">Select Method</option>
+                                <option value="Cash">Cash</option>
+                                <option value="GCash">GCash</option>
+                                <option value="Maya">Maya</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Status *</label>
+                            <select id="paymentStatus" required onchange="toggleRefundFields()">
+                                <option value="">Select Status</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Down Payment">Down Payment</option>
+                                <option value="Refunded">Refunded</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Payment Date *</label>
+                        <input type="datetime-local" id="paymentDate" required>
+                    </div>
+
+                    <div id="refundSection" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Refund Amount</label>
+                                <input type="number" id="refundAmount" step="0.01" min="0" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Refund Date</label>
+                                <input type="datetime-local" id="refundDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Notes/Comments</label>
+                        <textarea id="notes" placeholder="Add any additional information..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn-submit">
+                            <i class="bi bi-check-circle"></i> Save Payment
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Details Modal (New Enhanced Version) -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2><i class="bi bi-file-text"></i> Payment Details</h2>
+                <button class="close-btn" onclick="closeDetailsModal()">&times;</button>
+            </div>
+            <div class="modal-body details-modal-body">
+                <div class="details-section">
+                    <h3><i class="bi bi-person-badge"></i> Customer Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Guest Name</label>
+                            <div class="value" id="detail_guest"></div>
+                        </div>
+                        <div class="info-item">
+                            <label>Contact Number</label>
+                            <div class="value" id="detail_contact"></div>
+                        </div>
+                        <div class="info-item">
+                            <label>Email Address</label>
+                            <div class="value" id="detail_email"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-section">
+                    <h3><i class="bi bi-calendar-check"></i> Reservation Details</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Transaction ID</label>
+                            <div class="value" id="detail_transId"></div>
+                        </div>
+                        <div class="info-item">
+                            <label>Booking Reference</label>
+                            <div class="value" id="detail_bookingRef"></div>
+                        </div>
+                        <div class="info-item">
+                            <label>Payment Date</label>
+                            <div class="value" id="detail_date"></div>
+                        </div>
+                        <div class="info-item">
+                            <label>Payment Method</label>
+                            <div class="value" id="detail_method"></div>
+                        </div>
+                        <div class="info-item">
+                            <label>Payment Status</label>
+                            <div class="value" id="detail_status"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-section">
+                    <h3><i class="bi bi-calculator"></i> Payment Breakdown</h3>
+                    <div class="amount-breakdown">
+                        <div class="amount-row">
+                            <span>Total Amount Due:</span>
+                            <strong id="detail_totalDue"></strong>
+                        </div>
+                        <div class="amount-row">
+                            <span>Discount / Voucher:</span>
+                            <strong id="detail_discount"></strong>
+                        </div>
+                        <div class="amount-row">
+                            <span>Service Charge / Tax:</span>
+                            <strong id="detail_serviceCharge"></strong>
+                        </div>
+                        <div class="amount-row">
+                            <span>Net Amount:</span>
+                            <strong id="detail_netAmount"></strong>
+                        </div>
+                        <div class="amount-row paid">
+                            <span><i class="bi bi-cash-stack"></i> Amount Paid:</span>
+                            <strong id="detail_amountPaid"></strong>
+                        </div>
+                        <div class="amount-row balance" id="detail_balanceRow">
+                            <span><i class="bi bi-exclamation-triangle"></i> Balance Due:</span>
+                            <strong id="detail_balance"></strong>
+                        </div>
+                    </div>
+
+                    <div id="detail_refundSection"></div>
+                </div>
+
+                <div id="detail_notesSection"></div>
+
+                <div class="form-actions">
+                    <button class="btn-cancel" onclick="closeDetailsModal()">
+                        <i class="bi bi-x-circle"></i> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div id="receiptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Payment Receipt</h2>
+                <button class="close-btn" onclick="closeReceiptModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="receipt-view">
+                    <div class="receipt-header">
+                        <h2>Elanne Resort</h2>
+                        <p>Official Payment Receipt</p>
+                    </div>
+                    <div class="receipt-details" id="receiptDetails"></div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeReceiptModal()">Close</button>
+                    <button type="button" class="btn-print" onclick="printReceipt()">
+                        <i class="bi bi-printer"></i> Print
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>Generate Payment Report</h2>
+                <button class="close-btn" onclick="closeReportModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="reportForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date From</label>
+                            <input type="date" id="reportDateFrom" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Date To</label>
+                            <input type="date" id="reportDateTo" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Status Filter</label>
+                            <select id="reportStatus">
+                                <option value="">All Status</option>
+                                <option value="Paid">Paid</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Down Payment">Down Payment</option>
+                                <option value="Refunded">Refunded</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Method Filter</label>
+                            <select id="reportMethod">
+                                <option value="">All Methods</option>
+                                <option value="Cash">Cash</option>
+                                <option value="GCash">GCash</option>
+                                <option value="Maya">Maya</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="closeReportModal()">Cancel</button>
+                        <button type="submit" class="btn-submit">
+                            <i class="bi bi-bar-chart"></i> Generate Report
+                        </button>
+                    </div>
+                </form>
+
+                <div id="reportPreview" class="report-view" style="display: none;">
+                    <div class="report-header">
+                        <h2 id="reportPeriod">Payment Report</h2>
+                        <p>Generated on: <span id="reportGeneratedDate"></span></p>
+                    </div>
+
+                    <div class="report-summary" id="reportSummary"></div>
+
+                    <div class="report-table">
+                        <h3>Detailed Transactions</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Trans ID</th>
+                                    <th>Date</th>
+                                    <th>Guest Name</th>
+                                    <th>Method</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-print" onclick="printReport()">
+                            <i class="bi bi-printer"></i> Print / Save PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let payments = [
+            { id: 'OR-2025001', bookingRef: '#1001', guest: 'Juan Dela Cruz', contact: '0917-123-4567', email: 'juan@email.com', date: '2025-10-01T10:30', totalDue: 9500, discount: 0, serviceCharge: 0, amountPaid: 9500, balance: 0, method: 'Cash', status: 'Paid', notes: '', refundAmount: 0, refundDate: '' },
+            { id: 'OR-2025002', bookingRef: '#1002', guest: 'Maria Santos', contact: '0918-234-5678', email: 'maria@email.com', date: '2025-10-01T14:15', totalDue: 52500, discount: 2500, serviceCharge: 0, amountPaid: 30000, balance: 20000, method: 'GCash', status: 'Down Payment', notes: 'Remaining balance due Oct 10', refundAmount: 0, refundDate: '' },
+            { id: 'OR-2025003', bookingRef: '#1003', guest: 'Pedro Garcia', contact: '0919-345-6789', email: 'pedro@email.com', date: '2025-10-02T09:00', totalDue: 10000, discount: 0, serviceCharge: 0, amountPaid: 0, balance: 10000, method: 'GCash', status: 'Pending', notes: 'Awaiting payment confirmation', refundAmount: 0, refundDate: '' },
+            { id: 'OR-2025004', bookingRef: '#1004', guest: 'Ana Reyes', contact: '0920-456-7890', email: 'ana@email.com', date: '2025-10-02T11:45', totalDue: 10500, discount: 500, serviceCharge: 0, amountPaid: 10000, balance: 0, method: 'Cash', status: 'Paid', notes: '', refundAmount: 0, refundDate: '' },
+            { id: 'OR-2025005', bookingRef: '#1005', guest: 'Carlos Mendoza', contact: '0921-567-8901', email: 'carlos@email.com', date: '2025-09-28T13:20', totalDue: 15000, discount: 0, serviceCharge: 0, amountPaid: 0, balance: 15000, method: 'Maya', status: 'Pending', notes: 'Waiting for confirmation', refundAmount: 0, refundDate: '' },
+            { id: 'OR-2025006', bookingRef: '#1006', guest: 'Lisa Fernandez', contact: '0922-678-9012', email: 'lisa@email.com', date: '2025-09-30T16:45', totalDue: 28000, discount: 1000, serviceCharge: 500, amountPaid: 15000, balance: 12500, method: 'GCash', status: 'Down Payment', notes: 'Balance payable on check-in', refundAmount: 0, refundDate: '' },
+            { id: 'OR-2025007', bookingRef: '#1007', guest: 'Roberto Tan', contact: '0923-789-0123', email: 'roberto@email.com', date: '2025-09-25T10:15', totalDue: 18500, discount: 0, serviceCharge: 500, amountPaid: 19000, balance: 0, method: 'Maya', status: 'Refunded', notes: 'Booking cancelled due to emergency', refundAmount: 9500, refundDate: '2025-10-01T14:30' },
+            { id: 'OR-2025008', bookingRef: '#1008', guest: 'Grace Villar', contact: '0924-890-1234', email: 'grace@email.com', date: '2025-09-27T08:30', totalDue: 12000, discount: 500, serviceCharge: 0, amountPaid: 11500, balance: 0, method: 'Cash', status: 'Refunded', notes: 'Client requested refund - weather concerns', refundAmount: 5750, refundDate: '2025-09-28T11:00' },
+            { id: 'OR-2025009', bookingRef: '#1009', guest: 'Mark Ramos', contact: '0925-901-2345', email: 'mark@email.com', date: '2025-09-29T12:00', totalDue: 8500, discount: 0, serviceCharge: 0, amountPaid: 0, balance: 8500, method: 'GCash', status: 'Cancelled', notes: 'No payment received within deadline', refundAmount: 0, refundDate: '' },
+            { id: 'OR-2025010', bookingRef: '#1010', guest: 'Nina Lopez', contact: '0926-012-3456', email: 'nina@email.com', date: '2025-10-01T15:30', totalDue: 22000, discount: 2000, serviceCharge: 1000, amountPaid: 0, balance: 21000, method: 'Maya', status: 'Cancelled', notes: 'Client did not show up', refundAmount: 0, refundDate: '' },
+            { id: 'OR-2025011', bookingRef: '#1011', guest: 'David Cruz', contact: '0927-123-4567', email: 'david@email.com', date: '2025-10-02T14:20', totalDue: 16500, discount: 0, serviceCharge: 500, amountPaid: 17000, balance: 0, method: 'Cash', status: 'Paid', notes: 'Walk-in payment', refundAmount: 0, refundDate: '' },
+            { id: 'OR-2025012', bookingRef: '#1012', guest: 'Sofia Aquino', contact: '0928-234-5678', email: 'sofia@email.com', date: '2025-09-26T09:45', totalDue: 35000, discount: 5000, serviceCharge: 1500, amountPaid: 20000, balance: 11500, method: 'GCash', status: 'Down Payment', notes: 'Full payment expected Oct 5', refundAmount: 0, refundDate: '' }
+        ];
+
+        function renderPayments() {
+            const tbody = document.getElementById('paymentsTableBody');
+            tbody.innerHTML = '';
+
+            let totalRevenue = 0;
+            let pendingAmount = 0;
+            let pendingCount = 0;
+            let todayCount = 0;
+            let todayAmount = 0;
+            const today = new Date().toISOString().split('T')[0];
+
+            payments.forEach(payment => {
+                totalRevenue += payment.amountPaid;
+
+                if (payment.status === 'Pending' || payment.status === 'Down Payment') {
+                    pendingAmount += payment.balance;
+                    pendingCount++;
+                }
+
+                if (payment.date.startsWith(today)) {
+                    todayCount++;
+                    todayAmount += payment.amountPaid;
+                }
+
+                const statusClass = payment.status.toLowerCase().replace(' ', '-');
+                const row = `
+                    <tr>
+                        <td><strong>${payment.id}</strong></td>
+                        <td>${payment.bookingRef}</td>
+                        <td>${payment.guest}</td>
+                        <td>${new Date(payment.date).toLocaleDateString('en-PH')}</td>
+                        <td>₱${payment.amountPaid.toLocaleString()}</td>
+                        <td style="color: ${payment.balance > 0 ? '#ff9800' : '#4caf50'}; font-weight: 600;">
+                            ₱${payment.balance.toLocaleString()}
+                        </td>
+                        <td>${payment.method}</td>
+                        <td><span class="status-badge ${statusClass}">${payment.status}</span></td>
+                        <td>${payment.status === 'Refunded' && payment.refundAmount > 0 ?
+                        `₱${payment.refundAmount.toLocaleString()}<br><small>${new Date(payment.refundDate).toLocaleDateString('en-PH')}</small>` :
+                        '-'}</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-icon view" onclick="viewDetails('${payment.id}')" title="View Details">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn-icon receipt" onclick="viewReceipt('${payment.id}')" title="View Receipt">
+                                    <i class="bi bi-receipt"></i>
+                                </button>
+                                <button class="btn-icon edit" onclick="editPayment('${payment.id}')" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+
+            document.getElementById('totalRevenue').textContent = '₱' + totalRevenue.toLocaleString();
+            document.getElementById('pendingAmount').textContent = '₱' + pendingAmount.toLocaleString();
+            document.getElementById('pendingCount').textContent = pendingCount;
+            document.getElementById('todayCount').textContent = todayCount;
+            document.getElementById('todayAmount').textContent = todayAmount.toLocaleString();
+        }
+
+        function filterPayments() {
+            const status = document.getElementById('filterStatus').value;
+            const method = document.getElementById('filterMethod').value;
+            const dateFrom = document.getElementById('filterDateFrom').value;
+            const dateTo = document.getElementById('filterDateTo').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+
+            const tbody = document.getElementById('paymentsTableBody');
+            const rows = tbody.getElementsByTagName('tr');
+
+            for (let row of rows) {
+                const cells = row.getElementsByTagName('td');
+                let showRow = true;
+
+                const rowStatus = cells[7].textContent.trim();
+                const rowMethod = cells[6].textContent.trim();
+                const rowDate = cells[3].textContent.trim();
+                const searchText = (cells[0].textContent + cells[1].textContent + cells[2].textContent).toLowerCase();
+
+                if (status && !rowStatus.includes(status)) showRow = false;
+                if (method && rowMethod !== method) showRow = false;
+                if (search && !searchText.includes(search)) showRow = false;
+
+                row.style.display = showRow ? '' : 'none';
+            }
+        }
+
+        function calculateBalance() {
+            const totalDue = parseFloat(document.getElementById('totalDue').value) || 0;
+            const discount = parseFloat(document.getElementById('discount').value) || 0;
+            const serviceCharge = parseFloat(document.getElementById('serviceCharge').value) || 0;
+            const amountPaid = parseFloat(document.getElementById('amountPaid').value) || 0;
+
+            const netAmount = totalDue - discount + serviceCharge;
+            const balance = netAmount - amountPaid;
+
+            document.getElementById('netAmountDisplay').textContent = '₱' + netAmount.toLocaleString();
+            document.getElementById('balanceDisplay').textContent = '₱' + balance.toLocaleString();
+            document.getElementById('balanceDisplay').style.color = balance > 0 ? '#ff9800' : '#4caf50';
+        }
+
+        function toggleRefundFields() {
+            const status = document.getElementById('paymentStatus').value;
+            const refundSection = document.getElementById('refundSection');
+            refundSection.style.display = status === 'Refunded' ? 'block' : 'none';
+        }
+
+        function openAddModal() {
+            document.getElementById('paymentForm').reset();
+            document.getElementById('editId').value = '';
+            document.getElementById('modalTitle').textContent = 'Record Payment';
+
+            const now = new Date();
+            document.getElementById('paymentDate').value = now.toISOString().slice(0, 16);
+
+            calculateBalance();
+            document.getElementById('paymentModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('paymentModal').classList.remove('show');
+        }
+
+        function editPayment(id) {
+            const payment = payments.find(p => p.id === id);
+            if (!payment) return;
+
+            document.getElementById('editId').value = payment.id;
+            document.getElementById('modalTitle').textContent = 'Edit Payment';
+            document.getElementById('transactionId').value = payment.id;
+            document.getElementById('bookingRef').value = payment.bookingRef;
+            document.getElementById('guestName').value = payment.guest;
+            document.getElementById('contactNumber').value = payment.contact;
+            document.getElementById('email').value = payment.email;
+            document.getElementById('totalDue').value = payment.totalDue;
+            document.getElementById('discount').value = payment.discount;
+            document.getElementById('serviceCharge').value = payment.serviceCharge;
+            document.getElementById('amountPaid').value = payment.amountPaid;
+            document.getElementById('paymentMethod').value = payment.method;
+            document.getElementById('paymentStatus').value = payment.status;
+            document.getElementById('paymentDate').value = payment.date;
+            document.getElementById('notes').value = payment.notes;
+            document.getElementById('refundAmount').value = payment.refundAmount;
+            document.getElementById('refundDate').value = payment.refundDate;
+
+            toggleRefundFields();
+            calculateBalance();
+            document.getElementById('paymentModal').classList.add('show');
+        }
+
+        function viewDetails(id) {
+            const payment = payments.find(p => p.id === id);
+            if (!payment) return;
+
+            const netAmount = payment.totalDue - payment.discount + payment.serviceCharge;
+
+            document.getElementById('detail_guest').textContent = payment.guest;
+            document.getElementById('detail_contact').textContent = payment.contact || 'N/A';
+            document.getElementById('detail_email').textContent = payment.email || 'N/A';
+
+            document.getElementById('detail_transId').textContent = payment.id;
+            document.getElementById('detail_bookingRef').textContent = payment.bookingRef;
+            document.getElementById('detail_date').textContent = new Date(payment.date).toLocaleString('en-PH');
+            document.getElementById('detail_method').textContent = payment.method;
+
+            const statusClass = payment.status.toLowerCase().replace(' ', '-');
+            document.getElementById('detail_status').innerHTML = `<span class="status-badge ${statusClass}">${payment.status}</span>`;
+
+            document.getElementById('detail_totalDue').textContent = '₱' + payment.totalDue.toLocaleString();
+            document.getElementById('detail_discount').textContent = '-₱' + payment.discount.toLocaleString();
+            document.getElementById('detail_serviceCharge').textContent = '₱' + payment.serviceCharge.toLocaleString();
+            document.getElementById('detail_netAmount').textContent = '₱' + netAmount.toLocaleString();
+            document.getElementById('detail_amountPaid').textContent = '₱' + payment.amountPaid.toLocaleString();
+            document.getElementById('detail_balance').textContent = '₱' + payment.balance.toLocaleString();
+
+            const balanceRow = document.getElementById('detail_balanceRow');
+            if (payment.balance === 0) {
+                balanceRow.classList.add('zero');
+                balanceRow.querySelector('span').innerHTML = '<i class="bi bi-check-circle"></i> Balance Due:';
+            } else {
+                balanceRow.classList.remove('zero');
+                balanceRow.querySelector('span').innerHTML = '<i class="bi bi-exclamation-triangle"></i> Balance Due:';
+            }
+
+            const refundSection = document.getElementById('detail_refundSection');
+            if (payment.status === 'Refunded' && payment.refundAmount > 0) {
+                refundSection.innerHTML = `
+                    <div class="refund-alert">
+                        <h4><i class="bi bi-exclamation-circle"></i> Refund Information</h4>
+                        <div class="amount-row" style="color: #f44336; border-bottom: none;">
+                            <span>Refund Amount:</span>
+                            <strong>₱${payment.refundAmount.toLocaleString()}</strong>
+                        </div>
+                        <div class="amount-row" style="color: #f44336; border-bottom: none;">
+                            <span>Refund Date:</span>
+                            <strong>${new Date(payment.refundDate).toLocaleString('en-PH')}</strong>
+                        </div>
+                    </div>
+                `;
+            } else {
+                refundSection.innerHTML = '';
+            }
+
+            const notesSection = document.getElementById('detail_notesSection');
+            if (payment.notes) {
+                notesSection.innerHTML = `
+                    <div class="details-section">
+                        <div class="notes-section">
+                            <h4><i class="bi bi-journal-text"></i> Notes / Comments</h4>
+                            <p>${payment.notes}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                notesSection.innerHTML = '';
+            }
+
+            document.getElementById('detailsModal').classList.add('show');
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('detailsModal').classList.remove('show');
+        }
+
+        function viewReceipt(id) {
+            const payment = payments.find(p => p.id === id);
+            if (!payment) return;
+
+            const netAmount = payment.totalDue - payment.discount + payment.serviceCharge;
+
+            const receiptHTML = `
+                <div class="detail-row">
+                    <strong>Receipt No:</strong>
+                    <span>${payment.id}</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Date:</strong>
+                    <span>${new Date(payment.date).toLocaleString('en-PH')}</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Booking Reference:</strong>
+                    <span>${payment.bookingRef}</span>
+                </div>
+                <hr style="margin: 1rem 0;">
+                <div class="detail-row">
+                    <strong>Guest Name:</strong>
+                    <span>${payment.guest}</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Contact:</strong>
+                    <span>${payment.contact}</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Email:</strong>
+                          <span>${payment.email}</span>
+                </div>
+                <hr style="margin: 1rem 0;">
+                <div class="detail-row">
+                    <strong>Total Amount Due:</strong>
+                    <span>₱${payment.totalDue.toLocaleString()}</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Discount:</strong>
+                    <span>-₱${payment.discount.toLocaleString()}</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Service Charge/Tax:</strong>
+                    <span>₱${payment.serviceCharge.toLocaleString()}</span>
+                </div>
+                <div class="detail-row" style="font-weight: bold; font-size: 1.1rem; border-top: 2px solid #2e6180; padding-top: 0.5rem;">
+                    <strong>Net Amount:</strong>
+                    <span>₱${netAmount.toLocaleString()}</span>
+                </div>
+                <div class="detail-row" style="color: #4caf50;">
+                    <strong>Amount Paid:</strong>
+                    <span>₱${payment.amountPaid.toLocaleString()}</span>
+                </div>
+                <div class="detail-row" style="color: ${payment.balance > 0 ? '#ff9800' : '#4caf50'};">
+                    <strong>Balance:</strong>
+                    <span>₱${payment.balance.toLocaleString()}</span>
+                </div>
+                <hr style="margin: 1rem 0;">
+                <div class="detail-row">
+                    <strong>Payment Method:</strong>
+                    <span>${payment.method}</span>
+                </div>
+                <div class="detail-row">
+                    <strong>Status:</strong>
+                    <span>${payment.status}</span>
+                </div>
+                ${payment.status === 'Refunded' && payment.refundAmount > 0 ? `
+                <hr style="margin: 1rem 0; border-color: #f44336;">
+                <div class="detail-row" style="color: #f44336;">
+                    <strong>Refund Amount:</strong>
+                    <span>₱${payment.refundAmount.toLocaleString()}</span>
+                </div>
+                <div class="detail-row" style="color: #f44336;">
+                    <strong>Refund Date:</strong>
+                    <span>${new Date(payment.refundDate).toLocaleString('en-PH')}</span>
+                </div>
+                ` : ''}
+                ${payment.notes ? `<div class="detail-row"><strong>Notes:</strong><span>${payment.notes}</span></div>` : ''}
+            `;
+
+            document.getElementById('receiptDetails').innerHTML = receiptHTML;
+            document.getElementById('receiptModal').classList.add('show');
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receiptModal').classList.remove('show');
+        }
+
+        function printReceipt() {
+            window.print();
+        }
+
+        function openReportModal() {
+            document.getElementById('reportForm').reset();
+            document.getElementById('reportPreview').style.display = 'none';
+            document.getElementById('reportForm').style.display = 'block';
+
+            const today = new Date();
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+            document.getElementById('reportDateFrom').value = firstDayOfMonth.toISOString().split('T')[0];
+            document.getElementById('reportDateTo').value = today.toISOString().split('T')[0];
+
+            document.getElementById('reportModal').classList.add('show');
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').classList.remove('show');
+        }
+
+        document.getElementById('reportForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            generateReport();
+        });
+
+        function generateReport() {
+            const dateFrom = document.getElementById('reportDateFrom').value;
+            const dateTo = document.getElementById('reportDateTo').value;
+            const status = document.getElementById('reportStatus').value;
+            const method = document.getElementById('reportMethod').value;
+
+            let filtered = payments.filter(payment => {
+                let match = true;
+                if (payment.date < dateFrom) match = false;
+                if (payment.date > dateTo + 'T23:59') match = false;
+                if (status && payment.status !== status) match = false;
+                if (method && payment.method !== method) match = false;
+                return match;
+            });
+
+            const totalTransactions = filtered.length;
+            const totalRevenue = filtered.reduce((sum, p) => sum + p.amountPaid, 0);
+            const paidCount = filtered.filter(p => p.status === 'Paid').length;
+            const pendingBalance = filtered.filter(p => p.status === 'Pending' || p.status === 'Down Payment').reduce((sum, p) => sum + p.balance, 0);
+
+            const cashTotal = filtered.filter(p => p.method === 'Cash').reduce((sum, p) => sum + p.amountPaid, 0);
+            const gcashTotal = filtered.filter(p => p.method === 'GCash').reduce((sum, p) => sum + p.amountPaid, 0);
+            const mayaTotal = filtered.filter(p => p.method === 'Maya').reduce((sum, p) => sum + p.amountPaid, 0);
+
+            document.getElementById('reportPeriod').textContent = `Payment Report: ${new Date(dateFrom).toLocaleDateString('en-PH')} - ${new Date(dateTo).toLocaleDateString('en-PH')}`;
+            document.getElementById('reportGeneratedDate').textContent = new Date().toLocaleString('en-PH');
+
+            document.getElementById('reportSummary').innerHTML = `
+                <div class="report-stat">
+                    <h4>Total Transactions</h4>
+                    <h3>${totalTransactions}</h3>
+                </div>
+                <div class="report-stat">
+                    <h4>Total Revenue</h4>
+                    <h3>₱${totalRevenue.toLocaleString()}</h3>
+                </div>
+                <div class="report-stat">
+                    <h4>Paid Transactions</h4>
+                    <h3>${paidCount}</h3>
+                </div>
+                <div class="report-stat">
+                    <h4>Pending Balance</h4>
+                    <h3>₱${pendingBalance.toLocaleString()}</h3>
+                </div>
+                <div class="report-stat">
+                    <h4>Cash Payments</h4>
+                    <h3>₱${cashTotal.toLocaleString()}</h3>
+                </div>
+                <div class="report-stat">
+                    <h4>GCash Payments</h4>
+                    <h3>₱${gcashTotal.toLocaleString()}</h3>
+                </div>
+                <div class="report-stat">
+                    <h4>Maya Payments</h4>
+                    <h3>₱${mayaTotal.toLocaleString()}</h3>
+                </div>
+            `;
+
+            const tableBody = document.getElementById('reportTableBody');
+            tableBody.innerHTML = '';
+            filtered.forEach(payment => {
+                const row = `
+                    <tr>
+                        <td>${payment.id}</td>
+                        <td>${new Date(payment.date).toLocaleDateString('en-PH')}</td>
+                        <td>${payment.guest}</td>
+                        <td>${payment.method}</td>
+                        <td>₱${payment.amountPaid.toLocaleString()}</td>
+                        <td>${payment.status}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+
+            document.getElementById('reportPreview').style.display = 'block';
+            document.getElementById('reportForm').style.display = 'none';
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        document.getElementById('paymentForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const editId = document.getElementById('editId').value;
+            const paymentData = {
+                id: editId || document.getElementById('transactionId').value,
+                bookingRef: document.getElementById('bookingRef').value,
+                guest: document.getElementById('guestName').value,
+                contact: document.getElementById('contactNumber').value,
+                email: document.getElementById('email').value,
+                date: document.getElementById('paymentDate').value,
+                totalDue: parseFloat(document.getElementById('totalDue').value),
+                discount: parseFloat(document.getElementById('discount').value) || 0,
+                serviceCharge: parseFloat(document.getElementById('serviceCharge').value) || 0,
+                amountPaid: parseFloat(document.getElementById('amountPaid').value),
+                balance: parseFloat(document.getElementById('balanceDisplay').textContent.replace('₱', '').replace(',', '')),
+                method: document.getElementById('paymentMethod').value,
+                status: document.getElementById('paymentStatus').value,
+                notes: document.getElementById('notes').value,
+                refundAmount: parseFloat(document.getElementById('refundAmount').value) || 0,
+                refundDate: document.getElementById('refundDate').value || ''
+            };
+
+            if (editId) {
+                const index = payments.findIndex(p => p.id === editId);
+                if (index !== -1) {
+                    payments[index] = paymentData;
+                }
+            } else {
+                payments.unshift(paymentData);
+            }
+
+            renderPayments();
+            closeModal();
+            alert('Payment ' + (editId ? 'updated' : 'recorded') + ' successfully!');
+        });
+        if (!sessionStorage.getItem('adminLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'login.html';
+            }
+        }
+
+        renderPayments();
+    </script>
+</body>
+
+</html>

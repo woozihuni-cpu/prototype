@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancellations - Elanne Resort Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Verdana, Geneva, sans-serif;
+            background-color: #f7f3ec;
+            color: #4c3e35;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(180deg, #2e6180 0%, #4c3e35 100%);
+            padding: 1.5rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-header h2 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .sidebar-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-link.active {
+            background-color: #e47b48;
+            color: white;
+        }
+
+        .logout-section {
+            position: absolute;
+            bottom: 1.5rem;
+            width: 100%;
+            padding: 0 1.5rem;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background-color: rgba(228, 123, 72, 0.2);
+            color: white;
+            border: 2px solid rgba(228, 123, 72, 0.5);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            background-color: #e47b48;
+            border-color: #e47b48;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-header h1 {
+            color: #2e6180;
+            font-size: 1.8rem;
+        }
+
+        .add-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: #e47b48;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .amount {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stat-card.pending .amount {
+            color: #ff9800;
+        }
+
+        .stat-card.approved .amount {
+            color: #4caf50;
+        }
+
+        .stat-card.rejected .amount {
+            color: #f44336;
+        }
+
+        .filters-section {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #4c3e35;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 0.7rem;
+            border: 2px solid #e0dbd0;
+            border-radius: 6px;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #2e6180;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #2e6180, #4c3e35);
+            color: white;
+        }
+
+        thead th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e0dbd0;
+            transition: background-color 0.3s;
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        tbody td {
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .status-badge.pending {
+            background-color: #fff3e0;
+            color: #ff9800;
+        }
+
+        .status-badge.approved {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .status-badge.rejected {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .btn-icon.view {
+            background-color: #e3f2fd;
+            color: #2196f3;
+        }
+
+        .btn-icon.approve {
+            background-color: #e8f5e9;
+            color: #4caf50;
+        }
+
+        .btn-icon.reject {
+            background-color: #ffebee;
+            color: #f44336;
+        }
+
+        .btn-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #f7f3ec;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #2e6180, #4c3e35);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .detail-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .detail-section h3 {
+            color: #2e6180;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0dbd0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-row strong {
+            color: #4c3e35;
+        }
+
+        .detail-row span {
+            color: #777;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .btn-approve,
+        .btn-reject,
+        .btn-cancel {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-approve {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background-color: #388e3c;
+        }
+
+        .btn-reject {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #4c3e35;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0dbd0;
+            border-radius: 6px;
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2e6180;
+        }
+
+        .add-btn:hover {
+            background-color: #dd5a68;
+            transform: translateY(-2px);
+        }
+
+        .btn-reject:hover {
+            background-color: #d32f2f;
+        }
+
+        .btn-cancel {
+            background-color: #e0dbd0;
+            color: #4c3e35;
+        }
+
+        .btn-cancel:hover {
+            background-color: #d0cbc0;
+        }
+
+        /* Add this CSS to your <style> section */
+
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .confirmation-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirmation-modal-content {
+            background-color: #f7f3ec;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .confirmation-modal-header {
+            background: linear-gradient(135deg, #2e6180, #4c3e35);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .confirmation-modal-header h2 {
+            font-size: 1.3rem;
+            margin: 0;
+        }
+
+        .confirmation-modal-body {
+            padding: 2rem;
+        }
+
+        .confirmation-modal-body p {
+            font-size: 1rem;
+            color: #4c3e35;
+            margin: 0;
+        }
+
+        .confirmation-modal-body strong {
+            color: #2e6180;
+        }
+
+        .confirmation-modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            padding: 0 2rem 2rem 2rem;
+        }
+
+        .btn-confirm-action {
+            padding: 0.8rem 2rem;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: Verdana, Geneva, sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-confirm-action:hover {
+            background-color: #388e3c;
+        }
+
+        #rejectionReason:focus {
+            outline: none;
+            border-color: #2e6180;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Elanne Resort</h2>
+            <p>Admin Portal</p>
+        </div>
+
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="reservations.html" class="nav-link">
+                        <i class="bi bi-calendar-check"></i>
+                        <span>Reservations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="checkin.html" class="nav-link">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Check-in</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="checkout.html" class="nav-link">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Checkout</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="cancellation.html" class="nav-link active">
+                        <i class="bi bi-x-circle"></i>
+                        <span>Cancellations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="rebooking.html" class="nav-link">
+                        <i class="bi bi-arrow-repeat"></i>
+                        <span>Rebookings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin-rooms.html" class="nav-link">
+                        <i class="bi bi-door-open"></i>
+                        <span>Rooms</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin-packages.html" class="nav-link">
+                        <i class="bi bi-box-seam"></i>
+                        <span>Packages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="payment.html" class="nav-link">
+                        <i class="bi bi-credit-card"></i>
+                        <span>Payments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="guest.html" class="nav-link">
+                        <i class="bi bi-person"></i>
+                        <span>Guests</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="accounts.html" class="nav-link">
+                        <i class="bi bi-people"></i>
+                        <span>Accounts</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="logout-section">
+            <button class="logout-btn" onclick="logout()">
+                <i class="bi bi-box-arrow-left"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1><i class="bi bi-x-circle"></i> Cancellation Requests</h1>
+            <button class="add-btn" onclick="openCreateModal()">
+                <i class="bi bi-plus-circle"></i> Create Cancellation Request
+            </button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card pending">
+                <h3>Pending Requests</h3>
+                <div class="amount" id="pendingCount">3</div>
+            </div>
+            <div class="stat-card approved">
+                <h3>Approved</h3>
+                <div class="amount" id="approvedCount">12</div>
+            </div>
+            <div class="stat-card rejected">
+                <h3>Rejected</h3>
+                <div class="amount" id="rejectedCount">2</div>
+            </div>
+        </div>
+
+        <div class="filters-section">
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select id="filterStatus" onchange="filterRequests()">
+                        <option value="">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Date From</label>
+                    <input type="date" id="filterDateFrom" onchange="filterRequests()">
+                </div>
+                <div class="filter-group">
+                    <label>Date To</label>
+                    <input type="date" id="filterDateTo" onchange="filterRequests()">
+                </div>
+                <div class="filter-group">
+                    <label>Search</label>
+                    <input type="text" id="searchInput" placeholder="Cancellation ID, Booking ID..."
+                        oninput="filterRequests()">
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cancellation ID</th>
+                        <th>Booking ID</th>
+                        <th>Guest Name</th>
+                        <th>Reason</th>
+                        <th>Date Requested</th>
+                        <th>Created By</th>
+                        <th>Decided By</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="requestsTableBody"></tbody>
+            </table>
+        </div>
+
+
+        <div id="confirmationModal" class="confirmation-modal">
+            <div class="confirmation-modal-content">
+                <div class="confirmation-modal-header">
+                    <h2 id="confirmationTitle">Confirm Decision</h2>
+                </div>
+                <div class="confirmation-modal-body">
+                    <p id="confirmationMessage"></p>
+                    <div id="rejectionReasonContainer" style="display: none; margin-top: 1.5rem;">
+                        <label
+                            style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #4c3e35;">Rejection
+                            Reason *</label>
+                        <textarea id="rejectionReason" placeholder="Enter rejection reason..."
+                            style="width: 100%; padding: 0.8rem; border: 2px solid #e0dbd0; border-radius: 6px; font-family: Verdana, Geneva, sans-serif; min-height: 100px;"></textarea>
+                    </div>
+                </div>
+                <div class="confirmation-modal-actions">
+                    <button class="btn-cancel" onclick="cancelConfirmation()">Cancel</button>
+                    <button class="btn-confirm-action" id="confirmActionBtn"
+                        onclick="proceedDecision()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Create/Edit Modal -->
+    <div id="createModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="createModalTitle">Create Cancellation Request</h2>
+                <button class="close-btn" onclick="closeCreateModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="cancellationForm">
+                    <input type="hidden" id="editId">
+
+                    <div class="form-group">
+                        <label>Booking ID *</label>
+                        <input type="text" id="bookingId" placeholder="#1001" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Guest Name *</label>
+                        <input type="text" id="guestName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Reason for Cancellation *</label>
+                        <textarea id="reason" rows="4" placeholder="Enter reason for cancellation..."
+                            required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Created By *</label>
+                        <select id="createdBy" required>
+                            <option value="">Select...</option>
+                            <option value="Guest">Receptionist</option>
+                            <option value="Receptionist">Admin</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="closeCreateModal()">Cancel</button>
+                        <button type="submit" class="btn-approve">Submit Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Cancellation Request Details</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalDetails"></div>
+        </div>
+    </div>
+
+    <script>
+        if (!sessionStorage.getItem('adminLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+
+        let cancellations = [
+            { id: 'CXL-2025001', bookingId: '#1001', guestName: 'Juan Dela Cruz', reason: 'Personal emergency', dateRequested: '2025-10-01T10:30', createdBy: 'Guest', decidedBy: '', status: 'Pending', decision: '', decisionDate: '' },
+            { id: 'CXL-2025002', bookingId: '#1003', guestName: 'Pedro Garcia', reason: 'Weather concerns - typhoon warning', dateRequested: '2025-10-01T14:20', createdBy: 'Guest', decidedBy: 'Admin User', status: 'Approved', decision: 'Approved', decisionDate: '2025-10-01T15:00' },
+            { id: 'CXL-2025003', bookingId: '#1005', guestName: 'Jose Ramos', reason: 'Duplicate booking made by mistake', dateRequested: '2025-10-02T09:15', createdBy: 'Receptionist - Maria Santos', decidedBy: '', status: 'Pending', decision: '', decisionDate: '' },
+            { id: 'CXL-2025004', bookingId: '#1007', guestName: 'Lisa Fernandez', reason: 'Change of plans', dateRequested: '2025-09-30T16:45', createdBy: 'Guest', decidedBy: 'Admin User', status: 'Rejected', decision: 'Rejected - within 24hr cancellation policy', decisionDate: '2025-09-30T17:30' },
+            { id: 'CXL-2025005', bookingId: '#1009', guestName: 'Mark Ramos', reason: 'Found better accommodation', dateRequested: '2025-09-28T11:00', createdBy: 'Guest', decidedBy: 'Receptionist - Maria Santos', status: 'Approved', decision: 'Approved', decisionDate: '2025-09-28T13:45' },
+            { id: 'CXL-2025006', bookingId: '#1012', guestName: 'Nina Lopez', reason: 'Medical reason - family member hospitalized', dateRequested: '2025-10-02T08:30', createdBy: 'Guest', decidedBy: '', status: 'Pending', decision: '', decisionDate: '' },
+            { id: 'CXL-2025007', bookingId: '#1006', guestName: 'Pearl Roxas', reason: 'Change of mind', dateRequested: '2025-10-19T13:30', createdBy: 'Guest', decidedBy: '', status: 'Pending', decision: '', decisionDate: '' }
+        ];
+
+        function updateStats() {
+            const pending = cancellations.filter(c => c.status === 'Pending').length;
+            const approved = cancellations.filter(c => c.status === 'Approved').length;
+            const rejected = cancellations.filter(c => c.status === 'Rejected').length;
+
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('approvedCount').textContent = approved;
+            document.getElementById('rejectedCount').textContent = rejected;
+        }
+
+        function renderRequests(data = cancellations) {
+            const tbody = document.getElementById('requestsTableBody');
+            tbody.innerHTML = '';
+
+            data.forEach(req => {
+                const statusClass = req.status.toLowerCase();
+                const row = `
+                    <tr>
+                        <td><strong>${req.id}</strong></td>
+                        <td>${req.bookingId}</td>
+                        <td>${req.guestName}</td>
+                        <td>${req.reason}</td>
+                        <td>${new Date(req.dateRequested).toLocaleString('en-PH')}</td>
+                        <td>${req.createdBy}</td>
+                        <td>${req.decidedBy || 'pending'}</td>
+                        <td><span class="status-badge ${statusClass}">${req.status}</span></td>
+                        <td class="action-btns">
+                            <button class="btn-icon view" onclick="viewRequest('${req.id}')" title="View Details">
+                                <i class="bi bi-eye-fill"></i>
+                            </button>
+                            
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+
+            updateStats();
+        }
+
+        function filterRequests() {
+            const status = document.getElementById('filterStatus').value;
+            const dateFrom = document.getElementById('filterDateFrom').value;
+            const dateTo = document.getElementById('filterDateTo').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+
+            let filtered = cancellations.filter(req => {
+                let match = true;
+                if (status && req.status !== status) match = false;
+                if (dateFrom && req.dateRequested < dateFrom) match = false;
+                if (dateTo && req.dateRequested > dateTo + 'T23:59') match = false;
+                if (search && !req.id.toLowerCase().includes(search) &&
+                    !req.bookingId.toLowerCase().includes(search) &&
+                    !req.guestName.toLowerCase().includes(search)) match = false;
+                return match;
+            });
+
+            renderRequests(filtered);
+        }
+
+        function viewRequest(id) {
+            const req = cancellations.find(r => r.id === id);
+            if (!req) return;
+
+            const html = `
+                <div class="detail-section">
+                    <h3>Request Information</h3>
+                    <div class="detail-row">
+                        <strong>Cancellation ID:</strong>
+                        <span>${req.id}</span>
+                    </div>
+                    <div class="detail-row">
+                        <strong>Booking ID:</strong>
+                        <span>${req.bookingId}</span>
+                    </div>
+                    <div class="detail-row">
+                        <strong>Guest Name:</strong>
+                        <span>${req.guestName}</span>
+                    </div>
+                    <div class="detail-row">
+                        <strong>Date Requested:</strong>
+                        <span>${new Date(req.dateRequested).toLocaleString('en-PH')}</span>
+                    </div>
+                    <div class="detail-row">
+                        <strong>Created By:</strong>
+                        <span>${req.createdBy}</span>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <h3>Cancellation Reason</h3>
+                    <p style="padding: 1rem; background: #f9f9f9; border-radius: 6px;">${req.reason}</p>
+                </div>
+
+                <div class="detail-section">
+                    <h3>Decision Information</h3>
+                    <div class="detail-row">
+                        <strong>Status:</strong>
+                        <span class="status-badge ${req.status.toLowerCase()}">${req.status}</span>
+                    </div>
+                    <div class="detail-row">
+                        <strong>Decided By:</strong>
+                        <span>${req.decidedBy || 'Pending decision'}</span>
+                    </div>
+                    ${req.decisionDate ? `
+                    <div class="detail-row">
+                        <strong>Decision Date:</strong>
+                        <span>${new Date(req.decisionDate).toLocaleString('en-PH')}</span>
+                    </div>
+                    ` : ''}
+                    ${req.decision ? `
+                    <div class="detail-row">
+                        <strong>Decision Notes:</strong>
+                        <span>${req.decision}</span>
+                    </div>
+                    ` : ''}
+                </div>
+
+                <div class="form-actions">
+                    ${req.status === 'Pending' ? `
+                        <button class="btn-approve" onclick="approveRequest('${req.id}'); closeModal();">
+                            <i class="bi bi-check-circle"></i> Approve
+                        </button>
+                        <button class="btn-reject" onclick="rejectRequest('${req.id}'); closeModal();">
+                            <i class="bi bi-x-circle"></i> Reject
+                        </button>
+                    ` : ''}
+                    <button class="btn-cancel" onclick="closeModal()">Close</button>
+                </div>
+            `;
+
+            document.getElementById('modalDetails').innerHTML = html;
+            document.getElementById('viewModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('viewModal').classList.remove('show');
+        }
+
+        /* Add these variables at the top of your script section */
+
+        let pendingDecisionId = null;
+        let pendingDecisionType = null; // 'approve' or 'reject'
+
+        /* Replace your approveRequest and rejectRequest functions with these: */
+
+        function approveRequest(id) {
+            pendingDecisionId = id;
+            pendingDecisionType = 'approve';
+
+            const req = cancellations.find(r => r.id === id);
+            if (!req) return;
+
+            document.getElementById('confirmationTitle').textContent = 'Approve Cancellation';
+            document.getElementById('confirmationMessage').innerHTML = `Approve cancellation request <strong>${req.id}</strong> for <strong>${req.guestName}</strong>?`;
+            document.getElementById('rejectionReasonContainer').style.display = 'none';
+            document.getElementById('rejectionReason').value = '';
+            document.getElementById('confirmActionBtn').textContent = 'Approve';
+            document.getElementById('confirmActionBtn').style.backgroundColor = '#4caf50';
+
+            document.getElementById('viewModal').classList.remove('show');
+            document.getElementById('confirmationModal').classList.add('show');
+        }
+
+        function rejectRequest(id) {
+            pendingDecisionId = id;
+            pendingDecisionType = 'reject';
+
+            const req = cancellations.find(r => r.id === id);
+            if (!req) return;
+
+            document.getElementById('confirmationTitle').textContent = 'Reject Cancellation';
+            document.getElementById('confirmationMessage').innerHTML = `Reject cancellation request <strong>${req.id}</strong> for <strong>${req.guestName}</strong>?`;
+            document.getElementById('rejectionReasonContainer').style.display = 'block';
+            document.getElementById('rejectionReason').value = '';
+            document.getElementById('confirmActionBtn').textContent = 'Reject';
+            document.getElementById('confirmActionBtn').style.backgroundColor = '#f44336';
+
+            document.getElementById('viewModal').classList.remove('show');
+            document.getElementById('confirmationModal').classList.add('show');
+        }
+
+        function cancelConfirmation() {
+            document.getElementById('confirmationModal').classList.remove('show');
+            document.getElementById('viewModal').classList.add('show');
+            pendingDecisionId = null;
+            pendingDecisionType = null;
+        }
+
+        function proceedDecision() {
+            if (!pendingDecisionId || !pendingDecisionType) return;
+
+            const req = cancellations.find(r => r.id === pendingDecisionId);
+            if (!req) return;
+
+            if (pendingDecisionType === 'reject') {
+                const reason = document.getElementById('rejectionReason').value.trim();
+                if (!reason) {
+                    alert('Please enter a rejection reason.');
+                    return;
+                }
+
+                req.status = 'Rejected';
+                req.decidedBy = sessionStorage.getItem('adminName') || 'Admin User';
+                req.decision = `Rejected - ${reason}`;
+                req.decisionDate = new Date().toISOString();
+
+                document.getElementById('confirmationModal').classList.remove('show');
+                renderRequests();
+
+                // Success message
+                const successModal = document.createElement('div');
+                successModal.className = 'confirmation-modal show';
+                successModal.innerHTML = `
+            <div class="confirmation-modal-content">
+                <div class="confirmation-modal-header">
+                    <h2>Success</h2>
+                </div>
+                <div class="confirmation-modal-body">
+                    <p>Cancellation request <strong>${req.id}</strong> has been <strong>rejected</strong>.</p>
+                </div>
+                <div class="confirmation-modal-actions">
+                    <button class="btn-confirm-action" onclick="this.parentElement.parentElement.parentElement.remove()">OK</button>
+                </div>
+            </div>
+        `;
+                document.body.appendChild(successModal);
+            } else if (pendingDecisionType === 'approve') {
+                req.status = 'Approved';
+                req.decidedBy = sessionStorage.getItem('adminName') || 'Admin User';
+                req.decision = 'Approved';
+                req.decisionDate = new Date().toISOString();
+
+                document.getElementById('confirmationModal').classList.remove('show');
+                renderRequests();
+
+                // Success message
+                const successModal = document.createElement('div');
+                successModal.className = 'confirmation-modal show';
+                successModal.innerHTML = `
+            <div class="confirmation-modal-content">
+                <div class="confirmation-modal-header">
+                    <h2>Success</h2>
+                </div>
+                <div class="confirmation-modal-body">
+                    <p>Cancellation request <strong>${req.id}</strong> has been <strong>approved</strong>.</p>
+                </div>
+                <div class="confirmation-modal-actions">
+                    <button class="btn-confirm-action" onclick="this.parentElement.parentElement.parentElement.remove()">OK</button>
+                </div>
+            </div>
+        `;
+                document.body.appendChild(successModal);
+            }
+
+            pendingDecisionId = null;
+            pendingDecisionType = null;
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('adminLoggedIn');
+                window.location.href = 'login.html';
+            }
+        }
+        function openCreateModal() {
+            document.getElementById('createModalTitle').textContent = 'Create Cancellation Request';
+            document.getElementById('cancellationForm').reset();
+            document.getElementById('editId').value = '';
+            document.getElementById('createModal').classList.add('show');
+        }
+
+        function closeCreateModal() {
+            document.getElementById('createModal').classList.remove('show');
+        }
+
+        document.getElementById('cancellationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const editId = document.getElementById('editId').value;
+            const currentUser = sessionStorage.getItem('adminName') || 'Admin User';
+
+            const createdByValue = document.getElementById('createdBy').value;
+            let createdByText = createdByValue;
+            if (createdByValue === 'Receptionist') {
+                createdByText = `Receptionist - ${currentUser}`;
+            }
+
+            const formData = {
+                bookingId: document.getElementById('bookingId').value,
+                guestName: document.getElementById('guestName').value,
+                reason: document.getElementById('reason').value,
+                createdBy: createdByText,
+                dateRequested: new Date().toISOString(),
+                decidedBy: '',
+                status: 'Pending',
+                decision: '',
+                decisionDate: ''
+            };
+
+            if (editId) {
+                const index = cancellations.findIndex(c => c.id === editId);
+                if (index !== -1) {
+                    cancellations[index] = { ...cancellations[index], ...formData };
+                    alert('Cancellation request updated successfully!');
+                }
+            } else {
+                const newId = 'CXL-2025' + String(cancellations.length + 1).padStart(3, '0');
+                cancellations.push({ id: newId, ...formData });
+                alert('Cancellation request created successfully!');
+            }
+
+            closeCreateModal();
+            renderRequests();
+        });
+
+        renderRequests();
+    </script>
+</body>
+
+</html>
